@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>90</x>
+      <y>240</y>
+      <w>260</w>
+      <h>570</h>
+    </coordinates>
+    <panel_attributes>Snake.Spielelogik
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>90</x>
+      <y>0</y>
+      <w>310</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>_Idee hinter dem Spiel:_
+Anders als das normale Snake 
+versucht die "Schlange" hier Verfolger 
+loszuwerden. Dies wird wie beim traditionellen
+Snake durch aufsammeln von Gegenständen
+ermöglicht.
+Hindernisse: Zufällig Spawnende "Gegner"
+und andere Schlangen.
+Features: Upgrades wie schnellere Bewegung
+durch "Powerups"
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>410</x>
+      <y>240</y>
+      <w>530</w>
+      <h>570</h>
+    </coordinates>
+    <panel_attributes>Snake.Objekte
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>90</x>
+      <y>820</y>
+      <w>270</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Snake.ZusatzImplementation
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>100</x>
+      <y>270</y>
+      <w>240</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>Spieleloop
+--
+- updateTimer : Number
+- spielfeld : Spielfeld
+- canvas : Canvas
+--
++ update()
++ draw()
++ move(key: Keyboardinput)
++ start()
++ stop()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>420</x>
+      <y>270</y>
+      <w>240</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Spielfeld
+--
+- spieler : Spieler
+- gegner : Array
+- buffs : boolean
+- pickups : Pickup 
+- spielfeld : Array
+--
++ draw()
++ move(key: Keyboardinput)
++ update()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>420</x>
+      <y>470</y>
+      <w>240</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Spieler
+--
+- kopf: Schlangenanfang
+- körper: List
+--
++ draw()
++ move(key: Keyboardinput)
++ kürzer()
++ länger()
++ "sterben"()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>270</y>
+      <w>110</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>90.0;10.0;50.0;10.0;50.0;50.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>650</x>
+      <y>300</y>
+      <w>40</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;180.0;20.0;180.0;20.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>270</y>
+      <w>240</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Kopf
+--
+- nächster: Körperteil
+- positionx: number
+- positiony: number
+--
++ draw()
++ move(key: Keyboardinput)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>400</y>
+      <w>240</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>Körperteil
+--
+- vorheriger: Körperteil
+- nächster: Körperteil
+- positionx: number
+- positiony: number
+--
++ add()
++ delete()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>650</x>
+      <y>270</y>
+      <w>60</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>40.0;10.0;30.0;10.0;30.0;250.0;10.0;250.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>920</x>
+      <y>290</y>
+      <w>80</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;120.0;60.0;120.0;60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>420</x>
+      <y>630</y>
+      <w>240</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Gegner
+--
+- typ : string
+- positionx: number
+- positiony: number
+--
++ draw()
++ spawn()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>390</x>
+      <y>310</y>
+      <w>50</w>
+      <h>360</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>30.0;340.0;10.0;340.0;10.0;10.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>100</x>
+      <y>850</y>
+      <w>240</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>GegnerSchlangen
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>540</y>
+      <w>240</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Pickup
+--
+- typ : string
+- positionx: number
+- positiony: number
+--
++ draw()
++ spawn()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>340</y>
+      <w>350</w>
+      <h>460</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>330.0;210.0;310.0;210.0;310.0;440.0;10.0;440.0;10.0;10.0;60.0;10.0</additional_attributes>
+  </element>
+</diagram>

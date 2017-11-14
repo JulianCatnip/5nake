@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>13</zoom_level>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>520</x>
+      <y>169</y>
+      <w>325</w>
+      <h>364</h>
+    </coordinates>
+    <panel_attributes>Zeitplan
+--
+Fertigstellung spätestens 10.01
+damit noch Zeit für eventuelle
+Probleme bleibt.
+--
+Paket 1:
+Implementation des Spielfeldes
+Zeichnen der Objekte
+Wrapper Website
+--
+Paket 2:
+Steuerung der Schlange
+Spawnen der Gegner und Pickups
+(Gameloop)
+--
+Paket 3:
+Bugfixes implementation von Features 
+(Gegnerische Schlangen)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>91</x>
+      <y>143</y>
+      <w>403</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>Wochenablauf
+--
+Mo: Arbeit allein (Senden des Statusberichts)
+Di &amp; Mi: Zeit für Gruppenbesprechung
+Do - Sa: Arbeit allein
+Sa: Sammeln des Statusberichts
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
