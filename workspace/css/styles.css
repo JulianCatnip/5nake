@@ -1,0 +1,124 @@
+@charset "utf-8";
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+    background: #073040;
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 100%;
+    line-height: 1.5rem;
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    text-size-adjust: none;
+}
+
+header {
+	background: #0D5F7F;
+	height: 4rem;
+	margin-bottom: 40px;
+}
+
+h1 {
+	font-family: 'Pixel', sans-serif;
+	font-size: 30px;
+	line-height: 30px;
+	font-weight: 400;
+	float: left;
+	margin-top: 17px;
+	text-transform: uppercase;
+}
+h1 a {
+	color: #fff;
+	text-decoration: none;
+}
+
+h2, h3, h4 {
+	font-family: 'Open Sans Light', sans-serif;
+	font-size: 20px;
+}
+.points, .length, .time {
+	font-family: 'Pixel', sans-serif;
+	font-weight: 400;
+	border: 1px solid #0D5F7F;
+	display: block;
+    margin-top: 10px;
+    margin-bottom: 43px;
+    font-size: 75px;
+    text-align: right;
+    line-height: 80px;
+    padding: 26px 30px 30px 30px;
+}
+
+section {
+	margin-left: auto;
+    margin-right: auto;
+    max-width: 1240px;
+    position: relative;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+section::after {
+	content: "";
+    display: table;
+    clear: both;
+}
+
+.col {
+	float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+}
+.col::after {
+	content: "";
+    display: table;
+    clear: both;
+}
+
+.desktop-3 {
+	width: 24%;
+}
+.desktop-9 {
+	width: 76%;
+}
+
+nav ul {
+	float: right;
+}
+
+nav ul li {
+	list-style: none;
+	float: left;
+}
+nav ul li:last-child a {
+	border-right: 1px solid #18ABE5;
+}
+
+nav ul li a {
+	font-family: 'Open Sans Light', sans-serif;
+	text-decoration: none;
+	color: #fff;
+	display: block;
+    padding: 20px;
+    border-left: 1px solid #18ABE5;
+	transition: 300ms all ease-in-out;
+}
+nav ul li a:hover {
+	color: #fff;
+	background: #148FBF;
+}
+nav ul li a.active {
+	font-family: 'Open Sans Bold', sans-serif;
+	color: #fff;
+	background: #073040;
+}
+
+main #snake {
+	display: block;
+	border: 1px solid #0D5F7F;
+}

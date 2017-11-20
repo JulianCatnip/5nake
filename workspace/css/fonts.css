@@ -1,0 +1,29 @@
+@font-face {
+  font-family: 'Open Sans';
+  src: url('fonts/OpenSans-Regular.ttf');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Open Sans Bold';
+  src: url('fonts/OpenSans-Bold.ttf');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Open Sans Light';
+  src: url('fonts/OpenSans-Light.ttf');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Open Sans Semibold';
+  src: url('fonts/OpenSans-Semibold.ttf');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Pixel';
+  src: url('fonts/LLPIXEL3.ttf');
+  font-weight: 400;
+}
