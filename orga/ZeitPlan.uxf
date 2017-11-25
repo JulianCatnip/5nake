@@ -5,8 +5,8 @@
     <id>UMLPackage</id>
     <coordinates>
       <x>520</x>
-      <y>169</y>
-      <w>325</w>
+      <y>143</y>
+      <w>364</w>
       <h>364</h>
     </coordinates>
     <panel_attributes>Zeitplan
@@ -35,7 +35,7 @@ Bugfixes implementation von Features
     <coordinates>
       <x>91</x>
       <y>143</y>
-      <w>403</w>
+      <w>416</w>
       <h>143</h>
     </coordinates>
     <panel_attributes>Wochenablauf
