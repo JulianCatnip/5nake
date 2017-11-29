@@ -3,7 +3,7 @@ function grid(){
 	var ctx = canvas.getContext("2d");
 
 	var einheitX = canvas.width / 15;	//60px
-	var einheitY = canvas.height / 10; 	//60px
+	var einheitY = canvas.height / 11; 	//60px
 
 	ctx.beginPath();
 	ctx.strokeStyle = "#fff";
