@@ -6,8 +6,19 @@ class Einzelobjekt{
 		this.positionY = _positionY;
 		this.typ = _typ;
 	}
-    //zusätzliche Fkt
-	drawObject(){
-			
+	
+	/** gibt X-Koordinate der Position zurück */
+	getPositionX(){
+		return this.positionX;
+	}
+	
+	/** gibt Y-Koordinate der Position zurück */
+	getPositionY(){
+		return this.positionY;
+	}
+	
+	/** gibt Typ des Objekts zurück */
+	getTyp(){
+		return this.typ;
 	}
 }

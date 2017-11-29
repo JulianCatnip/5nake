@@ -1,0 +1,34 @@
+/** Die Schlange soll ihre Körperteile wie die Liste ihre Nodes verwalten */
+class Schlange{
+    
+    constructor(_first){
+        this.first = _first;
+        this.first.typ = 'kopf';
+    }    
+    
+    /** Körperteil zur Schlange hinzufügen */
+    add(){
+        first.add();
+    }
+    
+    /** Körperteil aus Schlange entfernen*/
+    delete(anzahl){
+        if(anzahl < getLength()){
+            first.delete(anzahl);
+        }
+        else{
+            first.delete(getLength()-1);
+        }
+    }
+    
+    /** Gibt die Länge der Schlange in Form eines Zahlenwertes zurück */
+    getLength(){
+        return first.count();
+    }
+    
+    /** Weist dem Schlangenkopf eine neue Position zu */
+    move(newX, newY){
+    this.first.move(first.positionX + newX, first.positionY+ newY);
+    }
+    
+}
