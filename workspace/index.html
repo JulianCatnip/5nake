@@ -2,14 +2,16 @@
 <html>
 <head>
 	<title>Informatikprojekt2 „Snake“ | Gruppe 3</title>
+	<meta charset="utf-8">
 	<meta name="author" content="Victor-Julian Bringezu, Lule Jashari, Yasmin Kähler, Lisa Katharina Glosowitz, Marina Künzig">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link rel="stylesheet" href="css/styles.css" type="text/css">
 	<link rel="stylesheet" href="css/fonts.css" type="text/css">
-	<script type="text/javascript" src="js/script.js"></script>
+
+	<!--<script type="text/javascript" src="js/script.js"></script>-->
 </head>
-<body onload="grid()">
+<body>
 	<header>
 		<section>
 			<div class="col">
@@ -27,7 +29,40 @@
 	</header>
 	<main>
 		<section>
+			<div class="col">
+				<h1>BABEL TEST<br/><br/></h1>
+			</div>
+			<div class="col">
+				<!-- ===================== BABEL TEST ===================== -->
+				<div class="form">
+			        <div>
+			            <label>Principal:</label>
+			            <input type="text" id="principal" value="200000"/>
+			        </div>
+			        <div>
+			            <label>Years:</label>
+			            <input type="text" id="years" value="30"/>
+			        </div>
+			        <div>
+			            <label htmlFor="rate">Rate:</label>
+			            <input type="text" id="rate" value="5.0"/>
+			        </div>
+			        <div>
+			            <label htmlFor="calcBtn"></label>
+			            <button id="calcBtn">Calculate</button>
+			        </div>
+			    </div>
+			    <h2>Monthly Payment: <span id="monthlyPayment" class="currency"></span></h2>
+			    <h3>Monthly Rate: <span id="monthlyRate"></span></h3>
+			    <table id="amortization"></table>
+
+			    <script type="text/javascript" src="build/main.bundle.js"></script>
+			</div>
+		</section>
+
+		<!--<section>
 			<div class="col desktop-9">
+				<p class="test"></p>
 				<canvas id="snake" width="900" height="660"></canvas>
 			</div>
 			<div class="col desktop-3">
@@ -37,8 +72,9 @@
 				<p class="length">10</p>
 				<h4>Zeit</h4>
 				<p class="time">3:25</p>
-			</div>
-		</section>
+			</div><br/><br/>
+
+		</section>-->
 	</main>
 	<footer>
 		<section></section>

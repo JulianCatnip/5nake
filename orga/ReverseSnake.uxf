@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.2">
-  <zoom_level>5</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>135</x>
-      <y>185</y>
-      <w>130</w>
-      <h>285</h>
+      <x>140</x>
+      <y>224</y>
+      <w>182</w>
+      <h>399</h>
     </coordinates>
     <panel_attributes>Snake.Controller
 --
@@ -17,10 +17,10 @@
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>35</x>
-      <y>25</y>
-      <w>175</w>
-      <h>90</h>
+      <x>0</x>
+      <y>0</y>
+      <w>245</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>_Idee hinter dem Spiel:_
 Anders als das normale Snake 
@@ -38,10 +38,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>295</x>
-      <y>185</y>
-      <w>265</w>
-      <h>285</h>
+      <x>364</x>
+      <y>224</y>
+      <w>371</w>
+      <h>399</h>
     </coordinates>
     <panel_attributes>Snake.Objekte
 --</panel_attributes>
@@ -50,10 +50,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>135</x>
-      <y>485</y>
-      <w>135</w>
-      <h>65</h>
+      <x>140</x>
+      <y>644</y>
+      <w>189</w>
+      <h>91</h>
     </coordinates>
     <panel_attributes>Snake.ZusatzImplementation
 --</panel_attributes>
@@ -62,10 +62,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>140</x>
-      <y>200</y>
-      <w>120</w>
-      <h>105</h>
+      <x>147</x>
+      <y>245</y>
+      <w>168</w>
+      <h>147</h>
     </coordinates>
     <panel_attributes>Spieleloop
 --
@@ -88,10 +88,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>300</x>
-      <y>200</y>
-      <w>120</w>
-      <h>75</h>
+      <x>371</x>
+      <y>245</y>
+      <w>168</w>
+      <h>105</h>
     </coordinates>
     <panel_attributes>Spieler
 --
@@ -108,10 +108,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>435</x>
-      <y>200</y>
-      <w>120</w>
-      <h>60</h>
+      <x>560</x>
+      <y>245</y>
+      <w>168</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>Kopf
 --
@@ -126,10 +126,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>435</x>
-      <y>265</y>
-      <w>120</w>
-      <h>65</h>
+      <x>560</x>
+      <y>336</y>
+      <w>168</w>
+      <h>91</h>
     </coordinates>
     <panel_attributes>Körperteil
 --
@@ -146,10 +146,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>300</x>
-      <y>285</y>
-      <w>120</w>
-      <h>60</h>
+      <x>371</x>
+      <y>364</y>
+      <w>168</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>Gegner
 --
@@ -163,10 +163,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>140</x>
-      <y>505</y>
-      <w>120</w>
-      <h>35</h>
+      <x>147</x>
+      <y>672</y>
+      <w>168</w>
+      <h>49</h>
     </coordinates>
     <panel_attributes>GegnerSchlangen
 --
@@ -178,10 +178,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>300</x>
-      <y>355</y>
-      <w>120</w>
-      <h>60</h>
+      <x>371</x>
+      <y>462</y>
+      <w>168</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>Pickup
 --
@@ -195,10 +195,10 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>230</x>
-      <y>160</y>
-      <w>410</w>
-      <h>50</h>
+      <x>273</x>
+      <y>189</y>
+      <w>574</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 updates / calls</panel_attributes>
@@ -207,10 +207,10 @@ updates / calls</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>690</x>
-      <y>195</y>
-      <w>80</w>
-      <h>20</h>
+      <x>917</x>
+      <y>238</y>
+      <w>112</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 uses</panel_attributes>
@@ -219,10 +219,10 @@ uses</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>760</x>
-      <y>200</y>
-      <w>50</w>
-      <h>15</h>
+      <x>1015</x>
+      <y>245</y>
+      <w>70</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>&lt;&lt;framework&gt;&gt;</panel_attributes>
     <additional_attributes/>
@@ -230,10 +230,10 @@ uses</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>570</x>
-      <y>185</y>
-      <w>130</w>
-      <h>285</h>
+      <x>749</x>
+      <y>224</y>
+      <w>182</w>
+      <h>399</h>
     </coordinates>
     <panel_attributes>Snake.View
 --</panel_attributes>
@@ -242,10 +242,10 @@ uses</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>575</x>
-      <y>200</y>
-      <w>120</w>
-      <h>45</h>
+      <x>756</x>
+      <y>245</y>
+      <w>168</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>View
 --
@@ -257,10 +257,10 @@ uses</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>255</x>
-      <y>205</y>
-      <w>55</w>
-      <h>35</h>
+      <x>308</x>
+      <y>252</y>
+      <w>77</w>
+      <h>49</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>90.0;10.0;70.0;10.0;70.0;50.0;10.0;50.0</additional_attributes>
@@ -268,10 +268,10 @@ uses</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>255</x>
-      <y>235</y>
-      <w>55</w>
-      <h>70</h>
+      <x>308</x>
+      <y>294</y>
+      <w>77</w>
+      <h>98</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>90.0;120.0;60.0;120.0;60.0;10.0;10.0;10.0</additional_attributes>
@@ -279,10 +279,10 @@ uses</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>255</x>
-      <y>245</y>
-      <w>55</w>
-      <h>125</h>
+      <x>308</x>
+      <y>308</y>
+      <w>77</w>
+      <h>175</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>90.0;230.0;50.0;230.0;50.0;10.0;10.0;10.0</additional_attributes>
@@ -290,10 +290,10 @@ uses</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>415</x>
-      <y>200</y>
-      <w>30</w>
-      <h>25</h>
+      <x>532</x>
+      <y>245</y>
+      <w>42</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>40.0;10.0;20.0;10.0;20.0;30.0;10.0;30.0</additional_attributes>
@@ -301,10 +301,10 @@ uses</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>415</x>
-      <y>220</y>
-      <w>30</w>
-      <h>60</h>
+      <x>532</x>
+      <y>273</y>
+      <w>42</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>40.0;100.0;30.0;100.0;30.0;10.0;10.0;10.0</additional_attributes>
@@ -312,10 +312,10 @@ uses</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>575</x>
-      <y>250</y>
-      <w>120</w>
-      <h>45</h>
+      <x>756</x>
+      <y>315</y>
+      <w>168</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>Sound
 --
@@ -326,10 +326,10 @@ uses</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>760</x>
-      <y>250</y>
-      <w>50</w>
-      <h>15</h>
+      <x>1015</x>
+      <y>315</y>
+      <w>70</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>&lt;&lt;framework&gt;&gt;</panel_attributes>
     <additional_attributes/>
@@ -337,10 +337,10 @@ uses</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>690</x>
-      <y>245</y>
-      <w>80</w>
-      <h>20</h>
+      <x>917</x>
+      <y>308</y>
+      <w>112</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 uses</panel_attributes>
@@ -349,10 +349,10 @@ uses</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>240</x>
-      <y>575</y>
-      <w>325</w>
-      <h>215</h>
+      <x>287</x>
+      <y>770</y>
+      <w>455</w>
+      <h>301</h>
     </coordinates>
     <panel_attributes>Snake.Abhängigkeiten|Vererbung
 --</panel_attributes>
@@ -361,10 +361,10 @@ uses</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>390</x>
-      <y>600</y>
-      <w>70</w>
-      <h>40</h>
+      <x>497</x>
+      <y>805</y>
+      <w>98</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>Einzelobj
 --
@@ -376,10 +376,10 @@ Typ : String</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>465</x>
-      <y>665</y>
-      <w>70</w>
-      <h>40</h>
+      <x>602</x>
+      <y>896</y>
+      <w>98</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>Körperteil
 </panel_attributes>
@@ -388,10 +388,10 @@ Typ : String</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>310</x>
-      <y>665</y>
-      <w>70</w>
-      <h>40</h>
+      <x>385</x>
+      <y>896</y>
+      <w>98</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>RandomSpawn
 --
@@ -401,10 +401,10 @@ Typ : String</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>340</x>
-      <y>630</y>
-      <w>60</w>
-      <h>45</h>
+      <x>427</x>
+      <y>847</y>
+      <w>84</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>100.0;10.0;10.0;70.0</additional_attributes>
@@ -412,10 +412,10 @@ Typ : String</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>455</x>
-      <y>635</y>
-      <w>55</w>
-      <h>40</h>
+      <x>588</x>
+      <y>854</y>
+      <w>77</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;90.0;60.0</additional_attributes>
@@ -423,10 +423,10 @@ Typ : String</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>255</x>
-      <y>740</y>
-      <w>70</w>
-      <h>40</h>
+      <x>308</x>
+      <y>1001</y>
+      <w>98</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>Gegner
 </panel_attributes>
@@ -435,10 +435,10 @@ Typ : String</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>365</x>
-      <y>740</y>
-      <w>70</w>
-      <h>40</h>
+      <x>462</x>
+      <y>1001</y>
+      <w>98</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>Pickup
 
@@ -448,10 +448,10 @@ Typ : String</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>285</x>
-      <y>700</y>
-      <w>65</w>
-      <h>50</h>
+      <x>350</x>
+      <y>945</y>
+      <w>91</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>110.0;10.0;10.0;80.0</additional_attributes>
@@ -459,10 +459,10 @@ Typ : String</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
-      <y>700</y>
-      <w>60</w>
-      <h>50</h>
+      <x>441</x>
+      <y>945</y>
+      <w>84</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;100.0;80.0</additional_attributes>
@@ -470,10 +470,10 @@ Typ : String</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>150</y>
-      <w>565</w>
-      <h>150</h>
+      <x>259</x>
+      <y>175</y>
+      <w>791</w>
+      <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 updates / calls</panel_attributes>
@@ -482,10 +482,10 @@ updates / calls</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>140</x>
-      <y>310</y>
-      <w>120</w>
-      <h>70</h>
+      <x>147</x>
+      <y>399</y>
+      <w>168</w>
+      <h>98</h>
     </coordinates>
     <panel_attributes>UpdateView gibt informationen 
 der Modelle an das View Objekt, 
@@ -497,10 +497,10 @@ bg=green</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>435</x>
-      <y>400</y>
-      <w>120</w>
-      <h>60</h>
+      <x>560</x>
+      <y>525</y>
+      <w>168</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>Die Schlange wird wie eine Liste
 implementiert.
@@ -510,10 +510,10 @@ bg=green</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>250</x>
-      <y>595</y>
-      <w>120</w>
-      <h>60</h>
+      <x>301</x>
+      <y>798</y>
+      <w>168</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>Die Schlange wird wie eine Liste
 implementiert.
