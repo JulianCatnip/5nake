@@ -30,5 +30,18 @@ class Schlange{
     move(newX, newY){
     this.first.move(first.positionX + newX, first.positionY+ newY);
     }
+	
+	/** gibt die informationen über alle Körperteile als Array zurück */
+	getInfo(){
+		var info = new Array(this.getLength());
+		
+		for(var i = 0; i < this.getLength(); i++){
+			var currentNode = this.first;
+			info[0] = currentNode;
+			if(currentNode.naechster != undefined){
+				currentNode = currentNode.naechster;
+			} else { break; }
+		}
+	}
     
 }

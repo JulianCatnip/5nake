@@ -1,0 +1,1 @@
+//Kontrollerklasse für die Implementation des Views
