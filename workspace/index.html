@@ -29,41 +29,8 @@
 	</header>
 	<main>
 		<section>
-			<div class="col">
-				<h1>BABEL TEST<br/><br/></h1>
-			</div>
-			<div class="col">
-				<!-- ===================== BABEL TEST ===================== -->
-				<div class="form">
-			        <div>
-			            <label>Principal:</label>
-			            <input type="text" id="principal" value="200000"/>
-			        </div>
-			        <div>
-			            <label>Years:</label>
-			            <input type="text" id="years" value="30"/>
-			        </div>
-			        <div>
-			            <label htmlFor="rate">Rate:</label>
-			            <input type="text" id="rate" value="5.0"/>
-			        </div>
-			        <div>
-			            <label htmlFor="calcBtn"></label>
-			            <button id="calcBtn">Calculate</button>
-			        </div>
-			    </div>
-			    <h2>Monthly Payment: <span id="monthlyPayment" class="currency"></span></h2>
-			    <h3>Monthly Rate: <span id="monthlyRate"></span></h3>
-			    <table id="amortization"></table>
-
-			    <script type="text/javascript" src="build/main.bundle.js"></script>
-			</div>
-		</section>
-
-		<!--<section>
-			<div class="col desktop-9">
-				<p class="test"></p>
-				<canvas id="snake" width="900" height="660"></canvas>
+			<div id="game-box" class="col desktop-9">
+				<p id="test"></p>
 			</div>
 			<div class="col desktop-3">
 				<h2>Punkte</h2>
@@ -72,9 +39,10 @@
 				<p class="length">10</p>
 				<h4>Zeit</h4>
 				<p class="time">3:25</p>
-			</div><br/><br/>
+			</div>
 
-		</section>-->
+		</section>
+		<script type="text/javascript" src="build/snake.min.js"></script>
 	</main>
 	<footer>
 		<section></section>

@@ -1,10 +1,11 @@
 /** Die Schlange soll ihre Körperteile wie die Liste ihre Nodes verwalten */
-class Schlange{
+export default class Schlange {
     
-    constructor(_first){
-        this.first = _first;
+    constructor() {
+        this.first = new Object();
         this.first.typ = 'kopf';
-    }    
+        //this.follower = undefined;
+    }
     
     /** Körperteil zur Schlange hinzufügen */
     add(){
@@ -28,7 +29,7 @@ class Schlange{
     
     /** Weist dem Schlangenkopf eine neue Position zu */
     move(newX, newY){
-    this.first.move(first.positionX + newX, first.positionY+ newY);
+        this.first.move(first.positionX + newX, first.positionY + newY);
     }
 	
 	/** gibt die informationen über alle Körperteile als Array zurück */

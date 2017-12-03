@@ -1,75 +1,91 @@
+import 'pixi';
+import 'p2';
+import 'phaser';
 
+/** Start sobald Browserfenster geladen */
+window.addEventListener('load', () => {
 
+    const canvasWidth = 900;
+    const canvasHeight = 660;
 
-/** ================================= BABEL TEST ================================= */
-
-class Mortgage {
-    
-    constructor(principal, years, rate) {
-        this.principal = principal;
-        this.years = years;
-        this.rate = rate;
-    }
-    
-    get monthlyPayment() {
-        let monthlyRate = this.rate / 100 / 12;
-        return this.principal * monthlyRate / (1 - (Math.pow(1/(1 + monthlyRate),
-                    this.years * 12)));
-    }
-    
-    get amortization() {
-        let monthlyPayment = this.monthlyPayment;
-        let monthlyRate = this.rate / 100 / 12;
-        let balance = this.principal;
-        let amortization = [];
-        for (let y=0; y<this.years; y++) {
-            let interestY = 0;
-            let principalY = 0;
-            for (let m=0; m<12; m++) {
-                let interestM = balance * monthlyRate;
-                let principalM = monthlyPayment - interestM;
-                interestY = interestY + interestM;
-                principalY = principalY + principalM;
-                balance = balance - principalM;
-            }
-            amortization.push({principalY, interestY, balance});
+    /** PHASER GAME OBJEKT */
+    const game = new Phaser.Game(
+        canvasWidth,    // canvas breite
+        canvasHeight,   // canvas höhe
+        Phaser.CANVAS,  // rendering-typ
+        'game-box',     // id des elternknotens in dem canvas erzeugt werden soll
+        {   
+            // funktionen die implementiert werden müssen
+            preload: preload, // Dateien laden
+            create: create,   // Objekte erzeugen
+            update: update    // gameloop
         }
-        return amortization;
+    );
+
+    // Schlange (Model) erzeugen
+    const Schlange = require('./schlange.js').default; // klassen import
+    const schlange = new Schlange();
+
+    // View erzeugen
+    const View = require('./view.js').default; // klassen import
+    const view = new View(game, canvasWidth, canvasHeight, schlange);
+
+    //var cursor;
+
+    // Steuerung erzeugen
+    //const Controller = require('./controller.js').default; // klassen import
+    //const controller = new Controller(game, cursor, view, canvasWidth, canvasHeight);
+
+    /** SPRITES LADEN */
+    function preload() {
+        game.stage.backgroundColor = "#FFF"; // hintergrundfarbe canvas
+
+        game.load.image('spieler', '../images/spieler.jpg');
+        game.load.image('stein', '../images/stein.jpg');
     }
-    
-}
 
-document.getElementById('calcBtn').addEventListener('click', () => {
+    /** OBJEKTE ERZEUGEN */
+    function create() {
 
-    let principal = document.getElementById("principal").value;
-    let years = document.getElementById("years").value;
-    let rate = document.getElementById("rate").value;
+        // Schlange erzeugen
+        view.zeichneSchlange(); // bisher nur kopf implementiert
 
-    let mortgage = new Mortgage(principal, years, rate);
+        // Mauer aus Steinen (Model) erzeugen
 
-    document.getElementById("monthlyPayment").innerHTML = mortgage.monthlyPayment.toFixed(2);
-    document.getElementById("monthlyRate").innerHTML = (rate / 12).toFixed(2);
+        // random pickup (Model) erzeugen
 
-    let html = "";
-    mortgage.amortization.forEach((year, index) => html += `
-        <tr>
-            <td>${index + 1}</td>
-            <td class="currency">${Math.round(year.principalY)}</td>
-            <td class="stretch">
-                <div class="flex">
-                    <div class="bar principal"
-                         style="flex:${year.principalY};-webkit-flex:${year.principalY}">
-                    </div>
-                    <div class="bar interest"
-                         style="flex:${year.interestY};-webkit-flex:${year.interestY}">
-                    </div>
-                </div>
-            </td>
-            <td class="currency left">${Math.round(year.interestY)}</td>
-            <td class="currency">${Math.round(year.balance)}</td>
-        </tr>
-    `);
-    
-    document.getElementById("amortization").innerHTML = html;
+        // Steuerung erzeugen
+        //cursor = game.input.keyboard.createCursorKeys();
+
+        // test
+        //view.test();
+
+
+    }
+
+
+    /** GAMELOOP */
+    function update() {
+        
+        /*controller.updateLaufrichtung();
+
+        var geschwindigkeit = 20;
+        var frameCounter = 0;
+        frameCounter++;
+
+        if (frameCounter == geschwindigkeit) {
+
+            controller.bewegeSpieler(); // spieler bewegen
+
+            if (controller.laufrichtung != undefined) {
+                //removeTail(); // ?
+            }
+
+            frameCounter = 0;
+        }*/
+        // kollisionen prüfen
+        // controller updaten
+        // view updaten
+    }
 
 });
