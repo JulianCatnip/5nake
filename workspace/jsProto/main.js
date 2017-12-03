@@ -2,6 +2,46 @@ import 'pixi';
 import 'p2';
 import 'phaser';
 
+export default class Main {
+
+    constructor(game, canvasWidth, canvasHeight) {
+        this.game = game;
+        this.cursor;
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
+
+        let Schlange = require('./schlange.js').default; // klassen import
+        this.schlange = new Schlange();
+
+        let View = require('./view.js').default; // klassen import
+        this.view = new View(this.game, this.canvasWidth, this.canvasHeight, this.schlange);
+    }
+
+    preload() {
+        this.game.stage.backgroundColor = "#FFF";
+        this.game.load.image('spieler', '../images/spieler.jpg');
+        this.game.load.image('stein', '../images/stein.jpg');
+    }
+
+    create() {
+        this.cursor = this.game.input.keyboard.createCursorKeys();
+        this.view.zeichneSchlange();
+    }
+
+    update() {
+        if(this.cursor.up.isDown) {
+            schlange.first.image = game.add.image(200, 200, 'spieler');
+        }
+    }
+
+    toString() {
+        var test = "";
+        console.log(test + this.cursor.up.isDown);
+    }
+
+
+
+}
 /** Start sobald Browserfenster geladen */
 window.addEventListener('load', () => {
 
@@ -9,7 +49,7 @@ window.addEventListener('load', () => {
     const canvasHeight = 660;
 
     /** PHASER GAME OBJEKT */
-    const game = new Phaser.Game(
+    let game = new Phaser.Game(
         canvasWidth,    // canvas breite
         canvasHeight,   // canvas höhe
         Phaser.CANVAS,  // rendering-typ
@@ -22,6 +62,22 @@ window.addEventListener('load', () => {
         }
     );
 
+    let main = new Main(game, canvasWidth, canvasHeight);
+
+    function preload() {
+        main.preload();
+    }
+    function create() {
+        main.create();
+    }
+    function update() {
+        main.update();
+    }
+
+    main.toString();
+
+
+/* !!!!!!!!!! ALT !!!!!!!!!!!!!!
     // Schlange (Model) erzeugen
     const Schlange = require('./schlange.js').default; // klassen import
     const schlange = new Schlange();
@@ -36,7 +92,7 @@ window.addEventListener('load', () => {
     //const Controller = require('./controller.js').default; // klassen import
     //const controller = new Controller(game, cursor, view, canvasWidth, canvasHeight);
 
-    /** SPRITES LADEN */
+    /** SPRITES LADEN 
     function preload() {
         game.stage.backgroundColor = "#FFF"; // hintergrundfarbe canvas
 
@@ -44,7 +100,7 @@ window.addEventListener('load', () => {
         game.load.image('stein', '../images/stein.jpg');
     }
 
-    /** OBJEKTE ERZEUGEN */
+    /** OBJEKTE ERZEUGEN 
     function create() {
 
         // Schlange erzeugen
@@ -64,7 +120,7 @@ window.addEventListener('load', () => {
     }
 
 
-    /** GAMELOOP */
+    /** GAMELOOP 
     function update() {
         
         /*controller.updateLaufrichtung();
@@ -82,10 +138,11 @@ window.addEventListener('load', () => {
             }
 
             frameCounter = 0;
-        }*/
+        }
         // kollisionen prüfen
         // controller updaten
         // view updaten
     }
+*/
 
 });
