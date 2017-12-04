@@ -7,33 +7,56 @@ import { View } from './view';
 //Kontrollerklasse des Spiels
 export default class Controller {
 
-	constructor(game, cursor, view, canvasWidth, canvasHeight) {
+	constructor(game, view, canvasWidth, canvasHeight) {
+        this.game = game;
 		this.view = view;
-		this.cursor = cursor;
 		this.canvasWidth = canvasWidth;
 		this.canvasHeight = canvasHeight;
-		this.richtung = Object.freeze({up: 0, down: 1, right: 2, left: 3});
+
+        this.cursor;
+		this.richtung = Object.freeze({up: 0, down: 1, right: 2, left: 3}); // freeze: verhindert das Hinzufügen von neuen Eigenschaften zum Objekt
 		this.laufrichtung;
-		this.spielergroesse = 60;
-		this.x = view.startX;
-		this.y = view.startY;
+		this.spielergroesse = 60; // increment um 60
+
+		this.x = this.view.startX;
+		this.y = this.view.startY;
     }
 
+    /** Getter für die Cursor Keys */
+    getCursor() {
+        return this.game.input.keyboard.createCursorKeys();
+    }
+
+    /** Ändert die Laufrichtung */
     updateLaufrichtung() {
-        if (this.cursor.right.isDown && this.laufrichtung != this.richtung.left) { // wenn rechts gedrückt ist und nicht links
-            this.laufrichtung = this.richtung.right; // richtung ist rechts
+
+        if (this.getCursor().right.isDown && this.laufrichtung != this.richtung.left) {
+
+            this.laufrichtung = this.richtung.right; // richtung rechts
+
         }
-        if (this.cursor.left.isDown && this.laufrichtung != this.richtung.right) { // wenn links gedrückt ist und nicht rechts
-            this.laufrichtung = this.richtung.left; // richtung ist links
+        if (this.getCursor().left.isDown && this.laufrichtung != this.richtung.right) {
+
+            this.laufrichtung = this.richtung.left; // richtung links
+
         }
-        if (this.cursor.up.isDown && this.laufrichtung != this.richtung.down) { // wenn oben gedrückt ist und nicht unten
-            this.laufrichtung = this.richtung.up; // richtung ist oben
+        if (this.getCursor().up.isDown && this.laufrichtung != this.richtung.down) { 
+
+            this.laufrichtung = this.richtung.up; // richtung oben
+
         }
-        if (this.cursor.down.isDown && this.laufrichtung != this.richtung.up) { // wenn unten gedrückt ist und nicht oben
-            this.laufrichtung = this.richtung.down; // richtung ist unten
+        if (this.getCursor().down.isDown && this.laufrichtung != this.richtung.up) { 
+
+            this.laufrichtung = this.richtung.down; // richtung unten
+
         }
+
     }
 
+    /** 
+    * Aus der derzeitigen Position werden neue Koordinaten berechnet (von 1 Schritt weiter)
+    * und an der neu berechneten Position ein neuer Kopf erzeugt.
+    */
     bewegeSpieler() {
 
         if (this.laufrichtung == this.richtung.right) { // wenn richtung rechts ist
@@ -54,7 +77,12 @@ export default class Controller {
 
         }
 
-        /** brauchen wir nicht wenn wir eine wand machen */
+        /**
+        * Schlange läuft gegen den Rand des Canvas und kommt 
+        * an der anderen Seite wieder raus.
+        * Brauchen wir nicht wenn wir eine Wand machen, 
+        * dann wird eine Kollision stattdesen implementiert.
+        */
         if (this.x <= 0 - this.spielergroesse) { // wenn x position kleiner/gleich 0 - spielerbreite ist
 
             this.x = this.canvasWidth - this.spielergroesse; // position x = canvas-breite - spielerbreite
@@ -79,6 +107,11 @@ export default class Controller {
 
         }
 
+    }
+
+    /** Löscht den hinteren Knoten */
+    entferneLetzten() {
+        this.view.entferneLetzten();
     }
 
 }

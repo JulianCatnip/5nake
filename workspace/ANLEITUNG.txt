@@ -3,10 +3,10 @@ Kommandozeile:
 2. npm start : startet den lokalen server, es wird dann angezeigt unter welchem http-pfad ihr die seite im browser öffnen könnt
 3. neues fenster öffnen in der kommandozeile
 4. wieder cd zum workspace ordner
-4. npm run webpack : compiliert den inhalt der main.js und legt den compilierten code in build ab
+5. npm run webpack : compiliert den inhalt der main.js und legt den compilierten code in build ab
 
 zum test habe ich temporär den inhalt des tutorials http://ccoenraets.github.io/es6-tutorial/
-in der index.html und in der main.js reinkopiert
+in der index.html und in der main.js reinkopiert (is jetzt wieder raus)
 
 MACHT DAS TUTORIAL http://ccoenraets.github.io/es6-tutorial/    !!!111!!elf Σ(ﾟДﾟ；
 dort wird auch gezeigt wie das mit den import von klassen funktioniert und andere nützliche funktionalitäten von ecmascript 6 :)

@@ -2,147 +2,168 @@ import 'pixi';
 import 'p2';
 import 'phaser';
 
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////** HAUPTKLASSE *////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 export default class Main {
 
     constructor(game, canvasWidth, canvasHeight) {
-        this.game = game;
-        this.cursor;
+        this.game = game; // Referenz zum Phaser.Game-Objekt
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
 
+        this.gameText; // Test
+
+        this.frameCounter = 0;
+        this.spielgeschwindigkeit = 20;
+
+        // Klassenimport
         let Schlange = require('./schlange.js').default; // klassen import
         this.schlange = new Schlange();
 
         let View = require('./view.js').default; // klassen import
         this.view = new View(this.game, this.canvasWidth, this.canvasHeight, this.schlange);
+
+        let Controller = require('./controller.js').default; // klassen import
+        this.controller = new Controller(this.game, this.view, this.canvasWidth, this.canvasHeight);
+
+        this.laufrichtung;
+
     }
 
+    /** 
+    * PHASER-Methode SPRITES/DATEIEN LADEN
+    * Canvas-Einstellungen und Bild-/Audio-Dateien
+    */
     preload() {
         this.game.stage.backgroundColor = "#FFF";
+
         this.game.load.image('spieler', '../images/spieler.jpg');
         this.game.load.image('stein', '../images/stein.jpg');
     }
 
+    /** 
+    * PHASER-Methode OBJEKTE ERZEUGEN 
+    * Hier werden die benötigten Objekte und die Steuerung erzeugt.
+    */
     create() {
-        this.cursor = this.game.input.keyboard.createCursorKeys();
+
+        // Schlange aus Kopf und Verfolger erzeugen
         this.view.zeichneSchlange();
+
+        // Mauer aus Steinen (Model) erzeugen
+
+        // random pickup (Model) erzeugen
+
+        // Text zum Test (Damit habe ich getestet ob die Steuerung funktioniert)
+        // der Text bisher nur eine 0
+        this.gameText = this.game.add.text(this.canvasWidth, this.canvasHeight, "0", {
+            font: "28px Arial",
+            fill: "#000"
+        });
+        // Platzierung des Textes an die rechte untere Ecke des Feldes
+        this.gameText.anchor.setTo(1, 1);
     }
 
-    update() {
-        if(this.cursor.up.isDown) {
-            schlange.first.image = game.add.image(200, 200, 'spieler');
+    /** 
+    * PHASER-Methode GAMELOOP
+    * Hier wird die Spiele-Logik durchlaufen!!!
+    */
+    // 
+    
+    update() { 
+
+        this.controller.updateLaufrichtung(); // Laufrichtung aktualisieren
+
+        this.frameCounter++;
+
+        /** 
+        * Diese if-Abfrage regelt die Geschwindigkeit des Spiels, da die 
+        * update()-Methode aus Phaser ein sehr schneller und unendlicher Loop ist.
+        *
+        * Diese update()-Loop läuft also durch unendlich viele "Frames" und durch frameCounter und spielgeschwindigkeit wird es 
+        * nun so eingestellt das alle 20 Frames 1 Aktion ausgeführt wird und der Loop dann wieder von vorne beginnt.
+        */
+        if (this.frameCounter == this.spielgeschwindigkeit) {
+
+            // HIER WIRD DIE SCHLANGE MIT DEM CURSOR BEWEGT
+            // die Schlange wird dadurch bewegt, das ein neuer Kopf vorne drangesetzt wird
+            this.controller.bewegeSpieler();
+
+            // dadurch das vorne ein neuer Kopf dran ist, muss der hintere gelöscht werden
+            if (this.controller.laufrichtung != undefined) {
+                this.controller.entferneLetzten();
+            }
+
+            // HIER WERDEN KOLLISIONEN ABGEFRAGT
+
+            //this.controllerTest(); // testet on der Controller funktioniert, wenn ja wird aus der 0 bei up-taste eine 9
+
+            this.frameCounter = 0;
         }
+
     }
 
-    toString() {
-        var test = "";
-        console.log(test + this.cursor.up.isDown);
+    /** 
+    * Test-Methoden 
+    */
+    controllerTest() {
+
+        if(this.controller.getCursor().up.isDown) {
+            this.gameText.text = 9;
+        }
+
+        //console.log(this.frameCounter);
     }
-
-
 
 }
-/** Start sobald Browserfenster geladen */
+
+/////////////////////////////////////////////////////////////////////////////
+/////////////////** Start sobald Browserfenster geladen *////////////////////
+/////////////////////////////////////////////////////////////////////////////
 window.addEventListener('load', () => {
 
+    /** Einstellungen für das Canvas */
     const canvasWidth = 900;
     const canvasHeight = 660;
 
-    /** PHASER GAME OBJEKT */
+    /** 
+    * PHASER.GAME OBJEKT
+    * Erzeugt das Canvas und die Phaser-Methoden die 
+    * implementiert werden müssen für den Spieleablauf
+    */
     let game = new Phaser.Game(
         canvasWidth,    // canvas breite
         canvasHeight,   // canvas höhe
         Phaser.CANVAS,  // rendering-typ
         'game-box',     // id des elternknotens in dem canvas erzeugt werden soll
         {   
-            // funktionen die implementiert werden müssen
+            // Funktionen die implementiert werden MÜSSEN 
             preload: preload, // Dateien laden
             create: create,   // Objekte erzeugen
-            update: update    // gameloop
+            update: update    // Gameloop
         }
     );
 
+    /** Hauptklasse */
     let main = new Main(game, canvasWidth, canvasHeight);
 
+    /** PHASER-Methode SPRITES/DATEIEN LADEN */
     function preload() {
         main.preload();
     }
+
+    /** PHASER-Methode OBJEKTE ERZEUGEN */
     function create() {
         main.create();
     }
+
+    /** PHASER-Methode GAMELOOP */
     function update() {
         main.update();
     }
 
+    /** Testausgabe */
     main.toString();
-
-
-/* !!!!!!!!!! ALT !!!!!!!!!!!!!!
-    // Schlange (Model) erzeugen
-    const Schlange = require('./schlange.js').default; // klassen import
-    const schlange = new Schlange();
-
-    // View erzeugen
-    const View = require('./view.js').default; // klassen import
-    const view = new View(game, canvasWidth, canvasHeight, schlange);
-
-    //var cursor;
-
-    // Steuerung erzeugen
-    //const Controller = require('./controller.js').default; // klassen import
-    //const controller = new Controller(game, cursor, view, canvasWidth, canvasHeight);
-
-    /** SPRITES LADEN 
-    function preload() {
-        game.stage.backgroundColor = "#FFF"; // hintergrundfarbe canvas
-
-        game.load.image('spieler', '../images/spieler.jpg');
-        game.load.image('stein', '../images/stein.jpg');
-    }
-
-    /** OBJEKTE ERZEUGEN 
-    function create() {
-
-        // Schlange erzeugen
-        view.zeichneSchlange(); // bisher nur kopf implementiert
-
-        // Mauer aus Steinen (Model) erzeugen
-
-        // random pickup (Model) erzeugen
-
-        // Steuerung erzeugen
-        //cursor = game.input.keyboard.createCursorKeys();
-
-        // test
-        //view.test();
-
-
-    }
-
-
-    /** GAMELOOP 
-    function update() {
-        
-        /*controller.updateLaufrichtung();
-
-        var geschwindigkeit = 20;
-        var frameCounter = 0;
-        frameCounter++;
-
-        if (frameCounter == geschwindigkeit) {
-
-            controller.bewegeSpieler(); // spieler bewegen
-
-            if (controller.laufrichtung != undefined) {
-                //removeTail(); // ?
-            }
-
-            frameCounter = 0;
-        }
-        // kollisionen prüfen
-        // controller updaten
-        // view updaten
-    }
-*/
 
 });
