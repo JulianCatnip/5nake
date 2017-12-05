@@ -39,6 +39,7 @@ export default class Main {
         this.game.stage.backgroundColor = "#FFF";
 
         this.game.load.image('spieler', '../images/spieler.jpg');
+        this.game.load.image('verfolger', '../images/verfolger.jpg');
         this.game.load.image('stein', '../images/stein.jpg');
     }
 
@@ -49,7 +50,7 @@ export default class Main {
     create() {
 
         // Schlange aus Kopf und Verfolger erzeugen
-        this.view.zeichneSchlange();
+        this.view.zeichneSchlange_LVL1();
 
         // Mauer aus Steinen (Model) erzeugen
 
@@ -89,11 +90,6 @@ export default class Main {
             // HIER WIRD DIE SCHLANGE MIT DEM CURSOR BEWEGT
             // die Schlange wird dadurch bewegt, das ein neuer Kopf vorne drangesetzt wird
             this.controller.bewegeSpieler();
-
-            // dadurch das vorne ein neuer Kopf dran ist, muss der hintere gelöscht werden
-            if (this.controller.laufrichtung != undefined) {
-                this.controller.entferneLetzten();
-            }
 
             // HIER WERDEN KOLLISIONEN ABGEFRAGT
 

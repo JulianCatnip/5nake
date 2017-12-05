@@ -3,9 +3,17 @@ export default class Schlange {
     
     constructor() {
 
-        this.first = new Object();
-        this.first.typ = 'kopf';
-        this.last = this.first;
+        //this.first = new Object();
+        //this.first.typ = 'spieler';
+
+        //this.last = new Object();
+        //this.last.typ = 'verfolger';
+
+        this.lvl1 = [
+            { first: new Object(), typ: 'spieler'},
+            { second: new Object(), typ: 'verfolger'},
+            { third: new Object(), typ: 'verfolger'}
+        ];
 
     }
     

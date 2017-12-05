@@ -21,32 +21,45 @@ export default class View {
 		this.einheitY = this.canvasHeight / 11; 	//60px
 
         this.schlange = schlange;
+        this.i = 0;
     }
 
     /** 
     * Startschlange
-    * bisher nur 1 Kopf
+    * bisher 1 Kopf mit 2 Verfolgern
     */
-    zeichneSchlange() {
-    	this.schlange.first.image = this.game.add.image(this.startX, this.startY, 'spieler');
+    zeichneSchlange_LVL1() {
+
+        this.schlange.lvl1[2].image = this.game.add.image(this.startX, this.startY, 'verfolger');
+        this.schlange.lvl1[1].image = this.game.add.image(this.startX + this.spielergroesse, this.startY, 'verfolger');
+        this.schlange.lvl1[0].image = this.game.add.image(this.startX + (2 * this.spielergroesse), this.startY, 'spieler');
+  
     }
 
     /** 
-    * Erzeugt neuen Kopf 
+    * Bewegt die Schlange 
     * an der übergebenen Position
     */
-    neuerKopf(x, y) {
-        var neuerKopf = new Object(); // objekt erzeugen
-        // dem objekt sprite mit position zuweisen
-        neuerKopf.image = this.game.add.image(x, y, 'spieler'); // dem kopf-objekt das item-bild hinzufügen
-        neuerKopf.next = null; // zeiger zum nächsten steht auf null
-        this.schlange.first.next = neuerKopf; // zeiger next vom aktuellen kopf zeigt auf den neuen kopf
-        this.schlange.first = neuerKopf;
-    }
+    bewegeSpieler(x, y) {
 
-    entferneLetzten() {
-        this.schlange.last.image.destroy();
-        this.schlange.last = this.schlange.first;
+        var last_x = this.schlange.lvl1[1].image.world.x;
+        var last_y = this.schlange.lvl1[1].image.world.y;
+
+        var x_alt = this.schlange.lvl1[0].image.world.x;
+        var y_alt = this.schlange.lvl1[0].image.world.y;
+
+        for(var i = 0; i < this.schlange.lvl1.length; i++) {
+            this.schlange.lvl1[i].image.destroy();
+
+            switch(i) {
+                case 0: this.schlange.lvl1[i].image = this.game.add.image(x, y, 'spieler');
+                    break;
+                case 1: this.schlange.lvl1[i].image = this.game.add.image(x_alt, y_alt, 'verfolger');
+                    break;
+                case 2: this.schlange.lvl1[i].image = this.game.add.image(last_x, last_y, 'verfolger');
+            }
+        }
+
     }
 
 }

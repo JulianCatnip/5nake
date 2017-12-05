@@ -18,7 +18,7 @@ export default class Controller {
 		this.laufrichtung;
 		this.spielergroesse = 60; // increment um 60
 
-		this.x = this.view.startX;
+		this.x = this.view.startX + (2 * this.spielergroesse);
 		this.y = this.view.startY;
     }
 
@@ -58,6 +58,10 @@ export default class Controller {
     * und an der neu berechneten Position ein neuer Kopf erzeugt.
     */
     bewegeSpieler() {
+
+        const x_alt = this.x;
+        const y_alt = this.y;
+
 
         if (this.laufrichtung == this.richtung.right) { // wenn richtung rechts ist
 
@@ -103,15 +107,18 @@ export default class Controller {
 
         if (this.laufrichtung != undefined) { // wenn spieler richtung bestimmt ist
 
-            this.view.neuerKopf(this.x, this.y); // neuen kopf erzeugen
+            this.view.bewegeSpieler(this.x, this.y); // neuen kopf erzeugen
+
+            //this.view.entferneLetzten();
+            
 
         }
 
     }
 
-    /** Löscht den hinteren Knoten */
+    /** Löscht den hinteren Knoten 
     entferneLetzten() {
         this.view.entferneLetzten();
-    }
+    }*/
 
 }
