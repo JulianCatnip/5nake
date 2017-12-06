@@ -20,6 +20,8 @@ export default class Controller {
 
 		this.x = this.view.startX + (2 * this.spielergroesse);
 		this.y = this.view.startY;
+
+        this.changeId;
     }
 
     /** Getter für die Cursor Keys */
@@ -59,25 +61,25 @@ export default class Controller {
     */
     bewegeSpieler() {
 
-        const x_alt = this.x;
-        const y_alt = this.y;
-
-
         if (this.laufrichtung == this.richtung.right) { // wenn richtung rechts ist
 
             this.x += this.spielergroesse; // position x + breite des spielers
+            this.changeId = 0;
 
         } else if (this.laufrichtung == this.richtung.left) { // wenn richtung links ist
 
             this.x -= this.spielergroesse; // position x - breite des spielers
+            this.changeId = 1;
 
         } else if (this.laufrichtung == this.richtung.up) { // wenn richtung oben ist
 
             this.y -= this.spielergroesse; // position y - höhe des spielers
+            this.changeId = 2;
 
         } else if (this.laufrichtung == this.richtung.down) { // wenn richtung unten ist
 
             this.y += this.spielergroesse; // position y + höhe des spielers
+            this.changeId = 3;
 
         }
 
@@ -107,18 +109,10 @@ export default class Controller {
 
         if (this.laufrichtung != undefined) { // wenn spieler richtung bestimmt ist
 
-            this.view.bewegeSpieler(this.x, this.y); // neuen kopf erzeugen
-
-            //this.view.entferneLetzten();
-            
+            this.view.bewegeSpieler(this.x, this.y, this.changeId); // neuen kopf erzeugen und letzten löschen
 
         }
 
     }
-
-    /** Löscht den hinteren Knoten 
-    entferneLetzten() {
-        this.view.entferneLetzten();
-    }*/
 
 }

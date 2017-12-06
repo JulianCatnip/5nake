@@ -38,7 +38,8 @@ export default class Main {
     preload() {
         this.game.stage.backgroundColor = "#FFF";
 
-        this.game.load.image('spieler', '../images/spieler.jpg');
+        //this.game.load.image('spieler', '../images/spieler.png');
+        this.game.load.spritesheet('spieler', '../images/spieler.png', 60, 60, 12);
         this.game.load.image('verfolger', '../images/verfolger.jpg');
         this.game.load.image('stein', '../images/stein.jpg');
     }
@@ -70,8 +71,6 @@ export default class Main {
     * PHASER-Methode GAMELOOP
     * Hier wird die Spiele-Logik durchlaufen!!!
     */
-    // 
-    
     update() { 
 
         this.controller.updateLaufrichtung(); // Laufrichtung aktualisieren
@@ -88,7 +87,7 @@ export default class Main {
         if (this.frameCounter == this.spielgeschwindigkeit) {
 
             // HIER WIRD DIE SCHLANGE MIT DEM CURSOR BEWEGT
-            // die Schlange wird dadurch bewegt, das ein neuer Kopf vorne drangesetzt wird
+            // die Schlange wird dadurch bewegt, das ein neuer Kopf vorne drangesetzt wird und das hinterste objekt gelöscht
             this.controller.bewegeSpieler();
 
             // HIER WERDEN KOLLISIONEN ABGEFRAGT
@@ -109,7 +108,6 @@ export default class Main {
             this.gameText.text = 9;
         }
 
-        //console.log(this.frameCounter);
     }
 
 }
