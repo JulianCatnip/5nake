@@ -2,32 +2,50 @@ import 'pixi';
 import 'p2';
 import 'phaser';
 
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////** HAUPTKLASSE *////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
+/** 
+* HAUPTKLASSE 
+* Erzeugt Model, View und Controller
+* Implementiert preload(), create() und update()-Methode für Phaser.Game
+*/
 export default class Main {
 
+    /**
+    * Constructor
+    * @param game : Phaser.Game-Objekt
+    * @param canvasWidth : Canvas-Breite
+    * @param canvasHeight : Canvas-Höhe
+    */
     constructor(game, canvasWidth, canvasHeight) {
-        this.game = game; // Referenz zum Phaser.Game-Objekt
+
+        /** 
+        * Phaser.Game Objekt 
+        * Wird benötigt um auf jegliche Funktionen des Frameworks zuzugreifen.
+        */
+        this.game = game;
+
+        /**
+        * Canvas Höhe und Breite
+        */
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
 
-        this.gameText; // Test
-
-        this.frameCounter = 0;
-        this.spielgeschwindigkeit = 20;
-
-        // Klassenimport
+        /** 
+        * Klassenimporte 
+        */
         let Schlange = require('./schlange.js').default; // klassen import
         this.schlange = new Schlange();
 
         let View = require('./view.js').default; // klassen import
-        this.view = new View(this.game, this.canvasWidth, this.canvasHeight, this.schlange);
+        this.view = new View(this.game, this.schlange);
 
         let Controller = require('./controller.js').default; // klassen import
         this.controller = new Controller(this.game, this.view, this.canvasWidth, this.canvasHeight);
 
-        this.laufrichtung;
+        /** 
+        * Zur Steuerung der Geschwindigkeit in der Game-Loop 
+        */
+        this.frameCounter = 0;
+        this.spielgeschwindigkeit = 20;
 
     }
 
@@ -36,12 +54,12 @@ export default class Main {
     * Canvas-Einstellungen und Bild-/Audio-Dateien
     */
     preload() {
-        this.game.stage.backgroundColor = "#FFF";
+        this.game.stage.backgroundColor = "#FFF"; // hier später evtl ein Boden-Hintergrundbild
 
-        //this.game.load.image('spieler', '../images/spieler.png');
         this.game.load.spritesheet('spieler', '../images/spieler.png', 60, 60, 12);
         this.game.load.image('verfolger', '../images/verfolger.jpg');
         this.game.load.image('stein', '../images/stein.jpg');
+        // usw...
     }
 
     /** 
@@ -50,21 +68,23 @@ export default class Main {
     */
     create() {
 
-        // Schlange aus Kopf und Verfolger erzeugen
+        /** Schlange aus Spieler und Verfolger erzeugen */
         this.view.zeichneSchlange_LVL1();
 
-        // Mauer aus Steinen (Model) erzeugen
+        ////////////////// TODO: //////////////////
 
-        // random pickup (Model) erzeugen
+        /** Random Pickup erzeugen */
+        // this.view.platziereRandomPickup();
 
-        // Text zum Test (Damit habe ich getestet ob die Steuerung funktioniert)
-        // der Text bisher nur eine 0
-        this.gameText = this.game.add.text(this.canvasWidth, this.canvasHeight, "0", {
-            font: "28px Arial",
-            fill: "#000"
-        });
-        // Platzierung des Textes an die rechte untere Ecke des Feldes
-        this.gameText.anchor.setTo(1, 1);
+        /** Random Feind erzeugen */
+        // this.view.platziereRandomFeind();
+
+        /** Random Tisch erzeugen */
+        // this.view.platziereRandomTisch();
+
+        /** Wand aus Steinen erzeugen */
+        // this.view.zeichneWand();
+
     }
 
     /** 
@@ -87,25 +107,36 @@ export default class Main {
         if (this.frameCounter == this.spielgeschwindigkeit) {
 
             // HIER WIRD DIE SCHLANGE MIT DEM CURSOR BEWEGT
-            // die Schlange wird dadurch bewegt, das ein neuer Kopf vorne drangesetzt wird und das hinterste objekt gelöscht
-            this.controller.bewegeSpieler();
+            this.controller.bewegeSchlange();
 
-            // HIER WERDEN KOLLISIONEN ABGEFRAGT
+            ////////////////// TODO: //////////////////
 
-            //this.controllerTest(); // testet on der Controller funktioniert, wenn ja wird aus der 0 bei up-taste eine 9
+            // HIER WERDEN KOLLISIONEN ABGEFRAGT 
+            /*
+            if (this.view.kollisionMitVerfolger() || this.view.kollisionMitFeind() || this.view.kollisionMitWand()) {
+                // Game over...-Meldung
+                // this.view.loescheSchlange(); // schlange löschen
+
+                // this.view.zeichneSchlange_LVL1(); // neue schlange initialisieren
+                // this.spielgeschwindigkeit = 20; // Geschwindigkeit reseten
+                // laufrichtung reseten
+                // start des Spielers reseten
+                // Punktestand reseten
+            }
+            
+            if (this.view.kollisionMitPickup()) {
+                // Punktestand raufsetzen
+                // Pickup löschen
+                // this.view.platziereRandomPickup(); // neues Pickup platzieren
+                // this.spielgeschwindigkeit--; // spielgeschwindigkeit vergrößern?
+                // if (this.spielgeschwindigkeit <= 5) { // geschwindigkeit nie kleiner als 5
+                    this.spielgeschwindigkeit = 5;
+                }
+            }
+            */
+            // ...
 
             this.frameCounter = 0;
-        }
-
-    }
-
-    /** 
-    * Test-Methoden 
-    */
-    controllerTest() {
-
-        if(this.controller.getCursor().up.isDown) {
-            this.gameText.text = 9;
         }
 
     }
@@ -156,8 +187,5 @@ window.addEventListener('load', () => {
     function update() {
         main.update();
     }
-
-    /** Testausgabe */
-    main.toString();
 
 });

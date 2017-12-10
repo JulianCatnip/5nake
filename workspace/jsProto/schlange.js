@@ -1,13 +1,9 @@
-/** Die Schlange soll ihre Körperteile wie die Liste ihre Nodes verwalten */
+/** 
+* Die Schlange soll ihre Körperteile wie die Liste ihre Nodes verwalten.
+*/
 export default class Schlange {
     
     constructor() {
-
-        //this.first = new Object();
-        //this.first.typ = 'spieler';
-
-        //this.last = new Object();
-        //this.last.typ = 'verfolger';
 
         this.lvl1 = [
             { first: new Object(), typ: 'spieler'},
