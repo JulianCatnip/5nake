@@ -2,24 +2,11 @@
 <diagram program="umlet" version="14.2">
   <zoom_level>7</zoom_level>
   <element>
-    <id>UMLPackage</id>
-    <coordinates>
-      <x>140</x>
-      <y>224</y>
-      <w>182</w>
-      <h>399</h>
-    </coordinates>
-    <panel_attributes>Snake.Controller
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>0</x>
-      <y>0</y>
-      <w>245</w>
+      <x>28</x>
+      <y>14</y>
+      <w>273</w>
       <h>126</h>
     </coordinates>
     <panel_attributes>_Idee hinter dem Spiel:_
@@ -29,142 +16,85 @@ loszuwerden. Dies wird wie beim traditionellen
 Snake durch aufsammeln von Gegenständen
 ermöglicht.
 Hindernisse: Zufällig Spawnende "Gegner"
-und andere Schlangen.
+(und andere Schlangen).
 Features: Upgrades wie schnellere Bewegung
 durch "Powerups"
 bg=blue</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLPackage</id>
+    <id>UMLClass</id>
     <coordinates>
       <x>364</x>
-      <y>224</y>
-      <w>371</w>
-      <h>399</h>
+      <y>280</y>
+      <w>168</w>
+      <h>238</h>
     </coordinates>
-    <panel_attributes>Snake.Objekte
---</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLPackage</id>
-    <coordinates>
-      <x>140</x>
-      <y>644</y>
-      <w>189</w>
-      <h>91</h>
-    </coordinates>
-    <panel_attributes>Snake.ZusatzImplementation
---</panel_attributes>
+    <panel_attributes>Controller
+--
++ game : Phaser.Game
++ view : View
++ canvasWidth : number
++ canvasHeight : number
++ richtungen : List
++ laufrichtung: number
++ objektGroesse : number
++ x : number
++ y : number
++ changeId : number
+--
++ getCursor()
++ updateLaufrichtung()
++ bewegeSchlange()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>147</x>
-      <y>245</y>
-      <w>168</w>
-      <h>147</h>
-    </coordinates>
-    <panel_attributes>Spieleloop
---
-- updateTimer : Number
-- spielfeld : Spielfeld
-- spieler : Spieler
-- gegner : Array(Gegner)
-- pickup : Pickup
-- view: View
-- buff : boolean
-- music : Sound
---
-+ updateView()
-+ move(key: Keyboardinput)
-+ start()
-+ stop()
-+ kollision()</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>371</x>
-      <y>245</y>
-      <w>168</w>
-      <h>105</h>
-    </coordinates>
-    <panel_attributes>Spieler
---
-- kopf: Schlangenanfang
-- körper: List
---
-+ draw()
-+ move(key: Keyboardinput)
-+ kürzer()
-+ länger()
-+ "sterben"()</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>560</x>
-      <y>245</y>
-      <w>168</w>
+      <x>385</x>
+      <y>112</y>
+      <w>196</w>
       <h>84</h>
     </coordinates>
-    <panel_attributes>Kopf
+    <panel_attributes>Schlange
 --
-- nächster: Körperteil
-- positionx: number
-- positiony: number
---
-+ draw()
-+ move(key: Keyboardinput)</panel_attributes>
++ lvl1 : List {
+		first : Object, typ: 'spieler',
+		second : Object, typ: 'verfolger',
+		third : Object, typ: 'verfolger'
+   }</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>560</x>
-      <y>336</y>
-      <w>168</w>
-      <h>91</h>
+      <x>840</x>
+      <y>91</y>
+      <w>105</w>
+      <h>35</h>
     </coordinates>
-    <panel_attributes>Körperteil
+    <panel_attributes>Verfolger
 --
-- vorheriger: Körperteil
-- nächster: Körperteil
-- positionx: number
-- positiony: number
---
-+ add()
-+ delete()
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>371</x>
-      <y>364</y>
-      <w>168</w>
-      <h>84</h>
+      <x>840</x>
+      <y>189</y>
+      <w>105</w>
+      <h>35</h>
     </coordinates>
-    <panel_attributes>Gegner
---
-- typ : string
-- positionx: number
-- positiony: number
---
-+ spawn()</panel_attributes>
+    <panel_attributes>Feind/Tisch
+--</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>147</x>
-      <y>672</y>
+      <x>35</x>
+      <y>455</y>
       <w>168</w>
       <h>49</h>
     </coordinates>
@@ -178,142 +108,51 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>371</x>
-      <y>462</y>
-      <w>168</w>
-      <h>84</h>
+      <x>840</x>
+      <y>140</y>
+      <w>105</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>Pickup
---
-- typ : string
-- positionx: number
-- positiony: number
---
-+ spawn()</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>273</x>
-      <y>189</y>
-      <w>574</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-updates / calls</panel_attributes>
-    <additional_attributes>800.0;80.0;800.0;20.0;10.0;20.0;10.0;80.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>917</x>
-      <y>238</y>
-      <w>112</w>
-      <h>28</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-uses</panel_attributes>
-    <additional_attributes>140.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1015</x>
-      <y>245</y>
-      <w>70</w>
-      <h>21</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;framework&gt;&gt;</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLPackage</id>
-    <coordinates>
-      <x>749</x>
-      <y>224</y>
-      <w>182</w>
-      <h>399</h>
-    </coordinates>
-    <panel_attributes>Snake.View
 --</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>756</x>
-      <y>245</y>
-      <w>168</w>
-      <h>63</h>
+      <x>798</x>
+      <y>280</y>
+      <w>175</w>
+      <h>238</h>
     </coordinates>
     <panel_attributes>View
 --
-- canvas : Canvas
++ game : Phaser.Game
++ schlange : Schlange
++ einzelobjektGroesse : number
++ startX : number
++ startY : number
 --
-+ drawSingleObject(obj : Object)</panel_attributes>
++ zeichneSchlange_LVL1()
++ updatePosition(x, y, changeId)
+
+TODO:
++ platziereRandomPickup()
++ platziereRandomFeind()
++ platziereRandomTisch()
++ zeichneMauer()
++ kollisionMitVerfolger() : boolean
++ kollisionMitFeind() : boolean
++ kollisionMitWand() : boolean
++ kollisionMitPickup() : boolean
++ loescheSchlange()</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>308</x>
-      <y>252</y>
-      <w>77</w>
-      <h>49</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>90.0;10.0;70.0;10.0;70.0;50.0;10.0;50.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>308</x>
-      <y>294</y>
-      <w>77</w>
-      <h>98</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>90.0;120.0;60.0;120.0;60.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>308</x>
-      <y>308</y>
-      <w>77</w>
-      <h>175</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>90.0;230.0;50.0;230.0;50.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>532</x>
-      <y>245</y>
-      <w>42</w>
-      <h>35</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>40.0;10.0;20.0;10.0;20.0;30.0;10.0;30.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>532</x>
-      <y>273</y>
-      <w>42</w>
-      <h>84</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>40.0;100.0;30.0;100.0;30.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>756</x>
-      <y>315</y>
+      <x>819</x>
+      <y>525</y>
       <w>168</w>
       <h>63</h>
     </coordinates>
@@ -326,197 +165,338 @@ uses</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1015</x>
-      <y>315</y>
+      <x>630</x>
+      <y>399</y>
       <w>70</w>
-      <h>21</h>
+      <h>28</h>
     </coordinates>
-    <panel_attributes>&lt;&lt;framework&gt;&gt;</panel_attributes>
+    <panel_attributes>&lt;&lt;framework&gt;&gt;
+Phaser.Game</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>917</x>
-      <y>308</y>
-      <w>112</w>
+      <x>525</x>
+      <y>399</y>
+      <w>119</w>
       <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 uses</panel_attributes>
-    <additional_attributes>140.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>150.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
-    <id>UMLPackage</id>
+    <id>UMLNote</id>
     <coordinates>
-      <x>287</x>
-      <y>770</y>
-      <w>455</w>
-      <h>301</h>
+      <x>28</x>
+      <y>175</y>
+      <w>273</w>
+      <h>119</h>
     </coordinates>
-    <panel_attributes>Snake.Abhängigkeiten|Vererbung
+    <panel_attributes>Nicht benötigte Klassen, wegen virtueller 
+Fragmetierung (der Untertyp wird durch 
+ein Attribut(typ) beschrieben):
+
+- Einzelobjekt -&gt; (Object)
+- Gegner -&gt; (Feind is_a Object)
+- Koerperteil -&gt; (Verfolger is_a Object)
+- Pickup -&gt; (Pickup is_a Object)
+- RandomSpawn (wird durch eine Methode platziert)
+bg=red</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>385</x>
+      <y>49</y>
+      <w>168</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>Die Schlange wird wie eine Liste
+implementiert.
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>840</x>
+      <y>42</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>Spieler
 --</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>497</x>
-      <y>805</y>
-      <w>98</w>
-      <h>56</h>
+      <x>651</x>
+      <y>126</y>
+      <w>105</w>
+      <h>21</h>
     </coordinates>
-    <panel_attributes>Einzelobj
---
-positionX : Number
-positionY : Number
-Typ : String</panel_attributes>
+    <panel_attributes>Object</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>749</x>
+      <y>49</y>
+      <w>105</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;120.0;90.0;120.0;90.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>805</x>
+      <y>98</y>
+      <w>49</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>805</x>
+      <y>126</y>
+      <w>49</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;50.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>805</x>
+      <y>147</y>
+      <w>49</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;50.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>763</x>
+      <y>91</y>
+      <w>56</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>is_a
+{virtuell}</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>364</x>
+      <y>14</y>
+      <w>609</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>Model
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>693</x>
+      <y>420</y>
+      <w>140</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+uses</panel_attributes>
+    <additional_attributes>10.0;10.0;180.0;190.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>602</x>
-      <y>896</y>
-      <w>98</w>
-      <h>56</h>
+      <x>532</x>
+      <y>532</y>
+      <w>266</w>
+      <h>154</h>
     </coordinates>
-    <panel_attributes>Körperteil
-</panel_attributes>
+    <panel_attributes>Main
+--
++ game : Phaser.Game
++ canvasWidth : number
++ canvasHeight : number
++ schlange : Schlange
++ view : View
++ controller : Controller
++ frameCounter : number
++ spielgeschwindigkeit : number
+--
++ preload()
++ create()
++ update()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <id>Relation</id>
     <coordinates>
-      <x>385</x>
-      <y>896</y>
-      <w>98</w>
-      <h>56</h>
+      <x>658</x>
+      <y>420</y>
+      <w>42</w>
+      <h>126</h>
     </coordinates>
-    <panel_attributes>RandomSpawn
---
-+spawn()</panel_attributes>
-    <additional_attributes/>
+    <panel_attributes>lt=&lt;.
+uses</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>329</x>
+      <y>112</y>
+      <w>217</w>
+      <h>490</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>290.0;680.0;10.0;680.0;10.0;10.0;80.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>427</x>
-      <y>847</y>
-      <w>84</w>
+      <y>511</y>
+      <w>119</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>150.0;140.0;10.0;140.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>791</x>
+      <y>308</y>
+      <w>231</w>
+      <h>301</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;410.0;310.0;410.0;310.0;10.0;260.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>574</x>
+      <y>147</y>
+      <w>238</w>
+      <h>182</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>320.0;240.0;60.0;240.0;60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>525</x>
+      <y>322</y>
+      <w>287</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;390.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>693</x>
+      <y>350</y>
+      <w>119</w>
       <h>63</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>100.0;10.0;10.0;70.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>588</x>
-      <y>854</y>
-      <w>77</w>
-      <h>56</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;60.0</additional_attributes>
+    <panel_attributes>lt=&lt;.
+uses</panel_attributes>
+    <additional_attributes>10.0;70.0;150.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>308</x>
-      <y>1001</y>
-      <w>98</w>
-      <h>56</h>
+      <x>28</x>
+      <y>588</y>
+      <w>266</w>
+      <h>182</h>
     </coordinates>
-    <panel_attributes>Gegner
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>462</x>
-      <y>1001</y>
-      <w>98</w>
-      <h>56</h>
-    </coordinates>
-    <panel_attributes>Pickup
-
-</panel_attributes>
+    <panel_attributes>Phaser.Game
+--
++ stage.backgroundColor
++ image.frame
++ image.world.x
++ image.world.y
+--
++ load.spritesheet(...)
++ load.image(...)
++ input.keyboard.createCursorKeys()
++ add.image(...)
++ add.sprite(...)
++ image.animations.add(...)
++ image.animations.play(...);
++ image.destroy()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
-      <y>945</y>
-      <w>91</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>110.0;10.0;10.0;80.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>441</x>
-      <y>945</y>
-      <w>84</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;100.0;80.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>259</x>
-      <y>175</y>
-      <w>791</w>
-      <h>210</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-updates / calls</panel_attributes>
-    <additional_attributes>950.0;280.0;1010.0;280.0;1010.0;10.0;10.0;10.0;10.0;100.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLNote</id>
-    <coordinates>
-      <x>147</x>
-      <y>399</y>
-      <w>168</w>
-      <h>98</h>
-    </coordinates>
-    <panel_attributes>UpdateView gibt informationen 
-der Modelle an das View Objekt, 
-wo diese auf das Canvas gezeichnet 
-werden.
-bg=green</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLNote</id>
-    <coordinates>
-      <x>560</x>
-      <y>525</y>
-      <w>168</w>
+      <x>287</x>
+      <y>679</y>
+      <w>392</w>
       <h>84</h>
     </coordinates>
-    <panel_attributes>Die Schlange wird wie eine Liste
-implementiert.
-bg=green</panel_attributes>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>540.0;10.0;540.0;100.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>791</x>
+      <y>581</y>
+      <w>126</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;160.0;60.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>28</x>
+      <y>427</y>
+      <w>189</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>Snake.ZusatzImplementation
+--</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>301</x>
-      <y>798</y>
-      <w>168</w>
-      <h>84</h>
+      <x>28</x>
+      <y>329</y>
+      <w>273</w>
+      <h>70</h>
     </coordinates>
-    <panel_attributes>Die Schlange wird wie eine Liste
-implementiert.
+    <panel_attributes>controller.bewegeSchlange() berechnet die neue 
+Position des Spielers und gibt diese an 
+updatePosition(x, y, changeId) der View-Klasse, 
+wo dieser dann mit seinen Verfolgern 
+auf das Canvas gezeichnet wird.
 bg=green</panel_attributes>
     <additional_attributes/>
   </element>
