@@ -1,27 +1,36 @@
-//Einzelobjekt erstellen, von dem andere Objekte erben können
-class Einzelobjekt {
-	//in die Constructor-Fkt die Attribute übergeben
-	//constructor(_positionX, _positionY, _typ){
-	constructor(){
-		this.next = null;
-		this.previous = null;
-		//this.positionX = _positionX;
-		//this.positionY = _positionY;
-		//this.typ = _typ;
+/**
+* Einzelobjekt erstellen, von dem andere Objekte erben können
+* Einzelobjekt: Spieler, Verfolger, Pickup(+randomspawn), Stein, Feind(+randomspawn)
+*/
+export default class Einzelobjekt {
+	
+	/** 
+	* Constructor
+	* @param x-Koordinate eines Objektes
+	* @param y-Koordinate eines Objektes
+	* @param typ Typ des Objektes (spieler / verfolger / pickup / stein / feind), Spritename
+	*/
+	constructor(positionX, positionY, typ) {
+
+		/** Wichtig für die Sprite zuordnung */
+		this.positionX = positionX;
+		this.positionY = positionY;
+		this.typ = typ; // typ == spritename!
+
 	}
 	
-	/** gibt X-Koordinate der Position zurück */
-	getPositionX(){
+	/** Gibt X-Koordinate der Position zurück */
+	getPositionX() {
 		return this.positionX;
 	}
 	
-	/** gibt Y-Koordinate der Position zurück */
-	getPositionY(){
+	/** Gibt Y-Koordinate der Position zurück */
+	getPositionY() {
 		return this.positionY;
 	}
 	
-	/** gibt Typ des Objekts zurück */
-	getTyp(){
+	/** Gibt Typ des Objekts zurück */
+	getTyp() {
 		return this.typ;
 	}
 }

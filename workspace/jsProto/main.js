@@ -69,7 +69,8 @@ export default class Main {
     create() {
 
         /** Schlange aus Spieler und Verfolger erzeugen */
-        this.view.zeichneSchlange_LVL1();
+        this.view.zeichneSchlange();
+        this.view.laengenAnzeige();
 
         ////////////////// TODO: //////////////////
 

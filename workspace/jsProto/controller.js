@@ -3,6 +3,7 @@ import 'p2';
 import 'phaser';
 
 import { View } from './view';
+import { Schlange } from './schlange';
 
 /**
 * Controller

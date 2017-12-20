@@ -28,31 +28,35 @@ export default class View {
         */
         this.schlange = schlange;
 
-        /**
-        * Der Spieler (und alle anderen Einzelobjekte sind 60x60 groß)
-        */
-        this.objektGroesse = 60;
-
-        /**
-        * Startpunkt der Schlange P(60;60)
-        */
-        this.startX = this.objektGroesse;
-        this.startY = this.objektGroesse;
-
     }
 
     /** 
-    * LVL 1 Startschlange
+    * Startschlange
     * 1 Kopf mit 2 Verfolgern
     */
-    zeichneSchlange_LVL1() {
+    zeichneSchlange() {
 
-        this.schlange.lvl1[2].image = this.game.add.image(this.startX, this.startY, 'verfolger'); // 2. Verfolger
-        this.schlange.lvl1[1].image = this.game.add.image(this.startX + this.objektGroesse, this.startY, 'verfolger'); // 1. Verfolger
+        /** Schlange initialisieren */
+        this.schlange.initSchlange();
 
-        this.schlange.lvl1[0].image = this.game.add.sprite(this.startX + (2 * this.objektGroesse), this.startY, 'spieler'); // Kopf
-        this.schlange.lvl1[0].image.frame = 3; // Kopf-Sprite schaut nach rechts
+        /** Durch Schlange iterieren und den Objekten das Entsprechende Sprite zurodnen */
+        for(var i = this.schlange.getLength()-1; i >= 0; i--){
+            if(i == 0){
+                this.schlange.list[i].image = this.game.add.sprite(this.schlange.list[i].objekt.getPositionX(), this.schlange.list[i].objekt.getPositionY(), this.schlange.list[i].objekt.getTyp());
+                this.schlange.list[i].image.frame = 3;
+            } else {
+                this.schlange.list[i].image = this.game.add.image(this.schlange.list[i].objekt.getPositionX(), this.schlange.list[i].objekt.getPositionY(), this.schlange.list[i].objekt.getTyp());
+            }
+        }
   
+    }
+
+    /** 
+    * Längenanzeige der Schlange mit DOM
+    */
+    laengenAnzeige() {
+        var tag = document.getElementById("length");
+        tag.innerHTML = this.schlange.getLength();
     }
 
     /** 
@@ -62,9 +66,14 @@ export default class View {
     * @param y : neue y-Koordinate für den Kopf
     * @param changeId : Id der Richtung der Bewegung um das richtige Sprite zu setzen
     */
-    updatePosition(x, y, changeId) {
+    updatePosition(objekt, changeId) {
 
-        /** Koordinaten der Vorgänger speichern */
+        
+
+
+
+        ///////////////////// ALT /////////////////////
+        /** Koordinaten der Vorgänger speichern 
         // Koordinaten des ehemaligen Vorletzten
         var last_x = this.schlange.lvl1[1].image.world.x; 
         var last_y = this.schlange.lvl1[1].image.world.y;
@@ -73,12 +82,12 @@ export default class View {
         var x_alt = this.schlange.lvl1[0].image.world.x;
         var y_alt = this.schlange.lvl1[0].image.world.y;
 
-        /** Durch alle Schlangenglieder iterieren */
+        /** Durch alle Schlangenglieder iterieren 
         for(var i = 0; i < this.schlange.lvl1.length; i++) {
 
             this.schlange.lvl1[i].image.destroy(); // vorherige Sprites löschen
 
-            /** Je nach Schlangenglied Sprite an neuer Position erzeugen */
+            /** Je nach Schlangenglied Sprite an neuer Position erzeugen 
             switch(i) {
                 case 0:     this.schlange.lvl1[i].image = this.game.add.sprite(x, y, 'spieler');
 
@@ -105,7 +114,7 @@ export default class View {
                 case 2:     this.schlange.lvl1[i].image = this.game.add.image(last_x, last_y, 'verfolger');
             }
 
-        }
+        }*/
 
     }
 
