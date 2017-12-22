@@ -12,15 +12,15 @@ export default class Schlange {
         this.list = [{}, {}, {}];
 
         /**
-        * Ein Einzelobjekt ist 60x60 groß)
+        * Ein Einzelobjekt ist 1x1 Einheiten (60px) groß)
         */
-        this.objektGroesse = 60;
+        this.objektGroesse = 1;
 
         /**
-        * Startpunkt der Schlange P(60;60)
+        * Startpunkt der Schlange P(1 Einheit;1 Einheit)
         */
-        this.startX = this.objektGroesse;
-        this.startY = this.objektGroesse;
+        this.startX = 1;
+        this.startY = 1;
 
     }
 
@@ -42,17 +42,15 @@ export default class Schlange {
     
     /** Körperteil zur Schlange hinzufügen */
     add(){
-        first.add();
+		 //Erweitert das Array durch ein Einzelobjekt 
+        this.list.push(new Einzelobjekt(this.list[this.list.length -1].getPositionX(),
+													this.list[this.list.length -1].getPositionY(),
+													'verfolger'));
     }
     
     /** Körperteil aus Schlange entfernen */
     delete(anzahl){
-        if(anzahl < getLength()){
-            first.delete(anzahl);
-        }
-        else{
-            first.delete(getLength()-1);
-        }
+        this.list = this.list.slice(0, animals.length - anzahl);
     }
     
     /** Gibt die Länge der Schlange in Form eines Zahlenwertes zurück */
@@ -62,20 +60,26 @@ export default class Schlange {
     
     /** Weist dem Schlangenkopf eine neue Position zu */
     move(newX, newY){
-        this.first.move(first.positionX + newX, first.positionY + newY);
+		 //Speicher für die alte Position X
+		 var oldX;
+		 //Speicher für die alte Position Y
+		 var oldY;
+        for(var i = 0; i < this.list.length; i++){
+			  //Alte Position Speichern
+			  oldX = this.list[i].getPositionX();
+			  oldY = this.list[i].getPositionY();
+			  //Neue Position setzen
+			  this.list[i].setPositionX(newX);
+			  this.list[i].setPositionY(newY);
+			  //new neu besetzen
+			  newX = oldX;
+			  newY = oldY;
+		  }
     }
 	
 	/** gibt die informationen über alle Körperteile als Array zurück */
 	getInfo(){
-		var info = new Array(this.getLength());
-		
-		for(var i = 0; i < this.getLength(); i++){
-			var currentNode = this.first;
-			info[0] = currentNode;
-			if(currentNode.naechster != undefined){
-				currentNode = currentNode.naechster;
-			} else { break; }
-		}
+		return this.list;
 	}
     
 }

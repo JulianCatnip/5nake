@@ -29,39 +29,46 @@ export default class Controller {
         /**
         * View-Objekt
         */
-		this.view = view;
+		  this.view = view;
+		
+        /**
+        * Größe eines Einzelobjektes
+        */
+	  	  this.objektGroesse = 60; // increment um 60
 
         /**
         * Canvas Höhe und Breite
         */
-		this.canvasWidth = canvasWidth;
-		this.canvasHeight = canvasHeight;
+		  this.canvasWidth = canvasWidth/this.objektGroesse;
+		  this.canvasHeight = canvasHeight/this.objektGroesse;
 
         /**
         * Richtung
         */
-		this.richtungen = Object.freeze({up: 0, down: 1, right: 2, left: 3}); // freeze: verhindert das Hinzufügen von neuen Eigenschaften zum Objekt
+		  this.richtungen = Object.freeze({up: 0, down: 1, right: 2, left: 3}); // freeze: verhindert das Hinzufügen von neuen Eigenschaften zum Objekt
 		
         /**
         * Laufrichtung der Schlange
         */
         this.laufrichtung;
+		
+			/**
+			* SchlangenObjekt */
+		  let Schlange = require('./schlange.js').default;
+		  this.schlange = new Schlange();
+		  this.schlange.initSchlange();
 
-        /**
-        * Größe eines Einzelobjektes
-        */
-		this.objektGroesse = 60; // increment um 60
 
         /**
         * x- und y-Koordinate
         */
-		this.x = this.view.startX + (2 * this.objektGroesse);
-		this.y = this.view.startY;
+		  //this.x = this.view.startX + (2 * this.objektGroesse);
+		  //this.y = this.view.startY;
 
         /**
         * Speichert eine Zahl je nach derzeitiger Laufrichtung
         */
-        this.changeId;
+        //this.changeId;
 
     }
 
@@ -100,13 +107,14 @@ export default class Controller {
     * Aus der derzeitigen Position werden neue Koordinaten berechnet (von 1 Schritt weiter)
     * und an der neu berechneten Position ein neuer Kopf erzeugt.
     */
-    bewegeSchlange() {
+    bewegeSchlange(){
 
         /** Berechnung der neuen Koordinaten */
         if (this.laufrichtung == this.richtungen.right) { // wenn richtung rechts ist
 
-            this.x += this.objektGroesse; // position x + breite des spielers
-            this.changeId = 0;
+            //this.x += this.objektGroesse; // position x + breite des spielers
+            //this.changeId = 0;
+			  
 
         } else if (this.laufrichtung == this.richtungen.left) { // wenn richtung links ist
 
@@ -149,17 +157,17 @@ export default class Controller {
 
         }
 
-        /** Schlange bewegen */
-        if (this.laufrichtung != undefined) { // wenn Laufrichtung bestimmt ist
-
-            /** 
-            * Übergibt neue Koordinaten für das Spieler-Objekt
-            * und die Id der derzeitigen Richtung 
-            */
-            this.view.updatePosition(this.x, this.y, this.changeId); // Schlange um 1 Einheit weiter bewegen
-
-        }
-
     }
+	
+	/** Zeichne Objekte */
+	zeichneObjekte(){
+		//Zunächst Schlangen zeichnung beauftragen
+		var schlangeninfo = this.schlange.getInfo();
+		//update Länge der Schlange
+		this.view.laengenAnzeige(schlangeninfo.length);
+		for(var i = 0; i < schlangeninfo.length; i++){
+			this.view.draw(schlangeninfo[i]);
+		}
+	}
 
 }

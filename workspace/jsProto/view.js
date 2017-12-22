@@ -26,7 +26,12 @@ export default class View {
         /**
         * Schlangen-Objekt
         */
-        this.schlange = schlange;
+        //this.schlange = schlange;
+		
+			/**
+			* Größe der einzelnen Einheiten
+			*/
+			this.objektGroesse = 60;
 
     }
 
@@ -34,29 +39,29 @@ export default class View {
     * Startschlange
     * 1 Kopf mit 2 Verfolgern
     */
-    zeichneSchlange() {
+    //zeichneSchlange() {
 
         /** Schlange initialisieren */
-        this.schlange.initSchlange();
+        //this.schlange.initSchlange();
 
         /** Durch Schlange iterieren und den Objekten das Entsprechende Sprite zurodnen */
-        for(var i = this.schlange.getLength()-1; i >= 0; i--){
-            if(i == 0){
-                this.schlange.list[i].image = this.game.add.sprite(this.schlange.list[i].objekt.getPositionX(), this.schlange.list[i].objekt.getPositionY(), this.schlange.list[i].objekt.getTyp());
+       // for(var i = this.schlange.getLength()-1; i >= 0; i--){
+        /*    if(i == 0){
+                this.schlange.list[i].image = this.game.add.sprite(this.schlange.list[i].objekt.getPositionX()*this.objektGroesse, this.schlange.list[i].objekt.getPositionY()*this.objektGroesse, this.schlange.list[i].objekt.getTyp());
                 this.schlange.list[i].image.frame = 3;
             } else {
-                this.schlange.list[i].image = this.game.add.image(this.schlange.list[i].objekt.getPositionX(), this.schlange.list[i].objekt.getPositionY(), this.schlange.list[i].objekt.getTyp());
+                this.schlange.list[i].image = this.game.add.image(this.schlange.list[i].objekt.getPositionX()*this.objektGroesse, this.schlange.list[i].objekt.getPositionY()*this.objektGroesse, this.schlange.list[i].objekt.getTyp());
             }
         }
   
-    }
+    }*/
 
     /** 
     * Längenanzeige der Schlange mit DOM
     */
-    laengenAnzeige() {
+    laengenAnzeige(laenge) {
         var tag = document.getElementById("length");
-        tag.innerHTML = this.schlange.getLength();
+        tag.innerHTML = laenge;
     }
 
     /** 
@@ -66,7 +71,7 @@ export default class View {
     * @param y : neue y-Koordinate für den Kopf
     * @param changeId : Id der Richtung der Bewegung um das richtige Sprite zu setzen
     */
-    updatePosition(objekt, changeId) {
+   // updatePosition(objekt, changeId) {
 
         
 
@@ -116,6 +121,29 @@ export default class View {
 
         }*/
 
-    }
+   // }
+	
+	/** Update Position
+	Übernimmt ein Objekt, liest dessen Daten aus und zeichnet passend einen Sprite
+	@param Objekt das gezeichnet werden soll
+	*/
+	draw(objekt){
+		if(objekt.image != null){
+		objekt.image.destroy();
+		}
+		objekt.image = this.game.add.image(objekt.positionX, objekt.positionY, objekt.typ);
+		if(objekt.typ == 'spieler'){
+			switch(objekt.laufrichtung) {
+             case 'rauf': objekt.image.animations.add('walk', [4, 5], 5, true);
+                     break;
+             case 'runter': objekt.image.animations.add('walk', [10, 11], 5, true);
+                     break;
+             case 'rechts': objekt.image.animations.add('walk', [1, 2], 5, true);
+                     break;
+             case 'links': objekt.image.animations.add('walk', [7, 8], 5, true);
+         }
+			objekt.image.animations.play('walk');
+		}
+	}
 
 }
