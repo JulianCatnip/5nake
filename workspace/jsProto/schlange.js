@@ -9,7 +9,12 @@ export default class Schlange {
     constructor() {
 
         /** Schlange besteht aus einer Liste */
-        this.list = [{}, {}, {}];
+		  let Einzelobjekt = require('./einzelobjekt.js').default;
+        this.list = [
+			            new Einzelobjekt(3, 1, 'spieler'),
+							new Einzelobjekt(2, 1, 'verfolger'),
+							new Einzelobjekt(1, 1, 'verfolger')
+		  					];
 
         /**
         * Ein Einzelobjekt ist 1x1 Einheiten (60px) groß)
@@ -28,17 +33,17 @@ export default class Schlange {
     * Initialisiere die Schlange mit 3 Verfolgern 
     * an einer bestimmten Startposition.
     */
-    initSchlange() {
+    /*initSchlange() {
 
         var positionX0 = this.startX + (2 * this.objektGroesse);
         var positionX1 = this.startX + this.objektGroesse;
 
-        let Einzelobjekt = require('./einzelobjekt.js').default;
+        
         this.list[0].objekt = new Einzelobjekt(positionX0, this.startY, 'spieler');
         this.list[1].objekt = new Einzelobjekt(positionX1, this.startY, 'verfolger');
         this.list[2].objekt = new Einzelobjekt(this.startX, this.startY, 'verfolger');
         
-    }
+    }*/
     
     /** Körperteil zur Schlange hinzufügen */
     add(){

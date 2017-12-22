@@ -110,8 +110,15 @@ export default class Main {
 
             // HIER WIRD DIE SCHLANGE MIT DEM CURSOR BEWEGT
             this.controller.bewegeSchlange();
-
+			   
+			  	// HIER WERDEN OBJEKTE GESPAWNED
+			   //this.controller.spawneGegner();
+			   //this.controller.spawnePickup();
+			  
             ////////////////// TODO: //////////////////
+			  
+			  
+			   
 
             // HIER WERDEN KOLLISIONEN ABGEFRAGT 
             /*
@@ -137,6 +144,8 @@ export default class Main {
             }
             */
             // ...
+			  	 	// HIER WERDEN DIE EINZELENEN KOMPONENTEN GEZEICHNET
+			  		this.controller.zeichneObjekte();
 
             this.frameCounter = 0;
         }

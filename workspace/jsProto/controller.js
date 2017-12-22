@@ -4,6 +4,8 @@ import 'phaser';
 
 import { View } from './view';
 import { Schlange } from './schlange';
+import { Einzelobjekt} from './einzelobjekt';
+import { Gegner } from './gegner';
 
 /**
 * Controller
@@ -56,9 +58,13 @@ export default class Controller {
 			* SchlangenObjekt */
 		  let Schlange = require('./schlange.js').default;
 		  this.schlange = new Schlange();
-		  this.schlange.initSchlange();
-
-
+		  //this.schlange.initSchlange();
+		
+			/**
+			Objektebehälter Array für Gegner */
+		   let Gegner = require('./gegner.js').default;
+			var gegner = new Gegner(this.canvasWidth, this.canvasHeight, 'stein');
+		
         /**
         * x- und y-Koordinate
         */
@@ -108,28 +114,27 @@ export default class Controller {
     * und an der neu berechneten Position ein neuer Kopf erzeugt.
     */
     bewegeSchlange(){
+		 
+		 //Hol informationen des Kopfes
+		 var kopf = this.schlange.getInfo()[0];
 
         /** Berechnung der neuen Koordinaten */
         if (this.laufrichtung == this.richtungen.right) { // wenn richtung rechts ist
 
-            //this.x += this.objektGroesse; // position x + breite des spielers
-            //this.changeId = 0;
+			  this.schlange.move(kopf.positionX + 1, kopf.positionY);
 			  
 
         } else if (this.laufrichtung == this.richtungen.left) { // wenn richtung links ist
 
-            this.x -= this.objektGroesse; // position x - breite des spielers
-            this.changeId = 1;
+            this.schlange.move(kopf.positionX - 1, kopf.positionY);
 
         } else if (this.laufrichtung == this.richtungen.up) { // wenn richtung oben ist
 
-            this.y -= this.objektGroesse; // position y - höhe des spielers
-            this.changeId = 2;
+            this.schlange.move(kopf.positionX, kopf.positionY - 1);
 
         } else if (this.laufrichtung == this.richtungen.down) { // wenn richtung unten ist
 
-            this.y += this.objektGroesse; // position y + höhe des spielers
-            this.changeId = 3;
+            this.schlange.move(kopf.positionX, kopf.positionY + 1);
 
         }
 
@@ -139,25 +144,37 @@ export default class Controller {
         * Brauchen wir nicht wenn wir eine Wand machen, 
         * dann wird eine Kollision stattdessen implementiert.
         */
-        if (this.x <= 0 - this.objektGroesse) { // wenn x position kleiner/gleich 0 - spielerbreite ist
+        if (kopf.positionX <= 0 - 1) { // wenn x position kleiner/gleich 0 - spielerbreite ist
 
-            this.x = this.canvasWidth - this.objektGroesse; // position x = canvas-breite - spielerbreite
+            kopf.positionX = this.canvasWidth - 1; // position x = canvas-breite - spielerbreite
 
-        } else if (this.x >= this.canvasWidth) { // wenn position x größer als canvas-breite
+        } else if (kopf.positionX >= this.canvasWidth) { // wenn position x größer als canvas-breite
 
-            this.x = 0; // x = 0
+            kopf.positionX = 0;
 
-        } else if (this.y <= 0 - this.objektGroesse) { // wenn position y kleiner/gleich 0 - spielerhöhe ist
+        } else if (kopf.positionY <= 0 - 1) { // wenn position y kleiner/gleich 0 - spielerhöhe ist
 
-            this.y = this.canvasHeight - this.objektGroesse; // position y = canvas höhe - spielerhöhe
+            kopf.positionY = this.canvasHeight - 1; // position y = canvas höhe - spielerhöhe
 
-        } else if (this.y >= this.canvasHeight) { // wenn position y größer als canvas-höhe ist
+        } else if (kopf.positionY >= this.canvasHeight) { // wenn position y größer als canvas-höhe ist
 
-            this.y = 0; // y = 0
+            kopf.positionY = 0; // y = 0
 
         }
 
     }
+
+	
+	/** Befehl für das Spawnen eines Gegenstandes (Gegner)
+	@param Anzahl*/
+	spawneGegner(){
+		//this.gegner = [new Einzelobjekt(8,8,'stein')];
+	}
+	
+	/** Despawne alle Objekte ausser Schlange*/
+	despawnAll(){
+		this.gegner = [];
+	}
 	
 	/** Zeichne Objekte */
 	zeichneObjekte(){
@@ -167,6 +184,10 @@ export default class Controller {
 		this.view.laengenAnzeige(schlangeninfo.length);
 		for(var i = 0; i < schlangeninfo.length; i++){
 			this.view.draw(schlangeninfo[i]);
+		}
+		var gegnerinfo = this.gegner.getInfo();
+		for(var i = 0; i < gegnerinfo.length; i++){
+			this.view.draw(gegnerinfo[i]);
 		}
 	}
 

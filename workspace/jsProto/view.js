@@ -130,17 +130,11 @@ export default class View {
 	draw(objekt){
 		if(objekt.image != null){
 			objekt.image.destroy();
-			objekt.image = this.game.add.sprite(objekt.positionX*this.objektGroesse, objekt.positionY*this.objektGroesse, objekt.typ);
-			if(objekt.typ == 'spieler'){
-				objekt.image.frame = 3;
-			}
-		} else{
-			objekt.image = this.game.add.sprite(objekt.positionX*this.objektGroesse, objekt.positionY*this.objektGroesse, objekt.typ);
-			if(objekt.typ == 'spieler'){
-				objekt.image.frame = 3;
-			}
-			console.log("spielerGezeichnet");
 		}
+			objekt.image = this.game.add.sprite(objekt.positionX*this.objektGroesse, objekt.positionY*this.objektGroesse, objekt.typ);
+			if(objekt.typ == 'spieler'){
+				objekt.image.frame = 3;
+			}
 	}
 
 }

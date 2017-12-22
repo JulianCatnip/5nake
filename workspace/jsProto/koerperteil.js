@@ -1,5 +1,6 @@
+/////////////// DEPRECATED /////////////////
 /** Das Objekt ist der Prototyp für die Körperteile der Schlange */
-class Koerperteil extends Einzelobjekt{
+/** class Koerperteil extends Einzelobjekt{
     
     //Constructor-Aufruf wie vorher, nur hier mit "super", um 
     //Vererbung mit Java nachzuempfinden. Tatsächlicher Zugriff durch Prototyping
@@ -10,7 +11,7 @@ class Koerperteil extends Einzelobjekt{
         this.naechster = undefined;
 	}
     
-    /** Funktion fügt ein weiteres Körperteil zur Liste hinzu */
+    /** Funktion fügt ein weiteres Körperteil zur Liste hinzu 
     add(){
         if(naechster != undefined){
             naechster.add();
@@ -20,7 +21,7 @@ class Koerperteil extends Einzelobjekt{
         }
     }
     
-    /** Funkktion entfernt ein Körperteil aus der Liste */
+    /** Funkktion entfernt ein Körperteil aus der Liste 
     delete(anzahl){
         var deleteinfo = this.naechster.delete(anzahl);
 		 if(deleteinfo.sollGeloeschtwerden == true){
@@ -38,7 +39,7 @@ class Koerperteil extends Einzelobjekt{
 		 }
     }
     
-    /** Rekursives Zählen der vorhandenen Körperteile */
+    /** Rekursives Zählen der vorhandenen Körperteile
     count(){
         if(naechster != undefined){
             return naechster.count()+1;
@@ -48,7 +49,7 @@ class Koerperteil extends Einzelobjekt{
         }
     }
     
-    /** lässt den Körperteil auf die Position des jeweils vorhergehenden Körperteils in der Liste nachrücken*/
+    /** lässt den Körperteil auf die Position des jeweils vorhergehenden Körperteils in der Liste nachrücken
     move(newX, newY){
         if(this.naechster != undefined){
             naechster.move(this.positionX, this.positionY);
@@ -58,4 +59,5 @@ class Koerperteil extends Einzelobjekt{
     }
     
     
-}
+} 
+*/
