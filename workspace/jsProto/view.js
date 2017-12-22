@@ -129,20 +129,17 @@ export default class View {
 	*/
 	draw(objekt){
 		if(objekt.image != null){
-		objekt.image.destroy();
-		}
-		objekt.image = this.game.add.image(objekt.positionX, objekt.positionY, objekt.typ);
-		if(objekt.typ == 'spieler'){
-			switch(objekt.laufrichtung) {
-             case 'rauf': objekt.image.animations.add('walk', [4, 5], 5, true);
-                     break;
-             case 'runter': objekt.image.animations.add('walk', [10, 11], 5, true);
-                     break;
-             case 'rechts': objekt.image.animations.add('walk', [1, 2], 5, true);
-                     break;
-             case 'links': objekt.image.animations.add('walk', [7, 8], 5, true);
-         }
-			objekt.image.animations.play('walk');
+			objekt.image.destroy();
+			objekt.image = this.game.add.sprite(objekt.positionX*this.objektGroesse, objekt.positionY*this.objektGroesse, objekt.typ);
+			if(objekt.typ == 'spieler'){
+				objekt.image.frame = 3;
+			}
+		} else{
+			objekt.image = this.game.add.sprite(objekt.positionX*this.objektGroesse, objekt.positionY*this.objektGroesse, objekt.typ);
+			if(objekt.typ == 'spieler'){
+				objekt.image.frame = 3;
+			}
+			console.log("spielerGezeichnet");
 		}
 	}
 
