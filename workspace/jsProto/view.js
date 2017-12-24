@@ -127,14 +127,16 @@ export default class View {
 	Übernimmt ein Objekt, liest dessen Daten aus und zeichnet passend einen Sprite
 	@param Objekt das gezeichnet werden soll
 	*/
-	draw(objekt){
+	draw(objekt, kill){
 		if(objekt.image != null){
 			objekt.image.destroy();
 		}
+		if(!kill){
 			objekt.image = this.game.add.sprite(objekt.positionX*this.objektGroesse, objekt.positionY*this.objektGroesse, objekt.typ);
 			if(objekt.typ == 'spieler'){
 				objekt.image.frame = 3;
 			}
+		}
 	}
 
 }

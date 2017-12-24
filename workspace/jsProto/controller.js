@@ -63,7 +63,15 @@ export default class Controller {
 			/**
 			Objektebehälter Array für Gegner */
 		   let Gegner = require('./gegner.js').default;
-			var gegner = new Gegner(this.canvasWidth, this.canvasHeight, 'stein');
+			this.gegner = new Gegner(this.canvasWidth, this.canvasHeight, 'stein');
+		
+			/**
+			* Objektebehälter für Upgrades */
+			//this.boons = new Gegner(this.canvasWidth, this.canvasHeight, '');
+		
+		   /**
+			* Objektebehälter Pickup */
+		   this.pickup = new Gegner(this.canvasWidth, this.canvasHeight, 'item');
 		
         /**
         * x- und y-Koordinate
@@ -167,14 +175,82 @@ export default class Controller {
 	
 	/** Befehl für das Spawnen eines Gegenstandes (Gegner)
 	@param Anzahl*/
-	spawneGegner(){
-		//this.gegner = [new Einzelobjekt(8,8,'stein')];
+	erhoeheGegnerzahl(){
+		var pickupkol = this.pickup.getInfo();
+		pickupkol = pickupkol[0];
+		this.gegner.add(pickupkol);
 	}
 	
-	/** Despawne alle Objekte ausser Schlange*/
-	despawnAll(){
-		this.gegner = [];
+	/** Setzt bei Pickup alle Objekte die neu verteilt werden sollen auf neue Positionen*/
+	respawnAll(){
+		var kopf = this.schlange.getInfo();
+		kopf = kopf[0];
+		this.pickup.respawn(kopf);
+		var pickupkol = this.pickup.getInfo();
+		pickupkol = pickupkol[0];
+		this.gegner.respawn(pickupkol);		
 	}
+	
+	/** Kollisionsabfragen mit dem Kopf der Schlange
+	*@ return gibt typen der Kollision als String wieder
+		: pickup, feind(sowie verfolger als auch stein), boon(upgrade)
+		falls eine Kollision stattfindet
+		: frei
+		falls keine Kollision stattfindet*/
+	kollision(){
+		//schlangeninfo holen
+		var schlangeninfo = this.schlange.getInfo();
+		//durch Schlange iterieren
+		for(var i = 2; i < schlangeninfo.length; i++){
+			//Kopf mit KörperteilPosition testen, hierbei muss erst beim 3. angefangen werden
+			if(schlangeninfo[0].getPositionX() == schlangeninfo[i].getPositionX()){
+				//falls X wert Stimmt Y wert überprüfen
+				if(schlangeninfo[0].getPositionY() == schlangeninfo[i].getPositionY()){
+					console.log('KörperteilKollision An Körperteil: ' + i);
+					return 'feind';
+				}
+			}
+		}
+		
+		//durch Gegner Iterieren
+		var gegnerinfo = this.gegner.getInfo();
+		for(var i = 0; i < gegnerinfo.length; i++){
+			//Kopf mit Gegnern
+			if(schlangeninfo[0].getPositionX() == gegnerinfo[i].getPositionX()){
+				//falls X wert Stimmt Y wert überprüfen
+				if(schlangeninfo[0].getPositionY() == gegnerinfo[i].getPositionY()){
+					console.log('Gegnerkollision an Gegner: ' + i);
+					return 'feind';
+				}
+			}
+		}
+		
+		//Pickup testen
+		var pickupinfo = this.pickup.getInfo();
+		if(schlangeninfo[0].getPositionX() == pickupinfo[0].getPositionX()){
+			if(schlangeninfo[0].getPositionY() == pickupinfo[0].getPositionY()){
+					console.log('Pickup wurde aufgehoben' + i);
+					return 'pickup';
+			}
+		}
+		
+		//falls nichts zutrifft frei wiedergeben
+		return 'frei';
+	}
+	
+	/** Vergrößert die Schlange */
+	vergroessereSchlange(){
+		this.schlange.add();
+	}
+	
+	/** Verkleinert die Schlange */
+	verkuerzeSchlange(){
+		var zutoeten = this.schlange.delete(0);
+		if(zutoeten != undefined){
+			this.view.draw(zutoeten, true);
+		}
+	}
+	
 	
 	/** Zeichne Objekte */
 	zeichneObjekte(){
@@ -183,11 +259,15 @@ export default class Controller {
 		//update Länge der Schlange
 		this.view.laengenAnzeige(schlangeninfo.length);
 		for(var i = 0; i < schlangeninfo.length; i++){
-			this.view.draw(schlangeninfo[i]);
+			this.view.draw(schlangeninfo[i], false);
 		}
 		var gegnerinfo = this.gegner.getInfo();
 		for(var i = 0; i < gegnerinfo.length; i++){
-			this.view.draw(gegnerinfo[i]);
+			this.view.draw(gegnerinfo[i], false);
+		}
+		var pickupinfo = this.pickup.getInfo();
+		for(var i = 0; i < pickupinfo.length; i++){
+			this.view.draw(pickupinfo[i], false);
 		}
 	}
 

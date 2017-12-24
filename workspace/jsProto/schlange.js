@@ -1,4 +1,5 @@
-import { Einzelobjekt } from './einzelobjekt';
+let Einzelobjekt = require('./einzelobjekt.js').default;
+//import { Einzelobjekt } from './einzelobjekt';
 
 /** 
 * Die Schlange soll ihre Körperteile wie die Liste ihre Nodes verwalten.
@@ -9,11 +10,12 @@ export default class Schlange {
     constructor() {
 
         /** Schlange besteht aus einer Liste */
-		  let Einzelobjekt = require('./einzelobjekt.js').default;
+		  
         this.list = [
 			            new Einzelobjekt(3, 1, 'spieler'),
 							new Einzelobjekt(2, 1, 'verfolger'),
-							new Einzelobjekt(1, 1, 'verfolger')
+							new Einzelobjekt(1, 1, 'verfolger'),
+			  				new Einzelobjekt(0, 1, 'verfolger')
 		  					];
 
         /**
@@ -48,14 +50,20 @@ export default class Schlange {
     /** Körperteil zur Schlange hinzufügen */
     add(){
 		 //Erweitert das Array durch ein Einzelobjekt 
-        this.list.push(new Einzelobjekt(this.list[this.list.length -1].getPositionX(),
-													this.list[this.list.length -1].getPositionY(),
-													'verfolger'));
+		  var neuesItem = new Einzelobjekt(this.list[this.list.length-1].getPositionX(), 
+													  this.list[this.list.length-1].getPositionY(),
+													  'verfolger');
+        this.list.push(neuesItem);
     }
     
-    /** Körperteil aus Schlange entfernen */
-    delete(anzahl){
-        this.list = this.list.slice(0, animals.length - anzahl);
+    /** Körperteil aus Schlange entfernen 
+	 @ returned das getötete Objekt dessen sprite gelöscht werden muss*/
+    delete(){
+		 if(this.list.length > 2){
+		  var zutoeten = this.list[this.list.length - 1];
+        this.list = this.list.slice(0, this.list.length - 1);
+		  return zutoeten;
+		 }
     }
     
     /** Gibt die Länge der Schlange in Form eines Zahlenwertes zurück */

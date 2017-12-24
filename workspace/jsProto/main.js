@@ -46,6 +46,10 @@ export default class Main {
         */
         this.frameCounter = 0;
         this.spielgeschwindigkeit = 20;
+		 
+		  /**
+		  * Typ der aktuellen Kollision */
+		  this.kollisionstyp = 'frei';
 
     }
 
@@ -59,6 +63,7 @@ export default class Main {
         this.game.load.spritesheet('spieler', '../images/spieler.png', 60, 60, 12);
         this.game.load.image('verfolger', '../images/verfolger.jpg');
         this.game.load.image('stein', '../images/stein.jpg');
+		  this.game.load.image('item', '../images/item.jpg');
         // usw...
     }
 
@@ -111,16 +116,26 @@ export default class Main {
             // HIER WIRD DIE SCHLANGE MIT DEM CURSOR BEWEGT
             this.controller.bewegeSchlange();
 			   
-			  	// HIER WERDEN OBJEKTE GESPAWNED
-			   //this.controller.spawneGegner();
-			   //this.controller.spawnePickup();
+			  	// OBJEKTE WERDEN AUTOMATISCH IM CONTROLLER INITIALISIERT UND GESPAWNT!
+			  
+			   // HIER WERDEN KOLLISIONEN ABGEFRAGT 
+			   this.kollisionstyp = this.controller.kollision();
+			  	
+			   if(this.kollisionstyp != 'frei'){
+			  	switch(this.kollisionstyp) {
+					case 'feind': /** TODO: GAMEOVER;*/ console.log('GAMEOVER');
+                                    break;
+					case 'boon': /** TODO: Apply Boon;*/ console.log('BOON');
+                                    break;
+               case 'pickup': this.controller.respawnAll(); 
+										this.controller.verkuerzeSchlange();
+                                    break;
+               }
+				}
 			  
             ////////////////// TODO: //////////////////
 			  
-			  
-			   
 
-            // HIER WERDEN KOLLISIONEN ABGEFRAGT 
             /*
             if (this.view.kollisionMitVerfolger() || this.view.kollisionMitFeind() || this.view.kollisionMitWand()) {
                 // Game over...-Meldung
