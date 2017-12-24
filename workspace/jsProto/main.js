@@ -48,8 +48,25 @@ export default class Main {
         this.spielgeschwindigkeit = 20;
 		 
 		  /**
+		  * Steuerung der Spawnlogik von SchlangenKörperteilen*/
+		  this.snekSpawn = 0;
+		 
+		  /**
+		  * SpielStand */
+		  this.score = 0;
+		 
+		  /**
 		  * Typ der aktuellen Kollision */
 		  this.kollisionstyp = 'frei';
+		 
+		  /**
+		  * Ist das spiel pausiert oder nicht
+		  * fängt mit true an (Press any Key to continue)*/
+		  this.paused = true;
+		 
+		  /**
+		  * Ist der Spieler tot oder nicht */
+		  this.dead = false;
 
     }
 
@@ -78,20 +95,6 @@ export default class Main {
         //this.view.laengenAnzeige();
 		  this.controller.zeichneObjekte();
 
-        ////////////////// TODO: //////////////////
-
-        /** Random Pickup erzeugen */
-        // this.view.platziereRandomPickup();
-
-        /** Random Feind erzeugen */
-        // this.view.platziereRandomFeind();
-
-        /** Random Tisch erzeugen */
-        // this.view.platziereRandomTisch();
-
-        /** Wand aus Steinen erzeugen */
-        // this.view.zeichneWand();
-
     }
 
     /** 
@@ -99,6 +102,9 @@ export default class Main {
     * Hier wird die Spiele-Logik durchlaufen!!!
     */
     update() { 
+		 
+		  //Wenn das Spiel nicht pausiert ist
+		  if(!this.paused){
 
         this.controller.updateLaufrichtung(); // Laufrichtung aktualisieren
 
@@ -129,6 +135,7 @@ export default class Main {
                                     break;
                case 'pickup': this.controller.respawnAll(); 
 										this.controller.verkuerzeSchlange();
+										this.score + 10;
                                     break;
                }
 				}
@@ -161,12 +168,30 @@ export default class Main {
             // ...
 			  	 	// HIER WERDEN DIE EINZELENEN KOMPONENTEN GEZEICHNET
 			  		this.controller.zeichneObjekte();
+			  
+			  	//Erhöhen des logik counters
+			  	this.snekSpawn++;
+			   this.snekSpawn %= 10; 
+			   if(this.snekSpawn == 0){
+					this.controller.vergroessereSchlange();
+				}
 
             this.frameCounter = 0;
         }
 
-    }
+    } else if(this.dead){ //Was Passiert wenn das Spiel nicht Pausiert sondern zuende ist? (Tot)
+		// HIER TOT SCREEN EINFÜGEN
+	} else { //Was passiert um das Spiel zu starten bzw was passiert im Pausescreen? 
+		this.view.drawPauseScreen();
+		//Wenn eine Taste gedrückt ist
+		if(this.controller.getCursor().down.isDown){
+			this.paused = false;
+			this.view.removeText();
+			}
+	}  
 
+ }
+	
 }
 
 /////////////////////////////////////////////////////////////////////////////

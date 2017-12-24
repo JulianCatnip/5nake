@@ -22,6 +22,9 @@ export default class View {
         * Wird benötigt um auf jegliche Funktionen des Frameworks zuzugreifen.
         */
         this.game = game;
+		
+		 /** Text für tot und PauseScreen */
+			this.text = undefined;
 
         /**
         * Schlangen-Objekt
@@ -128,15 +131,46 @@ export default class View {
 	@param Objekt das gezeichnet werden soll
 	*/
 	draw(objekt, kill){
-		if(objekt.image != null){
-			objekt.image.destroy();
-		}
 		if(!kill){
-			objekt.image = this.game.add.sprite(objekt.positionX*this.objektGroesse, objekt.positionY*this.objektGroesse, objekt.typ);
+			if(objekt.image != undefined){
+				//oldx = objekt.image.x;
+				//oldy = objekt.image.y;
+				//Alten Sprite löschen
+				objekt.image.destroy();
+			}
+			objekt.image = this.game.add.sprite(objekt.getPositionX()*this.objektGroesse,objekt.getPositionY()*this.objektGroesse,objekt.typ);
+			
+			///// TODO: RICHTIGE ANIMATION ABSPIELEN ////
 			if(objekt.typ == 'spieler'){
 				objekt.image.frame = 3;
 			}
+		} else {
+			if(objekt.image != undefined){
+				objekt.image.destroy();
+			}
 		}
+	}
+	
+	/**
+	Zeichnet Pausebildschirm der auf down Knopfdruck verschwindet*/
+	drawPauseScreen(){
+		if(this.text == undefined){
+		this.text = this.game.add.text(this.game.world.centerX, this.game.world.centerY, "- Press DOWN to Continue -");
+		//  Centers the text
+    	this.text.anchor.set(0.5);
+    	this.text.align = 'center';
+
+    	//  Our font + size
+    	this.text.font = 'Arial';
+    	this.text.fontWeight = 'bold';
+    	this.text.fontSize = 30;
+    	this.text.fill = '#101010';
+		}
+	}
+	
+	/** Lässt text verschwinden */
+	removeText(){
+		this.game.world.remove(this.text);
 	}
 
 }
