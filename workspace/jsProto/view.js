@@ -22,11 +22,19 @@ export default class View {
         * Wird benötigt um auf jegliche Funktionen des Frameworks zuzugreifen.
         */
         this.game = game;
+		
+		 /** Text für tot und PauseScreen */
+			this.text = undefined;
 
         /**
         * Schlangen-Objekt
         */
-        this.schlange = schlange;
+        //this.schlange = schlange;
+		
+			/**
+			* Größe der einzelnen Einheiten
+			*/
+			this.objektGroesse = 60;
 
     }
 
@@ -34,29 +42,29 @@ export default class View {
     * Startschlange
     * 1 Kopf mit 2 Verfolgern
     */
-    zeichneSchlange() {
+    //zeichneSchlange() {
 
         /** Schlange initialisieren */
-        this.schlange.initSchlange();
+        //this.schlange.initSchlange();
 
         /** Durch Schlange iterieren und den Objekten das Entsprechende Sprite zurodnen */
-        for(var i = this.schlange.getLength()-1; i >= 0; i--){
-            if(i == 0){
-                this.schlange.list[i].image = this.game.add.sprite(this.schlange.list[i].objekt.getPositionX(), this.schlange.list[i].objekt.getPositionY(), this.schlange.list[i].objekt.getTyp());
+       // for(var i = this.schlange.getLength()-1; i >= 0; i--){
+        /*    if(i == 0){
+                this.schlange.list[i].image = this.game.add.sprite(this.schlange.list[i].objekt.getPositionX()*this.objektGroesse, this.schlange.list[i].objekt.getPositionY()*this.objektGroesse, this.schlange.list[i].objekt.getTyp());
                 this.schlange.list[i].image.frame = 3;
             } else {
-                this.schlange.list[i].image = this.game.add.image(this.schlange.list[i].objekt.getPositionX(), this.schlange.list[i].objekt.getPositionY(), this.schlange.list[i].objekt.getTyp());
+                this.schlange.list[i].image = this.game.add.image(this.schlange.list[i].objekt.getPositionX()*this.objektGroesse, this.schlange.list[i].objekt.getPositionY()*this.objektGroesse, this.schlange.list[i].objekt.getTyp());
             }
         }
   
-    }
+    }*/
 
     /** 
     * Längenanzeige der Schlange mit DOM
     */
-    laengenAnzeige() {
+    laengenAnzeige(laenge) {
         var tag = document.getElementById("length");
-        tag.innerHTML = this.schlange.getLength();
+        tag.innerHTML = laenge;
     }
 
     /** 
@@ -66,7 +74,7 @@ export default class View {
     * @param y : neue y-Koordinate für den Kopf
     * @param changeId : Id der Richtung der Bewegung um das richtige Sprite zu setzen
     */
-    updatePosition(objekt, changeId) {
+   // updatePosition(objekt, changeId) {
 
         
 
@@ -116,6 +124,53 @@ export default class View {
 
         }*/
 
-    }
+   // }
+	
+	/** Update Position
+	Übernimmt ein Objekt, liest dessen Daten aus und zeichnet passend einen Sprite
+	@param Objekt das gezeichnet werden soll
+	*/
+	draw(objekt, kill){
+		if(!kill){
+			if(objekt.image != undefined){
+				//oldx = objekt.image.x;
+				//oldy = objekt.image.y;
+				//Alten Sprite löschen
+				objekt.image.destroy();
+			}
+			objekt.image = this.game.add.sprite(objekt.getPositionX()*this.objektGroesse,objekt.getPositionY()*this.objektGroesse,objekt.typ);
+			
+			///// TODO: RICHTIGE ANIMATION ABSPIELEN ////
+			if(objekt.typ == 'spieler'){
+				objekt.image.frame = 3;
+			}
+		} else {
+			if(objekt.image != undefined){
+				objekt.image.destroy();
+			}
+		}
+	}
+	
+	/**
+	Zeichnet Pausebildschirm der auf down Knopfdruck verschwindet*/
+	drawPauseScreen(){
+		if(this.text == undefined){
+		this.text = this.game.add.text(this.game.world.centerX, this.game.world.centerY, "- Press DOWN to Continue -");
+		//  Centers the text
+    	this.text.anchor.set(0.5);
+    	this.text.align = 'center';
+
+    	//  Our font + size
+    	this.text.font = 'Arial';
+    	this.text.fontWeight = 'bold';
+    	this.text.fontSize = 30;
+    	this.text.fill = '#101010';
+		}
+	}
+	
+	/** Lässt text verschwinden */
+	removeText(){
+		this.game.world.remove(this.text);
+	}
 
 }

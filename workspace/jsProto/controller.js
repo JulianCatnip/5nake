@@ -4,6 +4,8 @@ import 'phaser';
 
 import { View } from './view';
 import { Schlange } from './schlange';
+import { Einzelobjekt} from './einzelobjekt';
+import { Gegner } from './gegner';
 
 /**
 * Controller
@@ -29,39 +31,58 @@ export default class Controller {
         /**
         * View-Objekt
         */
-		this.view = view;
+		  this.view = view;
+		
+        /**
+        * Größe eines Einzelobjektes
+        */
+	  	  this.objektGroesse = 60; // increment um 60
 
         /**
         * Canvas Höhe und Breite
         */
-		this.canvasWidth = canvasWidth;
-		this.canvasHeight = canvasHeight;
+		  this.canvasWidth = canvasWidth/this.objektGroesse;
+		  this.canvasHeight = canvasHeight/this.objektGroesse;
 
         /**
         * Richtung
         */
-		this.richtungen = Object.freeze({up: 0, down: 1, right: 2, left: 3}); // freeze: verhindert das Hinzufügen von neuen Eigenschaften zum Objekt
+		  this.richtungen = Object.freeze({up: 0, down: 1, right: 2, left: 3}); // freeze: verhindert das Hinzufügen von neuen Eigenschaften zum Objekt
 		
         /**
         * Laufrichtung der Schlange
         */
         this.laufrichtung;
-
-        /**
-        * Größe eines Einzelobjektes
-        */
-		this.objektGroesse = 60; // increment um 60
-
+		
+			/**
+			* SchlangenObjekt */
+		  let Schlange = require('./schlange.js').default;
+		  this.schlange = new Schlange();
+		  //this.schlange.initSchlange();
+		
+			/**
+			Objektebehälter Array für Gegner */
+		   let Gegner = require('./gegner.js').default;
+			this.gegner = new Gegner(this.canvasWidth, this.canvasHeight, 'stein');
+		
+			/**
+			* Objektebehälter für Upgrades */
+			//this.boons = new Gegner(this.canvasWidth, this.canvasHeight, '');
+		
+		   /**
+			* Objektebehälter Pickup */
+		   this.pickup = new Gegner(this.canvasWidth, this.canvasHeight, 'item');
+		
         /**
         * x- und y-Koordinate
         */
-		this.x = this.view.startX + (2 * this.objektGroesse);
-		this.y = this.view.startY;
+		  //this.x = this.view.startX + (2 * this.objektGroesse);
+		  //this.y = this.view.startY;
 
         /**
         * Speichert eine Zahl je nach derzeitiger Laufrichtung
         */
-        this.changeId;
+        //this.changeId;
 
     }
 
@@ -100,28 +121,28 @@ export default class Controller {
     * Aus der derzeitigen Position werden neue Koordinaten berechnet (von 1 Schritt weiter)
     * und an der neu berechneten Position ein neuer Kopf erzeugt.
     */
-    bewegeSchlange() {
+    bewegeSchlange(){
+		 
+		 //Hol informationen des Kopfes
+		 var kopf = this.schlange.getInfo()[0];
 
         /** Berechnung der neuen Koordinaten */
         if (this.laufrichtung == this.richtungen.right) { // wenn richtung rechts ist
 
-            this.x += this.objektGroesse; // position x + breite des spielers
-            this.changeId = 0;
+			  this.schlange.move(kopf.positionX + 1, kopf.positionY);
+			  
 
         } else if (this.laufrichtung == this.richtungen.left) { // wenn richtung links ist
 
-            this.x -= this.objektGroesse; // position x - breite des spielers
-            this.changeId = 1;
+            this.schlange.move(kopf.positionX - 1, kopf.positionY);
 
         } else if (this.laufrichtung == this.richtungen.up) { // wenn richtung oben ist
 
-            this.y -= this.objektGroesse; // position y - höhe des spielers
-            this.changeId = 2;
+            this.schlange.move(kopf.positionX, kopf.positionY - 1);
 
         } else if (this.laufrichtung == this.richtungen.down) { // wenn richtung unten ist
 
-            this.y += this.objektGroesse; // position y + höhe des spielers
-            this.changeId = 3;
+            this.schlange.move(kopf.positionX, kopf.positionY + 1);
 
         }
 
@@ -131,35 +152,123 @@ export default class Controller {
         * Brauchen wir nicht wenn wir eine Wand machen, 
         * dann wird eine Kollision stattdessen implementiert.
         */
-        if (this.x <= 0 - this.objektGroesse) { // wenn x position kleiner/gleich 0 - spielerbreite ist
+        if (kopf.positionX <= 0 - 1) { // wenn x position kleiner/gleich 0 - spielerbreite ist
 
-            this.x = this.canvasWidth - this.objektGroesse; // position x = canvas-breite - spielerbreite
+            kopf.positionX = this.canvasWidth - 1; // position x = canvas-breite - spielerbreite
 
-        } else if (this.x >= this.canvasWidth) { // wenn position x größer als canvas-breite
+        } else if (kopf.positionX >= this.canvasWidth) { // wenn position x größer als canvas-breite
 
-            this.x = 0; // x = 0
+            kopf.positionX = 0;
 
-        } else if (this.y <= 0 - this.objektGroesse) { // wenn position y kleiner/gleich 0 - spielerhöhe ist
+        } else if (kopf.positionY <= 0 - 1) { // wenn position y kleiner/gleich 0 - spielerhöhe ist
 
-            this.y = this.canvasHeight - this.objektGroesse; // position y = canvas höhe - spielerhöhe
+            kopf.positionY = this.canvasHeight - 1; // position y = canvas höhe - spielerhöhe
 
-        } else if (this.y >= this.canvasHeight) { // wenn position y größer als canvas-höhe ist
+        } else if (kopf.positionY >= this.canvasHeight) { // wenn position y größer als canvas-höhe ist
 
-            this.y = 0; // y = 0
-
-        }
-
-        /** Schlange bewegen */
-        if (this.laufrichtung != undefined) { // wenn Laufrichtung bestimmt ist
-
-            /** 
-            * Übergibt neue Koordinaten für das Spieler-Objekt
-            * und die Id der derzeitigen Richtung 
-            */
-            this.view.updatePosition(this.x, this.y, this.changeId); // Schlange um 1 Einheit weiter bewegen
+            kopf.positionY = 0; // y = 0
 
         }
 
     }
+
+	
+	/** Befehl für das Spawnen eines Gegenstandes (Gegner)
+	@param Anzahl*/
+	erhoeheGegnerzahl(){
+		var pickupkol = this.pickup.getInfo();
+		pickupkol = pickupkol[0];
+		this.gegner.add(pickupkol);
+	}
+	
+	/** Setzt bei Pickup alle Objekte die neu verteilt werden sollen auf neue Positionen*/
+	respawnAll(){
+		var kopf = this.schlange.getInfo();
+		kopf = kopf[0];
+		this.pickup.respawn(kopf);
+		var pickupkol = this.pickup.getInfo();
+		pickupkol = pickupkol[0];
+		this.gegner.respawn(pickupkol);		
+	}
+	
+	/** Kollisionsabfragen mit dem Kopf der Schlange
+	*@ return gibt typen der Kollision als String wieder
+		: pickup, feind(sowie verfolger als auch stein), boon(upgrade)
+		falls eine Kollision stattfindet
+		: frei
+		falls keine Kollision stattfindet*/
+	kollision(){
+		//schlangeninfo holen
+		var schlangeninfo = this.schlange.getInfo();
+		//durch Schlange iterieren
+		for(var i = 2; i < schlangeninfo.length; i++){
+			//Kopf mit KörperteilPosition testen, hierbei muss erst beim 3. angefangen werden
+			if(schlangeninfo[0].getPositionX() == schlangeninfo[i].getPositionX()){
+				//falls X wert Stimmt Y wert überprüfen
+				if(schlangeninfo[0].getPositionY() == schlangeninfo[i].getPositionY()){
+					console.log('KörperteilKollision An Körperteil: ' + i);
+					return 'feind';
+				}
+			}
+		}
+		
+		//durch Gegner Iterieren
+		var gegnerinfo = this.gegner.getInfo();
+		for(var i = 0; i < gegnerinfo.length; i++){
+			//Kopf mit Gegnern
+			if(schlangeninfo[0].getPositionX() == gegnerinfo[i].getPositionX()){
+				//falls X wert Stimmt Y wert überprüfen
+				if(schlangeninfo[0].getPositionY() == gegnerinfo[i].getPositionY()){
+					console.log('Gegnerkollision an Gegner: ' + i);
+					return 'feind';
+				}
+			}
+		}
+		
+		//Pickup testen
+		var pickupinfo = this.pickup.getInfo();
+		if(schlangeninfo[0].getPositionX() == pickupinfo[0].getPositionX()){
+			if(schlangeninfo[0].getPositionY() == pickupinfo[0].getPositionY()){
+					console.log('Pickup wurde aufgehoben' + i);
+					return 'pickup';
+			}
+		}
+		
+		//falls nichts zutrifft frei wiedergeben
+		return 'frei';
+	}
+	
+	/** Vergrößert die Schlange */
+	vergroessereSchlange(){
+		this.schlange.add();
+	}
+	
+	/** Verkleinert die Schlange */
+	verkuerzeSchlange(){
+		var zutoeten = this.schlange.delete(0);
+		if(zutoeten != undefined){
+			this.view.draw(zutoeten, true);
+		}
+	}
+	
+	
+	/** Zeichne Objekte */
+	zeichneObjekte(){
+		//Zunächst Schlangen zeichnung beauftragen
+		var schlangeninfo = this.schlange.getInfo();
+		//update Länge der Schlange
+		this.view.laengenAnzeige(schlangeninfo.length);
+		for(var i = 0; i < schlangeninfo.length; i++){
+			this.view.draw(schlangeninfo[i], false);
+		}
+		var gegnerinfo = this.gegner.getInfo();
+		for(var i = 0; i < gegnerinfo.length; i++){
+			this.view.draw(gegnerinfo[i], false);
+		}
+		var pickupinfo = this.pickup.getInfo();
+		for(var i = 0; i < pickupinfo.length; i++){
+			this.view.draw(pickupinfo[i], false);
+		}
+	}
 
 }

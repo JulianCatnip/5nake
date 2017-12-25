@@ -46,6 +46,27 @@ export default class Main {
         */
         this.frameCounter = 0;
         this.spielgeschwindigkeit = 20;
+		 
+		  /**
+		  * Steuerung der Spawnlogik von SchlangenKörperteilen*/
+		  this.snekSpawn = 0;
+		 
+		  /**
+		  * SpielStand */
+		  this.score = 0;
+		 
+		  /**
+		  * Typ der aktuellen Kollision */
+		  this.kollisionstyp = 'frei';
+		 
+		  /**
+		  * Ist das spiel pausiert oder nicht
+		  * fängt mit true an (Press any Key to continue)*/
+		  this.paused = true;
+		 
+		  /**
+		  * Ist der Spieler tot oder nicht */
+		  this.dead = false;
 
     }
 
@@ -59,6 +80,7 @@ export default class Main {
         this.game.load.spritesheet('spieler', '../images/spieler.png', 60, 60, 12);
         this.game.load.image('verfolger', '../images/verfolger.jpg');
         this.game.load.image('stein', '../images/stein.jpg');
+		  this.game.load.image('item', '../images/item.jpg');
         // usw...
     }
 
@@ -69,22 +91,9 @@ export default class Main {
     create() {
 
         /** Schlange aus Spieler und Verfolger erzeugen */
-        this.view.zeichneSchlange();
-        this.view.laengenAnzeige();
-
-        ////////////////// TODO: //////////////////
-
-        /** Random Pickup erzeugen */
-        // this.view.platziereRandomPickup();
-
-        /** Random Feind erzeugen */
-        // this.view.platziereRandomFeind();
-
-        /** Random Tisch erzeugen */
-        // this.view.platziereRandomTisch();
-
-        /** Wand aus Steinen erzeugen */
-        // this.view.zeichneWand();
+        //this.view.zeichneSchlange();
+        //this.view.laengenAnzeige();
+		  this.controller.zeichneObjekte();
 
     }
 
@@ -93,6 +102,9 @@ export default class Main {
     * Hier wird die Spiele-Logik durchlaufen!!!
     */
     update() { 
+		 
+		  //Wenn das Spiel nicht pausiert ist
+		  if(!this.paused){
 
         this.controller.updateLaufrichtung(); // Laufrichtung aktualisieren
 
@@ -109,10 +121,28 @@ export default class Main {
 
             // HIER WIRD DIE SCHLANGE MIT DEM CURSOR BEWEGT
             this.controller.bewegeSchlange();
-
+			   
+			  	// OBJEKTE WERDEN AUTOMATISCH IM CONTROLLER INITIALISIERT UND GESPAWNT!
+			  
+			   // HIER WERDEN KOLLISIONEN ABGEFRAGT 
+			   this.kollisionstyp = this.controller.kollision();
+			  	
+			   if(this.kollisionstyp != 'frei'){
+			  	switch(this.kollisionstyp) {
+					case 'feind': /** TODO: GAMEOVER;*/ console.log('GAMEOVER');
+                                    break;
+					case 'boon': /** TODO: Apply Boon;*/ console.log('BOON');
+                                    break;
+               case 'pickup': this.controller.respawnAll(); 
+										this.controller.verkuerzeSchlange();
+										this.score + 10;
+                                    break;
+               }
+				}
+			  
             ////////////////// TODO: //////////////////
+			  
 
-            // HIER WERDEN KOLLISIONEN ABGEFRAGT 
             /*
             if (this.view.kollisionMitVerfolger() || this.view.kollisionMitFeind() || this.view.kollisionMitWand()) {
                 // Game over...-Meldung
@@ -136,12 +166,32 @@ export default class Main {
             }
             */
             // ...
+			  	 	// HIER WERDEN DIE EINZELENEN KOMPONENTEN GEZEICHNET
+			  		this.controller.zeichneObjekte();
+			  
+			  	//Erhöhen des logik counters
+			  	this.snekSpawn++;
+			   this.snekSpawn %= 10; 
+			   if(this.snekSpawn == 0){
+					this.controller.vergroessereSchlange();
+				}
 
             this.frameCounter = 0;
         }
 
-    }
+    } else if(this.dead){ //Was Passiert wenn das Spiel nicht Pausiert sondern zuende ist? (Tot)
+		// HIER TOT SCREEN EINFÜGEN
+	} else { //Was passiert um das Spiel zu starten bzw was passiert im Pausescreen? 
+		this.view.drawPauseScreen();
+		//Wenn eine Taste gedrückt ist
+		if(this.controller.getCursor().down.isDown){
+			this.paused = false;
+			this.view.removeText();
+			}
+	}  
 
+ }
+	
 }
 
 /////////////////////////////////////////////////////////////////////////////
