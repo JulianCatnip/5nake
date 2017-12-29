@@ -183,7 +183,9 @@ export default class View {
 	
 	/** Lässt text verschwinden */
 	removeText() {
-		this.game.world.remove(this.text);
+		// this.game.world.remove(this.text);
+        this.text.destroy();
+        this.text = undefined;
 	}
 
 }

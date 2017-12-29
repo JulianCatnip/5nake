@@ -98,6 +98,7 @@ export default class Main {
 
         /** Alle Objekte die zu Start benötigt werden zeichnen (Schlange, Pickup, Gegner) */
 		this.controller.zeichneObjekte();
+        this.controller.resetKeyboardKeys();
 
     }
 
@@ -189,15 +190,21 @@ export default class Main {
                 this.frameCounter = 0;
             }
 
+            // Wenn space gedrückt wird pausieren
+            if(this.controller.getSpaceBar().isDown) {
+                this.paused = true;
+                this.view.drawPauseScreen();
+            }
+
         } else if(this.dead) { // Was Passiert wenn das Spiel nicht Pausiert sondern zuende ist? (Tot)
 
 		// HIER TOT SCREEN EINFÜGEN
 
-        } else { // Was passiert um das Spiel zu starten bzw was passiert im Pausescreen?
+        } else if(this.paused) { // Was passiert um das Spiel zu starten bzw was passiert im Pausescreen?
 
             this.view.drawPauseScreen();
 
-            // Wenn eine Taste gedrückt ist
+            // Wenn space gedrückt wird
             if(this.controller.getCursor().down.isDown) {
                 this.paused = false;
                 this.view.removeText();

@@ -91,9 +91,17 @@ export default class Controller {
 
     }
 
+    resetKeyboardKeys() {
+    	this.game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN, Phaser.Keyboard.SPACEBAR ]);
+    }
+
     /** Getter für die Cursor Keys */
     getCursor() {
         return this.game.input.keyboard.createCursorKeys();
+    }
+    /** Getter für die Space Bar */
+    getSpaceBar() {
+        return this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     }
 
     /** Ändert die Laufrichtung */
