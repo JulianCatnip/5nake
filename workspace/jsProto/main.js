@@ -132,7 +132,7 @@ export default class Main {
 					case 'feind': /** TODO: GAMEOVER;*/ 
                                     this.view.drawGameOverText();
                                     this.paused = true;
-                                    console.log('GAMEOVER');
+                                    console.log('GAMEOVER..');
                                     break;
 					case 'boon': /** TODO: Apply Boon;*/ console.log('BOON');
                                     break;
