@@ -35,7 +35,8 @@ export default class View {
 			* Größe der einzelnen Einheiten
 			*/
 			this.objektGroesse = 60;
-
+        
+            this.gameOverText = undefined;
     }
 
     /** 
@@ -173,4 +174,22 @@ export default class View {
 		this.game.world.remove(this.text);
 	}
 
+    /**
+    Schreibt bei Kollision game over auf den screen
+    */
+    drawGameOverText() {
+        if (this.gameOverText == undefined) {
+                this.gameOverText = this.game.add.text(this.game.world.centerX, this.game.world.centerY, "- GAME OVER -");
+                //  Centers the text
+                this.gameOverText.anchor.set(0.5);
+                this.gameOverText.align = 'center';
+
+                //  Our font + size
+                this.gameOverText.font = 'Arial';
+                this.gameOverText.zIndex = 10;
+                this.gameOverText.fontWeight = 'bold';
+                this.gameOverText.fontSize = 30;
+                this.gameOverText.fill = '#FF0000';
+            }
+    }
 }
