@@ -23,18 +23,20 @@ export default class View {
         */
         this.game = game;
 		
-		 /** Text für tot und PauseScreen */
-			this.text = undefined;
+		/** 
+        * Text für tot und PauseScreen 
+        */
+        this.text = undefined;
 
         /**
         * Schlangen-Objekt
         */
         //this.schlange = schlange;
-		
-			/**
-			* Größe der einzelnen Einheiten
-			*/
-			this.objektGroesse = 60;
+
+        /**
+        * Größe der einzelnen Einheiten
+        */
+        this.objektGroesse = 60;
 
     }
 
@@ -74,11 +76,7 @@ export default class View {
     * @param y : neue y-Koordinate für den Kopf
     * @param changeId : Id der Richtung der Bewegung um das richtige Sprite zu setzen
     */
-   // updatePosition(objekt, changeId) {
-
-        
-
-
+    // updatePosition(objekt, changeId) {
 
         ///////////////////// ALT /////////////////////
         /** Koordinaten der Vorgänger speichern 
@@ -123,53 +121,68 @@ export default class View {
             }
 
         }*/
-
-   // }
+    // }
 	
-	/** Update Position
-	Übernimmt ein Objekt, liest dessen Daten aus und zeichnet passend einen Sprite
-	@param Objekt das gezeichnet werden soll
+	/** 
+    * Zeichet Objekte
+    * Übernimmt ein Objekt, liest dessen Daten aus 
+    * löscht ggf. vorhandenen Sprite und zeichnet einen neuen Sprite an passender Stelle
+	* @param Objekt das gezeichnet werden soll
+    * @param kill, überprüfung ob es gelöscht wurde
 	*/
 	draw(objekt, kill){
-		if(!kill){
-			if(objekt.image != undefined){
+
+		if(!kill) { // wenn objekt nicht gelöscht wurde
+
+			if(objekt.image != undefined){ // wenn objekt bereits ein Sprite besitzt
 				//oldx = objekt.image.x;
 				//oldy = objekt.image.y;
 				//Alten Sprite löschen
-				objekt.image.destroy();
+				objekt.image.destroy(); // Sprite löschen
 			}
-			objekt.image = this.game.add.sprite(objekt.getPositionX()*this.objektGroesse,objekt.getPositionY()*this.objektGroesse,objekt.typ);
+
+            /** Dem Objekt ein Sprite hinzufügen */
+			objekt.image = this.game.add.sprite(objekt.getPositionX() * this.objektGroesse, objekt.getPositionY() * this.objektGroesse, objekt.typ);
 			
 			///// TODO: RICHTIGE ANIMATION ABSPIELEN ////
-			if(objekt.typ == 'spieler'){
+            /** Je nach Objekt-Typ andere Animation anwenden? */
+			if(objekt.typ == 'spieler') {
 				objekt.image.frame = 3;
 			}
-		} else {
-			if(objekt.image != undefined){
+
+		} else { // wenn objekt gelöscht wurde
+
+			if(objekt.image != undefined) { // sprite löschen
 				objekt.image.destroy();
 			}
+
 		}
 	}
 	
 	/**
-	Zeichnet Pausebildschirm der auf down Knopfdruck verschwindet*/
-	drawPauseScreen(){
-		if(this.text == undefined){
-		this.text = this.game.add.text(this.game.world.centerX, this.game.world.centerY, "- Press DOWN to Continue -");
-		//  Centers the text
-    	this.text.anchor.set(0.5);
-    	this.text.align = 'center';
+	* Zeichnet Pausebildschirm der auf down Knopfdruck verschwindet
+    */
+	drawPauseScreen() {
 
-    	//  Our font + size
-    	this.text.font = 'Arial';
-    	this.text.fontWeight = 'bold';
-    	this.text.fontSize = 30;
-    	this.text.fill = '#101010';
+		if(this.text == undefined) {
+
+            this.text = this.game.add.text(this.game.world.centerX, this.game.world.centerY, "- Press DOWN to Continue -");
+            //  Centers the text
+            this.text.anchor.set(0.5);
+            this.text.align = 'center';
+
+            //  Our font + size
+            this.text.font = 'Arial';
+            this.text.fontWeight = 'bold';
+            this.text.fontSize = 30;
+            this.text.fill = '#101010';
+            
 		}
+
 	}
 	
 	/** Lässt text verschwinden */
-	removeText(){
+	removeText() {
 		this.game.world.remove(this.text);
 	}
 

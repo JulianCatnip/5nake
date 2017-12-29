@@ -57,7 +57,6 @@
             this.positionX = newX;
             this.positionY = newY;
     }
-    
-    
+
 } 
 */

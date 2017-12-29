@@ -47,26 +47,31 @@ export default class Main {
         this.frameCounter = 0;
         this.spielgeschwindigkeit = 20;
 		 
-		  /**
-		  * Steuerung der Spawnlogik von SchlangenKörperteilen*/
-		  this.snekSpawn = 0;
+		/**
+        * Steuerung der Spawnlogik von Schlangen-Körperteilen
+        */
+        this.snekSpawn = 0;
 		 
-		  /**
-		  * SpielStand */
-		  this.score = 0;
+        /**
+        * Spielstand 
+        */
+        this.score = 0;
 		 
-		  /**
-		  * Typ der aktuellen Kollision */
-		  this.kollisionstyp = 'frei';
+		/**
+        * Typ der aktuellen Kollision 
+        */
+        this.kollisionstyp = 'frei';
 		 
-		  /**
-		  * Ist das spiel pausiert oder nicht
-		  * fängt mit true an (Press any Key to continue)*/
-		  this.paused = true;
+		/**
+		* Ist das spiel pausiert oder nicht
+		* fängt mit true an (Press any Key to continue)
+        */
+		this.paused = true;
 		 
-		  /**
-		  * Ist der Spieler tot oder nicht */
-		  this.dead = false;
+		/**
+		* Ist der Spieler tot oder nicht 
+        */
+		this.dead = false;
 
     }
 
@@ -79,8 +84,9 @@ export default class Main {
 
         this.game.load.spritesheet('spieler', '../images/spieler.png', 60, 60, 12);
         this.game.load.image('verfolger', '../images/verfolger.jpg');
+        this.game.load.image('feind', '../images/feind.jpg');
         this.game.load.image('stein', '../images/stein.jpg');
-		  this.game.load.image('item', '../images/item.jpg');
+		this.game.load.image('item', '../images/item.jpg');
         // usw...
     }
 
@@ -90,10 +96,8 @@ export default class Main {
     */
     create() {
 
-        /** Schlange aus Spieler und Verfolger erzeugen */
-        //this.view.zeichneSchlange();
-        //this.view.laengenAnzeige();
-		  this.controller.zeichneObjekte();
+        /** Alle Objekte die zu Start benötigt werden zeichnen (Schlange, Pickup, Gegner) */
+		this.controller.zeichneObjekte();
 
     }
 
@@ -103,95 +107,103 @@ export default class Main {
     */
     update() { 
 		 
-		  //Wenn das Spiel nicht pausiert ist
-		  if(!this.paused){
+		// Wenn das Spiel nicht pausiert ist
+		if(!this.paused) {
 
-        this.controller.updateLaufrichtung(); // Laufrichtung aktualisieren
-
-        this.frameCounter++;
-
-        /** 
-        * Diese if-Abfrage regelt die Geschwindigkeit des Spiels, da die 
-        * update()-Methode aus Phaser ein sehr schneller und unendlicher Loop ist.
-        *
-        * Diese update()-Loop läuft also durch unendlich viele "Frames" und durch frameCounter und spielgeschwindigkeit wird es 
-        * nun so eingestellt das alle 20 Frames 1 Aktion ausgeführt wird und der Loop dann wieder von vorne beginnt.
-        */
-        if (this.frameCounter == this.spielgeschwindigkeit) {
-
-            // HIER WIRD DIE SCHLANGE MIT DEM CURSOR BEWEGT
-            this.controller.bewegeSchlange();
-			   
-			  	// OBJEKTE WERDEN AUTOMATISCH IM CONTROLLER INITIALISIERT UND GESPAWNT!
-			  
-			   // HIER WERDEN KOLLISIONEN ABGEFRAGT 
-			   this.kollisionstyp = this.controller.kollision();
-			  	
-			   if(this.kollisionstyp != 'frei'){
-			  	switch(this.kollisionstyp) {
-					case 'feind': /** TODO: GAMEOVER;*/ console.log('GAMEOVER');
-                                    break;
-					case 'boon': /** TODO: Apply Boon;*/ console.log('BOON');
-                                    break;
-               case 'pickup': this.controller.respawnAll(); 
-										this.controller.verkuerzeSchlange();
-										this.score + 10;
-                                    break;
-               }
-				}
-			  
-            ////////////////// TODO: //////////////////
-			  
-
-            /*
-            if (this.view.kollisionMitVerfolger() || this.view.kollisionMitFeind() || this.view.kollisionMitWand()) {
-                // Game over...-Meldung
-                // this.view.loescheSchlange(); // schlange löschen
-
-                // this.view.zeichneSchlange_LVL1(); // neue schlange initialisieren
-                // this.spielgeschwindigkeit = 20; // Geschwindigkeit reseten
-                // laufrichtung reseten
-                // start des Spielers reseten
-                // Punktestand reseten
-            }
-            
-            if (this.view.kollisionMitPickup()) {
-                // Punktestand raufsetzen
-                // Pickup löschen
-                // this.view.platziereRandomPickup(); // neues Pickup platzieren
-                // this.spielgeschwindigkeit--; // spielgeschwindigkeit vergrößern?
-                // if (this.spielgeschwindigkeit <= 5) { // geschwindigkeit nie kleiner als 5
-                    this.spielgeschwindigkeit = 5;
-                }
-            }
+            /** 
+            * Überprüft ob Cursor benutzt wurde und passt 
+            * entsprechend die Laufrichtung der Schlange an 
             */
-            // ...
-			  	 	// HIER WERDEN DIE EINZELENEN KOMPONENTEN GEZEICHNET
-			  		this.controller.zeichneObjekte();
+            this.controller.updateLaufrichtung(); // Laufrichtung aktualisieren
+
+            this.frameCounter++; // Frame-Zähler (zur Geschwindigkeitssteuerung des Loops)
+
+            /** 
+            * Diese if-Abfrage regelt die Geschwindigkeit des Spiels, da die 
+            * update()-Methode aus Phaser ein sehr schneller und unendlicher Loop ist.
+            *
+            * Diese update()-Loop läuft also durch unendlich viele "Frames" und durch frameCounter und spielgeschwindigkeit wird es 
+            * nun so eingestellt das alle 20 Frames 1 Aktion ausgeführt wird und der Loop dann wieder von vorne beginnt.
+            */
+            if (this.frameCounter == this.spielgeschwindigkeit) {
+
+                // HIER BEWEGT SICH DIE SCHLANGE UM 1 SCHRITT DER LAUFRICHTUNG ENTSPRECHEND
+                this.controller.bewegeSchlange();
+
+                // OBJEKTE WERDEN AUTOMATISCH IM CONTROLLER INITIALISIERT UND GESPAWNT!
+                // HIER WERDEN IM CONTROLLER KOLLISIONEN ABGEFRAGT
+                this.kollisionstyp = this.controller.kollision(); 
+
+                if(this.kollisionstyp != 'frei') { // wenn kollidiert
+                    switch(this.kollisionstyp) { // je nach kollisionstyp reagieren
+
+                        case 'feind':   /** TODO: GAMEOVER;*/ 
+                                        console.log('GAMEOVER');
+                                        break;
+    					case 'boon':    /** TODO: Apply Boon;*/ 
+                                        console.log('BOON');
+                                        break;
+                        case 'pickup':  this.controller.respawnAll(); 
+    									this.controller.verkuerzeSchlange();
+    									this.score + 10;
+                                        break;
+                                        
+                   }
+    			}
 			  
-			  	//Erhöhen des logik counters
-			  	this.snekSpawn++;
-			   this.snekSpawn %= 10; 
-			   if(this.snekSpawn == 0){
-					this.controller.vergroessereSchlange();
-				}
+                ////////////////// TODO: //////////////////
+                /*
+                if (this.view.kollisionMitVerfolger() || this.view.kollisionMitFeind() || this.view.kollisionMitWand()) {
+                    // Game over...-Meldung
+                    // this.view.loescheSchlange(); // schlange löschen
 
-            this.frameCounter = 0;
-        }
+                    // this.view.zeichneSchlange_LVL1(); // neue schlange initialisieren
+                    // this.spielgeschwindigkeit = 20; // Geschwindigkeit reseten
+                    // laufrichtung reseten
+                    // start des Spielers reseten
+                    // Punktestand reseten
+                }
+                
+                if (this.view.kollisionMitPickup()) {
+                    // Punktestand raufsetzen
+                    // Pickup löschen
+                    // this.view.platziereRandomPickup(); // neues Pickup platzieren
+                    // this.spielgeschwindigkeit--; // spielgeschwindigkeit vergrößern?
+                    // if (this.spielgeschwindigkeit <= 5) { // geschwindigkeit nie kleiner als 5
+                        this.spielgeschwindigkeit = 5;
+                    }
+                }
+                */
+                // ...
 
-    } else if(this.dead){ //Was Passiert wenn das Spiel nicht Pausiert sondern zuende ist? (Tot)
+                // HIER WERDEN DIE EINZELENEN KOMPONENTEN GEZEICHNET
+                this.controller.zeichneObjekte(); // alle objekte neuzeichnen
+    			
+                // Schlange vergrößern
+                this.snekSpawn++;
+    			this.snekSpawn %= 10;
+    			if(this.snekSpawn == 0){
+                    this.controller.vergroessereSchlange();
+    			}
+
+                this.frameCounter = 0;
+            }
+
+        } else if(this.dead) { // Was Passiert wenn das Spiel nicht Pausiert sondern zuende ist? (Tot)
+
 		// HIER TOT SCREEN EINFÜGEN
-	} else { //Was passiert um das Spiel zu starten bzw was passiert im Pausescreen? 
-		this.view.drawPauseScreen();
-		//Wenn eine Taste gedrückt ist
-		if(this.controller.getCursor().down.isDown){
-			this.paused = false;
-			this.view.removeText();
-			}
-	}  
 
- }
-	
+        } else { // Was passiert um das Spiel zu starten bzw was passiert im Pausescreen?
+
+            this.view.drawPauseScreen();
+
+            // Wenn eine Taste gedrückt ist
+            if(this.controller.getCursor().down.isDown) {
+                this.paused = false;
+                this.view.removeText();
+			}
+        }
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////
