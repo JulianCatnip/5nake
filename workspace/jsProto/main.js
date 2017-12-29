@@ -129,7 +129,10 @@ export default class Main {
 			  	
 			   if(this.kollisionstyp != 'frei'){
 			  	switch(this.kollisionstyp) {
-					case 'feind': /** TODO: GAMEOVER;*/ console.log('GAMEOVER');
+					case 'feind': /** TODO: GAMEOVER;*/ 
+                                    this.view.drawGameOverText();
+                                    this.paused = true;
+                                    console.log('GAMEOVER');
                                     break;
 					case 'boon': /** TODO: Apply Boon;*/ console.log('BOON');
                                     break;
