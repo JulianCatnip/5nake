@@ -67,6 +67,12 @@ export default class Main {
 		  /**
 		  * Ist der Spieler tot oder nicht */
 		  this.dead = false;
+        
+        var gameover_picture;
+        
+        var called = false;
+        
+        var resetted = false;
 
     }
 
@@ -81,6 +87,7 @@ export default class Main {
         this.game.load.image('verfolger', '../images/verfolger.jpg');
         this.game.load.image('stein', '../images/stein.jpg');
 		  this.game.load.image('item', '../images/item.jpg');
+        this.game.load.image('go_screen', '../images/go_screen.jpg');
         // usw...
     }
 
@@ -94,9 +101,46 @@ export default class Main {
         //this.view.zeichneSchlange();
         //this.view.laengenAnzeige();
 		  this.controller.zeichneObjekte();
+        
+        //this.controller.zeichneGOScreen();
+
 
     }
+    
+    /**
+    Setzt neue Schlange für den Controller und resettet alle stats
+    */
+    resetGame(){
+        this.resetted = true;
+        // neue schlange initialisieren
+        this.controller.zeichneSchlange_LVL1();
 
+        // Geschwindigkeit reseten
+        this.spielgeschwindigkeit = 20;
+
+        // laufrichtung resetten
+        this.controller.laufrichtung = undefined;
+
+        // start des Spielers reseten
+        this.controller.schlange.startX = 1;
+        this.controller.schlange.startY = 1;
+
+        this.controller.respawnAll();
+        // Punktestand reseten
+        this.score = 0;
+        
+        this.controller.zeichneObjekte();
+        
+        this.controller.view.text = undefined;
+        //Pause-Screen zeichnen
+        /*this.view.drawPauseScreen();
+        //Wenn eine Taste gedrückt ist
+        if(this.controller.getCursor().down.isDown){
+            this.paused = false;
+            this.view.removeText();
+        }*/
+    }
+    
     /** 
     * PHASER-Methode GAMELOOP
     * Hier wird die Spiele-Logik durchlaufen!!!
@@ -105,95 +149,149 @@ export default class Main {
 		 
 		  //Wenn das Spiel nicht pausiert ist
 		  if(!this.paused){
+              
+              // Debugging
+              this.i++;
+              console.log('update keine pause aufgerufen ' + this.i);
+              
+            this.controller.updateLaufrichtung(); // Laufrichtung aktualisieren
 
-        this.controller.updateLaufrichtung(); // Laufrichtung aktualisieren
+            this.frameCounter++;
 
-        this.frameCounter++;
-
-        /** 
-        * Diese if-Abfrage regelt die Geschwindigkeit des Spiels, da die 
-        * update()-Methode aus Phaser ein sehr schneller und unendlicher Loop ist.
-        *
-        * Diese update()-Loop läuft also durch unendlich viele "Frames" und durch frameCounter und spielgeschwindigkeit wird es 
-        * nun so eingestellt das alle 20 Frames 1 Aktion ausgeführt wird und der Loop dann wieder von vorne beginnt.
-        */
-        if (this.frameCounter == this.spielgeschwindigkeit) {
-
-            // HIER WIRD DIE SCHLANGE MIT DEM CURSOR BEWEGT
-            this.controller.bewegeSchlange();
-			   
-			  	// OBJEKTE WERDEN AUTOMATISCH IM CONTROLLER INITIALISIERT UND GESPAWNT!
-			  
-			   // HIER WERDEN KOLLISIONEN ABGEFRAGT 
-			   this.kollisionstyp = this.controller.kollision();
-			  	
-			   if(this.kollisionstyp != 'frei'){
-			  	switch(this.kollisionstyp) {
-					case 'feind': /** TODO: GAMEOVER;*/ 
-                                    this.view.drawGameOverText();
-                                    this.paused = true;
-                                    console.log('GAMEOVER..');
-                                    break;
-					case 'boon': /** TODO: Apply Boon;*/ console.log('BOON');
-                                    break;
-               case 'pickup': this.controller.respawnAll(); 
-										this.controller.verkuerzeSchlange();
-										this.score + 10;
-                                    break;
-               }
-				}
-			  
-            ////////////////// TODO: //////////////////
-			  
-
-            /*
-            if (this.view.kollisionMitVerfolger() || this.view.kollisionMitFeind() || this.view.kollisionMitWand()) {
-                // Game over...-Meldung
-                // this.view.loescheSchlange(); // schlange löschen
-
-                // this.view.zeichneSchlange_LVL1(); // neue schlange initialisieren
-                // this.spielgeschwindigkeit = 20; // Geschwindigkeit reseten
-                // laufrichtung reseten
-                // start des Spielers reseten
-                // Punktestand reseten
-            }
-            
-            if (this.view.kollisionMitPickup()) {
-                // Punktestand raufsetzen
-                // Pickup löschen
-                // this.view.platziereRandomPickup(); // neues Pickup platzieren
-                // this.spielgeschwindigkeit--; // spielgeschwindigkeit vergrößern?
-                // if (this.spielgeschwindigkeit <= 5) { // geschwindigkeit nie kleiner als 5
-                    this.spielgeschwindigkeit = 5;
-                }
-            }
+            /** 
+            * Diese if-Abfrage regelt die Geschwindigkeit des Spiels, da die 
+            * update()-Methode aus Phaser ein sehr schneller und unendlicher Loop ist.
+            *
+            * Diese update()-Loop läuft also durch unendlich viele "Frames" und durch frameCounter und spielgeschwindigkeit wird es 
+            * nun so eingestellt das alle 20 Frames 1 Aktion ausgeführt wird und der Loop dann wieder von vorne beginnt.
             */
-            // ...
-			  	 	// HIER WERDEN DIE EINZELENEN KOMPONENTEN GEZEICHNET
-			  		this.controller.zeichneObjekte();
-			  
-			  	//Erhöhen des logik counters
-			  	this.snekSpawn++;
-			   this.snekSpawn %= 10; 
-			   if(this.snekSpawn == 0){
-					this.controller.vergroessereSchlange();
-				}
+            if (this.frameCounter == this.spielgeschwindigkeit) {
 
-            this.frameCounter = 0;
-        }
+                // HIER WIRD DIE SCHLANGE MIT DEM CURSOR BEWEGT
+                this.controller.bewegeSchlange();
 
-    } else if(this.dead){ //Was Passiert wenn das Spiel nicht Pausiert sondern zuende ist? (Tot)
-		// HIER TOT SCREEN EINFÜGEN
-	} else { //Was passiert um das Spiel zu starten bzw was passiert im Pausescreen? 
-		this.view.drawPauseScreen();
-		//Wenn eine Taste gedrückt ist
-		if(this.controller.getCursor().down.isDown){
-			this.paused = false;
-			this.view.removeText();
-			}
-	}  
+                    // OBJEKTE WERDEN AUTOMATISCH IM CONTROLLER INITIALISIERT UND GESPAWNT!
 
- }
+                   // HIER WERDEN KOLLISIONEN ABGEFRAGT 
+                   this.kollisionstyp = this.controller.kollision();
+
+                   if(this.kollisionstyp != 'frei'){
+                       switch(this.kollisionstyp) {
+                            case 'feind': /** TODO: GAMEOVER;*/ 
+                                    this.controller.kollisionMitVerfolger = true;
+                                    console.log('GAMEOVER!');
+                                    break;
+                            case 'boon': /** TODO: Apply Boon;*/ console.log('BOON');
+                                    break;
+                            case 'pickup': 
+                                    this.controller.respawnAll(); 
+                                    this.controller.verkuerzeSchlange();
+                                    this.score + 10;
+                                    break;
+                        }    
+                   }
+
+
+                ////////////////// TODO: //////////////////
+
+
+
+                if (this.controller.kollisionMitVerfolger || this.controller.kollisionMitFeind || this.controller.kollisionMitWand) {
+                    // Game over...-Meldung
+                    //this.view.drawGameOverText();
+
+
+                    // schlange löschen
+                    this.controller.loescheSchlange();
+
+                    //Spiel pausieren
+                    this.paused = true;
+
+                    // zeichne gameover screen nach 0.05 Sekunden
+                    //this.game.time.events.add(Phaser.Timer.SECOND * 0.05, this.controller.zeichneGOScreen, this);
+                    this.controller.zeichneGOScreen();
+                    
+                    // Reset game nach 0.05 Sekunden
+                    this.game.time.events.add(Phaser.Timer.SECOND * 1, this.resetGame, this);
+                    
+                    
+                    //this.game.time.events.add(Phaser.Timer.SECOND * 3, this.setUnPaused, this);
+                    
+                    this.controller.kollisionMitVerfolger = false;
+                    this.controller.kollisionMitFeind = false;
+                    this.controller.kollisionMitWand = false;
+                    
+                    
+
+                }
+
+                /*
+                if (this.view.kollisionMitPickup()) {
+                    // Punktestand raufsetzen
+                    // Pickup löschen
+                    // this.view.platziereRandomPickup(); // neues Pickup platzieren
+                    // this.spielgeschwindigkeit--; // spielgeschwindigkeit vergrößern?
+                    // if (this.spielgeschwindigkeit <= 5) { // geschwindigkeit nie kleiner als 5
+                        this.spielgeschwindigkeit = 5;
+                    }
+                }
+                */
+                // ...
+
+
+                    // HIER WERDEN DIE EINZELENEN KOMPONENTEN GEZEICHNET
+                    this.controller.zeichneObjekte();
+
+                    //Erhöhen des logik counters
+                    this.snekSpawn++;
+                    this.snekSpawn %= 10; 
+                    if(this.snekSpawn == 0){
+                        this.controller.vergroessereSchlange();
+                    }
+
+
+                //}
+
+
+
+
+                this.frameCounter = 0;
+            }
+
+        } else if(this.dead){ //Was Passiert wenn das Spiel nicht Pausiert sondern zuende ist? (Tot)
+            // HIER TOT SCREEN EINFÜGEN
+                } 
+
+                // NAchdem das Spiel auf paused gesetzt wurde wird es hier in unpaused gesetzt und die resetgameMethode aufgerufen, die eine neue Schlange initialisiert
+                /*else if( this.controller.kollisionMitVerfolger && this.paused && !this.called) {
+                        if (!this.called){
+                            //this.setUnPaused();
+                            this.called = true;
+                            this.game.time.events.add(Phaser.Timer.SECOND * 0.5, this.resetGame, this);
+                            
+                        }
+                        console.log('paused ist '+ this.paused);
+                            
+                    }*/
+
+                    else { //Was passiert um das Spiel zu starten bzw was passiert im Pausescreen? 
+                        
+                        this.view.drawPauseScreen();
+                        //Wenn eine Taste gedrückt ist
+                        if(this.controller.getCursor().down.isDown){
+                            this.paused = false;
+                            this.view.removeText();
+                            }
+                        
+                        this.resetted = false;
+                    }
+	 
+
+    } // Ende update
+    
+    setUnPaused(){
+        this.paused = false;
+    }
 	
 }
 
@@ -242,4 +340,7 @@ window.addEventListener('load', () => {
         main.update();
     }
 
+    function fadePicture(){
+        main.fadePicture();
+    }
 });

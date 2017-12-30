@@ -83,6 +83,13 @@ export default class Controller {
         * Speichert eine Zahl je nach derzeitiger Laufrichtung
         */
         //this.changeId;
+        
+        /** Speichert ob und womit es eine Kollision gab, setzen der IV durch aufruf von setMethoden in Main*/
+        this.kollisionMitVerfolger = false;
+        
+        this.kollisionMitFeind = false;
+        
+        this.kollisionMitWand = false;
 
     }
 
@@ -245,12 +252,8 @@ export default class Controller {
 	
 	/** Verkleinert die Schlange */
 	verkuerzeSchlange(){
-		var zutoeten = this.schlange.delete(0);
-		if(zutoeten != undefined){
-			this.view.draw(zutoeten, true);
-		}
+		
 	}
-	
 	
 	/** Zeichne Objekte */
 	zeichneObjekte(){
@@ -270,5 +273,47 @@ export default class Controller {
 			this.view.draw(pickupinfo[i], false);
 		}
 	}
+    
+    loescheSchlange_2(){
+        //Zunächst Schlangen zeichnung beauftragen
+		var schlangeninfo = this.schlange.getInfo();
+		//update Länge der Schlange
+		this.view.laengenAnzeige(schlangeninfo.length);
+		for(var i = 0; i < schlangeninfo.length; i++){
+			this.view.draw(schlangeninfo[i], true);
+            console.log('lösche Schlangenteil ' + i);
+		}
+		var gegnerinfo = this.gegner.getInfo();
+		for(var i = 0; i < gegnerinfo.length; i++){
+			this.view.draw(gegnerinfo[i], true);
+            console.log('lösche gegnerteil ' + i);
+		}
+		var pickupinfo = this.pickup.getInfo();
+		for(var i = 0; i < pickupinfo.length; i++){
+			this.view.draw(pickupinfo[i], true);
+            console.log('lösche pickupteil ' + i);
+		}
+    }
+    
+    /** Löscht Schlange bis auf Kopf */
+	loescheSchlange(){
+        for(var i = this.schlange.getLength(); i > 0 ; i--){
+            var zutoeten = this.schlange.delete(0);
+            if(zutoeten != undefined){
+                this.view.draw(zutoeten, true);
+            }
+            //zutoeten.image.destroy();
+        }
+    }
+    
+    zeichneSchlange_LVL1(){
+        let Schlange = require('./schlange.js').default;
+        this.schlange = new Schlange();
+    }
+    
+    zeichneGOScreen(){
+        this.view.zeichneGOScreen();
+    }
+    
 
 }
