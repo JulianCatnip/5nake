@@ -84,13 +84,9 @@ export default class Controller {
         //this.x = this.view.startX + (2 * this.objektGroesse);
         //this.y = this.view.startY;
 
-        /**
-        * Speichert eine Zahl je nach derzeitiger Laufrichtung
-        */
-        //this.changeId;
-
     }
 
+    /** Enfernt Browser-Voreinstellungen zu den Eingaben */
     resetKeyboardKeys() {
     	this.game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN, Phaser.Keyboard.SPACEBAR ]);
     }
@@ -102,6 +98,11 @@ export default class Controller {
     /** Getter für die Space Bar */
     getSpaceBar() {
         return this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    }
+
+    /** Getter für die Laufrichtung des Spielers */
+    getLaufrichtung() {
+    	return this.laufrichtung;
     }
 
     /** Ändert die Laufrichtung */
@@ -136,25 +137,29 @@ export default class Controller {
     */
     bewegeSchlange() {
 		 
-		//Hol informationen des Kopfes
+		// Hol Informationen des Kopfes
 		var kopf = this.schlange.getInfo()[0];
 
         /** Berechnung der neuen Koordinaten */
         if (this.laufrichtung == this.richtungen.right) { // wenn richtung rechts ist
 
-			  this.schlange.move(kopf.positionX + 1, kopf.positionY);
+			this.schlange.move(kopf.positionX + 1, kopf.positionY);
+			this.schlange.setObjektLaufrichtung('right');
 			  
         } else if (this.laufrichtung == this.richtungen.left) { // wenn richtung links ist
 
             this.schlange.move(kopf.positionX - 1, kopf.positionY);
+            this.schlange.setObjektLaufrichtung('left');
 
         } else if (this.laufrichtung == this.richtungen.up) { // wenn richtung oben ist
 
             this.schlange.move(kopf.positionX, kopf.positionY - 1);
+            this.schlange.setObjektLaufrichtung('up');
 
         } else if (this.laufrichtung == this.richtungen.down) { // wenn richtung unten ist
 
             this.schlange.move(kopf.positionX, kopf.positionY + 1);
+            this.schlange.setObjektLaufrichtung('down');
 
         }
 
@@ -295,7 +300,7 @@ export default class Controller {
 		*/
 		var schlangeninfo = this.schlange.getInfo(); // getter für die Liste in Schlange
 		for(var i = 0; i < schlangeninfo.length; i++){
-			this.view.draw(schlangeninfo[i], false); // objekt, kill=false
+			this.view.draw(schlangeninfo[i], false); // objekt, kill = false
 		}
 
 		/** Länge der Schlange in View anzeigen lassen */
@@ -317,6 +322,65 @@ export default class Controller {
 		var pickupinfo = this.pickup.getInfo(); // getter für die Liste in Pickup
 		for(var i = 0; i < pickupinfo.length; i++){
 			this.view.draw(pickupinfo[i], false); // objekt, kill=false
+		}
+
+	}
+
+	/**
+	* Aktionen während der Spielzeit
+	* Blendet den Spielscreen ein.
+	* Iteriert durch Objekt-Listen und lässt in View ein Animation zuordnen.
+	*/
+	played() {
+
+		/**
+		* Durch Schlangen-Liste iterieren und deren 
+		* Animationen von View stoppen lassen 
+		
+		var schlangeninfo = this.schlange.getInfo(); // getter für die Liste in Schlange
+		for(var i = 0; i < schlangeninfo.length; i++){
+			this.view.playAnimation(schlangeninfo[i]); // objekt, kill = false
+		}*/
+
+		/**
+		* Durch Gegner-Liste iterieren und deren 
+		* Animationen von View stoppen lassen 
+		*/
+		var gegnerinfo = this.gegner.getInfo(); // getter für die Liste in Gegner
+		for(var i = 0; i < gegnerinfo.length; i++){
+			this.view.playAnimation(gegnerinfo[i]); // objekt, kill=false
+		}
+
+	}
+
+	/**
+	* Pausierende Aktionen
+	* Blendet den Pausenscreen ein.
+	* Iteriert durch Objekt-Listen und lässt in View ein Standbild zuordnen.
+	*/
+	paused() {
+
+		/**
+		* Pausenscreen darstellen
+		*/
+		this.view.drawPauseScreen();
+
+		/**
+		* Durch Schlangen-Liste iterieren und deren 
+		* Animationen von View stoppen lassen 
+		*/
+		var schlangeninfo = this.schlange.getInfo(); // getter für die Liste in Schlange
+		for(var i = 0; i < schlangeninfo.length; i++){
+			this.view.stopAnimation(schlangeninfo[i]); // objekt, kill = false
+		}
+
+		/**
+		* Durch Gegner-Liste iterieren und deren 
+		* Animationen von View stoppen lassen 
+		*/
+		var gegnerinfo = this.gegner.getInfo(); // getter für die Liste in Gegner
+		for(var i = 0; i < gegnerinfo.length; i++){
+			this.view.stopAnimation(gegnerinfo[i]); // objekt, kill=false
 		}
 
 	}

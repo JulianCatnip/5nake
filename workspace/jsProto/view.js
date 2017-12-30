@@ -129,6 +129,7 @@ export default class View {
     * löscht ggf. vorhandenen Sprite und zeichnet einen neuen Sprite an passender Stelle
 	* @param Objekt das gezeichnet werden soll
     * @param kill, überprüfung ob es gelöscht wurde
+    * @param richtung, blickrichtung des objekts
 	*/
 	draw(objekt, kill){
 
@@ -143,12 +144,41 @@ export default class View {
 
             /** Dem Objekt ein Sprite hinzufügen */
 			objekt.image = this.game.add.sprite(objekt.getPositionX() * this.objektGroesse, objekt.getPositionY() * this.objektGroesse, objekt.typ);
-			
-			///// TODO: RICHTIGE ANIMATION ABSPIELEN ////
-            /** Je nach Objekt-Typ andere Animation anwenden? */
-			if(objekt.typ == 'spieler') {
-				objekt.image.frame = 3;
-			}
+
+            /** Je nach Objekt-Typ andere Animation anwenden */
+			if(objekt.typ == 'spieler' || objekt.typ == 'verfolger') {
+
+                // animation je nach laufrichtung wechseln
+                switch(objekt.laufrichtung) {
+                    case 'up': objekt.image.animations.add('walk', [1, 2], 5, true);
+                            break;
+                    case 'right': objekt.image.animations.add('walk', [4, 5], 5, true);
+                            break;
+                    case 'down': objekt.image.animations.add('walk', [7, 8], 5, true);
+                            break;
+                    case 'left': objekt.image.animations.add('walk', [10, 11], 5, true);
+                            break;
+                    default: objekt.image.frame = 3;
+                }
+                objekt.image.animations.play('walk');
+
+			} else if(objekt.typ == 'feind') {
+
+                // random 1-4
+                var random = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
+
+                /** Feind blickt in zufällige Richtungen */
+                switch(random){
+                    case 1: objekt.image.frame = 3;
+                        break;
+                    case 2: objekt.image.frame = 6;
+                        break;
+                    case 3: objekt.image.frame = 9;
+                        break;
+                    default: objekt.image.frame = 0;
+                }
+
+            }
 
 		} else { // wenn objekt gelöscht wurde
 
@@ -158,6 +188,13 @@ export default class View {
 
 		}
 	}
+
+    /**
+    * Stoppt die Animation eines Objektes
+    */
+    stopAnimation(objekt) {
+        objekt.image.animations.stop('walk', false);
+    }
 	
 	/**
 	* Zeichnet Pausebildschirm der auf down Knopfdruck verschwindet

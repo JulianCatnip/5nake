@@ -18,7 +18,7 @@ export default class Einzelobjekt {
 		this.positionY = positionY;
 		this.typ = typ; // typ == spritename!
 		
-		this.laufrichtung = 'runter';
+		this.laufrichtung;
 		//this.image = null;
 		
 	}

@@ -52,7 +52,7 @@ export default class Schlange {
         return this.list.length;
     }
     
-    /** Weist dem Schlangenkopf eine neue Position zu */
+    /** Weist den Schlangengliedern neue Positionen zu */
     move(newX, newY) {
         
         //Speicher für die alte Position X
@@ -74,9 +74,62 @@ export default class Schlange {
             newY = oldY;
 		  }
     }
+
+    /** 
+    * Weist den Schlangengliedern neue Laufrichtungen zu
+    * Das aktuelle Objekt muss den Vorgänger verfolgen!
+    * @param kopfRichtung Laufrichtung des Spielers
+    */
+    setObjektLaufrichtung(kopfRichtung) {
+
+        // zur speicherung von aktuellem und vorgänger Objekt 
+        var aktueller;
+        var vorgaenger;
+
+        // zur speicherung von Positionsabfragen (Boolean)
+        var horizontal;
+        var vertikal;
+        var hinter;
+        var vor;
+        var unter;
+        var ueber;
+
+        this.list[0].laufrichtung = kopfRichtung;
+
+        // durch liste iterieren
+        for(var i = 1; i < this.list.length; i++) {
+
+            aktueller = this.list[i];
+
+            var j = i - 1;
+            vorgaenger = this.list[j];
+
+            /** Der Aktuelle und der Vorgaenger sind _____ angebunden. */
+            horizontal = vorgaenger.getPositionY() == aktueller.getPositionY();
+            vertikal = vorgaenger.getPositionX() == aktueller.getPositionX();
+
+            /** Der Aktuelle ist _____ dem Vorgaenger. */
+            hinter = vorgaenger.getPositionX() < aktueller.getPositionX();
+            vor = vorgaenger.getPositionX() > aktueller.getPositionX();
+            unter = vorgaenger.getPositionY() < aktueller.getPositionY();
+            ueber = vorgaenger.getPositionY() > aktueller.getPositionY();
+
+            if(horizontal && hinter) {
+                aktueller.laufrichtung = 'left';
+            } else if(horizontal && vor) {
+                aktueller.laufrichtung = 'right';
+            } else if(vertikal && unter) {
+                aktueller.laufrichtung = 'up';
+            } else if(vertikal && ueber) {
+                aktueller.laufrichtung = 'down';
+            }
+
+        }
+
+    }
 	
-	/** gibt die informationen über alle Körperteile als Array zurück */
-	getInfo(){
+	/** Gibt die informationen über alle Körperteile als Array zurück */
+	getInfo() {
 		return this.list;
 	}
     

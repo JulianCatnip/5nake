@@ -80,14 +80,16 @@ export default class Main {
     * Canvas-Einstellungen und Bild-/Audio-Dateien
     */
     preload() {
-        this.game.stage.backgroundColor = "#FFF"; // hier später evtl ein Boden-Hintergrundbild
 
+        /** Objekt-Sprites laden */
         this.game.load.spritesheet('spieler', '../images/spieler.png', 60, 60, 12);
-        this.game.load.image('verfolger', '../images/verfolger.jpg');
-        this.game.load.image('feind', '../images/feind.jpg');
+        this.game.load.spritesheet('verfolger', '../images/verfolger.png', 60, 60, 12);
+        this.game.load.spritesheet('feind', '../images/feind.png', 60, 60, 12);
         this.game.load.image('stein', '../images/stein.jpg');
 		this.game.load.image('item', '../images/item.jpg');
-        // usw...
+
+        /** Boden-Sprite laden */
+        this.game.load.image('boden', '../images/boden.png');
     }
 
     /** 
@@ -96,9 +98,12 @@ export default class Main {
     */
     create() {
 
+        /** Canvas-Hintergrund setzen */
+        this.game.add.tileSprite(0, 0, 900, 660, 'boden');
+        this.controller.resetKeyboardKeys();
+
         /** Alle Objekte die zu Start benötigt werden zeichnen (Schlange, Pickup, Gegner) */
 		this.controller.zeichneObjekte();
-        this.controller.resetKeyboardKeys();
 
     }
 
@@ -179,7 +184,7 @@ export default class Main {
 
                 // HIER WERDEN DIE EINZELENEN KOMPONENTEN GEZEICHNET
                 this.controller.zeichneObjekte(); // alle objekte neuzeichnen
-    			
+
                 // Schlange vergrößern
                 this.snekSpawn++;
     			this.snekSpawn %= 10;
@@ -202,7 +207,7 @@ export default class Main {
 
         } else if(this.paused) { // Was passiert um das Spiel zu starten bzw was passiert im Pausescreen?
 
-            this.view.drawPauseScreen();
+            this.controller.paused();
 
             // Wenn space gedrückt wird
             if(this.controller.getCursor().down.isDown) {
