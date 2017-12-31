@@ -90,6 +90,8 @@ export default class Controller {
         this.kollisionMitFeind = false;
         
         this.kollisionMitWand = false;
+        
+        this.kollisionMitPickup = false;
 
     }
 
@@ -250,10 +252,6 @@ export default class Controller {
 		this.schlange.add();
 	}
 	
-	/** Verkleinert die Schlange */
-	verkuerzeSchlange(){
-		
-	}
 	
 	/** Zeichne Objekte */
 	zeichneObjekte(){
@@ -274,29 +272,29 @@ export default class Controller {
 		}
 	}
     
-    loescheSchlange_2(){
+    loescheSchlange(){
         //Zunächst Schlangen zeichnung beauftragen
 		var schlangeninfo = this.schlange.getInfo();
 		//update Länge der Schlange
 		this.view.laengenAnzeige(schlangeninfo.length);
-		for(var i = 0; i < schlangeninfo.length; i++){
+		for(var i = schlangeninfo.length-1; i > 0 ; i--){
 			this.view.draw(schlangeninfo[i], true);
             console.log('lösche Schlangenteil ' + i);
 		}
 		var gegnerinfo = this.gegner.getInfo();
-		for(var i = 0; i < gegnerinfo.length; i++){
+		for(var i = gegnerinfo.length-1; i > 0 ; i--){
 			this.view.draw(gegnerinfo[i], true);
             console.log('lösche gegnerteil ' + i);
 		}
 		var pickupinfo = this.pickup.getInfo();
-		for(var i = 0; i < pickupinfo.length; i++){
+		for(var i = pickupinfo.length-1; i > 0 ; i--){
 			this.view.draw(pickupinfo[i], true);
             console.log('lösche pickupteil ' + i);
 		}
     }
     
     /** Löscht Schlange bis auf Kopf */
-	loescheSchlange(){
+	loescheSchlange_2(){
         for(var i = this.schlange.getLength(); i > 0 ; i--){
             var zutoeten = this.schlange.delete(0);
             if(zutoeten != undefined){

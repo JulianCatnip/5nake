@@ -139,6 +139,7 @@ export default class Main {
             this.paused = false;
             this.view.removeText();
         }*/
+        
     }
     
     /** 
@@ -149,11 +150,7 @@ export default class Main {
 		 
 		  //Wenn das Spiel nicht pausiert ist
 		  if(!this.paused){
-              
-              // Debugging
-              this.i++;
-              console.log('update keine pause aufgerufen ' + this.i);
-              
+                            
             this.controller.updateLaufrichtung(); // Laufrichtung aktualisieren
 
             this.frameCounter++;
@@ -184,8 +181,8 @@ export default class Main {
                             case 'boon': /** TODO: Apply Boon;*/ console.log('BOON');
                                     break;
                             case 'pickup': 
+                                    this.controller.kollisionMitPickup = true;
                                     this.controller.respawnAll(); 
-                                    this.controller.verkuerzeSchlange();
                                     this.score + 10;
                                     break;
                         }    
@@ -197,9 +194,6 @@ export default class Main {
 
 
                 if (this.controller.kollisionMitVerfolger || this.controller.kollisionMitFeind || this.controller.kollisionMitWand) {
-                    // Game over...-Meldung
-                    //this.view.drawGameOverText();
-
 
                     // schlange löschen
                     this.controller.loescheSchlange();
@@ -211,11 +205,9 @@ export default class Main {
                     //this.game.time.events.add(Phaser.Timer.SECOND * 0.05, this.controller.zeichneGOScreen, this);
                     this.controller.zeichneGOScreen();
                     
-                    // Reset game nach 0.05 Sekunden
+                    // Reset game nach 1 Sekunde
                     this.game.time.events.add(Phaser.Timer.SECOND * 1, this.resetGame, this);
                     
-                    
-                    //this.game.time.events.add(Phaser.Timer.SECOND * 3, this.setUnPaused, this);
                     
                     this.controller.kollisionMitVerfolger = false;
                     this.controller.kollisionMitFeind = false;
@@ -225,56 +217,68 @@ export default class Main {
 
                 }
 
-                /*
-                if (this.view.kollisionMitPickup()) {
+                
+                if (this.controller.kollisionMitPickup) {
                     // Punktestand raufsetzen
-                    // Pickup löschen
-                    // this.view.platziereRandomPickup(); // neues Pickup platzieren
-                    // this.spielgeschwindigkeit--; // spielgeschwindigkeit vergrößern?
-                    // if (this.spielgeschwindigkeit <= 5) { // geschwindigkeit nie kleiner als 5
+                    this.score++;
+                    // spielgeschwindigkeit vergrößern?
+                    this.spielgeschwindigkeit -= 2; 
+                    
+                     if (this.spielgeschwindigkeit <= 5) { 
+                    
                         this.spielgeschwindigkeit = 5;
-                    }
+                     }
+                    
+                    this.controller.kollisionMitPickup = false;
+                    
                 }
-                */
-                // ...
 
 
                     // HIER WERDEN DIE EINZELENEN KOMPONENTEN GEZEICHNET
                     this.controller.zeichneObjekte();
 
+                 
+                
+                // Erhöhen des Counters alle 20 Frames, unabhängig von der Spielgeschwindigkeit
+                //if (this.framecounter){
+                
                     //Erhöhen des logik counters
+                
                     this.snekSpawn++;
                     this.snekSpawn %= 10; 
                     if(this.snekSpawn == 0){
                         this.controller.vergroessereSchlange();
                     }
-
-
+                
                 //}
+                    
+
+
+                
 
 
 
 
                 this.frameCounter = 0;
             }
+              
+              
+              /////////////////////////TODO////////////////////////////////
+              // Erhöhen des Counters alle 20 Frames, unabhängig von der Spielgeschwindigkeit
+              if (this.framecounter == 20){
+                    //Erhöhen des logik counters
+                    this.snekSpawn++;
+                    this.snekSpawn %= 10; 
+                    if(this.snekSpawn == 0){
+                        this.controller.vergroessereSchlange();
+                    }
+                }
+              
+    
 
         } else if(this.dead){ //Was Passiert wenn das Spiel nicht Pausiert sondern zuende ist? (Tot)
             // HIER TOT SCREEN EINFÜGEN
-                } 
-
-                // NAchdem das Spiel auf paused gesetzt wurde wird es hier in unpaused gesetzt und die resetgameMethode aufgerufen, die eine neue Schlange initialisiert
-                /*else if( this.controller.kollisionMitVerfolger && this.paused && !this.called) {
-                        if (!this.called){
-                            //this.setUnPaused();
-                            this.called = true;
-                            this.game.time.events.add(Phaser.Timer.SECOND * 0.5, this.resetGame, this);
-                            
-                        }
-                        console.log('paused ist '+ this.paused);
-                            
-                    }*/
-
-                    else { //Was passiert um das Spiel zu starten bzw was passiert im Pausescreen? 
+                } else { //Was passiert um das Spiel zu starten bzw was passiert im Pausescreen? 
                         
                         this.view.drawPauseScreen();
                         //Wenn eine Taste gedrückt ist
@@ -285,6 +289,16 @@ export default class Main {
                         
                         this.resetted = false;
                     }
+            /*
+            // Erhöhen des Counters alle 20 Frames, unabhängig von der Spielgeschwindigkeit
+                if (this.framecounter == 20){
+                    //Erhöhen des logik counters
+                    this.snekSpawn++;
+                    this.snekSpawn %= 10; 
+                    if(this.snekSpawn == 0){
+                        this.controller.vergroessereSchlange();
+                    }
+                }*/
 	 
 
     } // Ende update
