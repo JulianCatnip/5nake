@@ -4,7 +4,7 @@ import 'phaser';
 
 import { Schlange } from './schlange';
 
-/** 
+/**
 * View
 * Zur Dastellung des Spiels auf dem Canvas
 */
@@ -17,30 +17,34 @@ export default class View {
     */
 	constructor(game, schlange) {
 
-        /** 
-        * Phaser.Game Objekt 
+        /**
+        * Phaser.Game Objekt
         * Wird benötigt um auf jegliche Funktionen des Frameworks zuzugreifen.
         */
         this.game = game;
-		
-		/** 
-        * Text für tot und PauseScreen 
+
+		/**
+        * Text für tot und PauseScreen
         */
         this.text = undefined;
 
         /**
         * Schlangen-Objekt
         */
-        //this.schlange = schlange;
 
-        /**
-        * Größe der einzelnen Einheiten
-        */
-        this.objektGroesse = 60;
+			/**
+			* Größe der einzelnen Einheiten
+			*/
+			this.objektGroesse = 60;
+
+        /** Text für Game-Over, vorübergehend */
+            this.gameOverText = undefined;
+
+        this.gameover_picture;
 
     }
 
-    /** 
+    /**
     * Startschlange
     * 1 Kopf mit 2 Verfolgern
     */
@@ -58,10 +62,10 @@ export default class View {
                 this.schlange.list[i].image = this.game.add.image(this.schlange.list[i].objekt.getPositionX()*this.objektGroesse, this.schlange.list[i].objekt.getPositionY()*this.objektGroesse, this.schlange.list[i].objekt.getTyp());
             }
         }
-  
+
     }*/
 
-    /** 
+    /**
     * Längenanzeige der Schlange mit DOM
     */
     laengenAnzeige(laenge) {
@@ -69,8 +73,8 @@ export default class View {
         tag.innerHTML = laenge;
     }
 
-    /** 
-    * Bewegt die Schlange 
+    /**
+    * Bewegt die Schlange
     * zu der übergebenen Position
     * @param x : neue x-Koordinate für den Kopf
     * @param y : neue y-Koordinate für den Kopf
@@ -79,21 +83,21 @@ export default class View {
     // updatePosition(objekt, changeId) {
 
         ///////////////////// ALT /////////////////////
-        /** Koordinaten der Vorgänger speichern 
+        /** Koordinaten der Vorgänger speichern
         // Koordinaten des ehemaligen Vorletzten
-        var last_x = this.schlange.lvl1[1].image.world.x; 
+        var last_x = this.schlange.lvl1[1].image.world.x;
         var last_y = this.schlange.lvl1[1].image.world.y;
 
         // Koordinaten Kopfes vor der Bewegung
         var x_alt = this.schlange.lvl1[0].image.world.x;
         var y_alt = this.schlange.lvl1[0].image.world.y;
 
-        /** Durch alle Schlangenglieder iterieren 
+        /** Durch alle Schlangenglieder iterieren
         for(var i = 0; i < this.schlange.lvl1.length; i++) {
 
             this.schlange.lvl1[i].image.destroy(); // vorherige Sprites löschen
 
-            /** Je nach Schlangenglied Sprite an neuer Position erzeugen 
+            /** Je nach Schlangenglied Sprite an neuer Position erzeugen
             switch(i) {
                 case 0:     this.schlange.lvl1[i].image = this.game.add.sprite(x, y, 'spieler');
 
@@ -122,10 +126,10 @@ export default class View {
 
         }*/
     // }
-	
-	/** 
+
+	/**
     * Zeichet Objekte
-    * Übernimmt ein Objekt, liest dessen Daten aus 
+    * Übernimmt ein Objekt, liest dessen Daten aus
     * löscht ggf. vorhandenen Sprite und zeichnet einen neuen Sprite an passender Stelle
 	* @param Objekt das gezeichnet werden soll
     * @param kill, überprüfung ob es gelöscht wurde
@@ -195,7 +199,7 @@ export default class View {
     stopAnimation(objekt) {
         objekt.image.animations.stop('walk', false);
     }
-	
+
 	/**
 	* Zeichnet Pausebildschirm der auf down Knopfdruck verschwindet
     */
@@ -213,16 +217,59 @@ export default class View {
             this.text.fontWeight = 'bold';
             this.text.fontSize = 30;
             this.text.fill = '#101010';
-            
+
 		}
 
 	}
-	
+
 	/** Lässt text verschwinden */
 	removeText() {
 		// this.game.world.remove(this.text);
         this.text.destroy();
         this.text = undefined;
 	}
+
+    /**
+    Schreibt bei Kollision game over auf den screen
+    */
+    drawGameOverText() {
+        if (this.gameOverText == undefined) {
+                this.gameOverText = this.game.add.text(this.game.world.centerX, this.game.world.centerY, "- GAME OVER -");
+                //  Centers the text
+                this.gameOverText.anchor.set(0.5);
+                this.gameOverText.align = 'center';
+
+                //  Our font + size
+                this.gameOverText.font = 'Arial';
+                this.gameOverText.zIndex = 10;
+                this.gameOverText.fontWeight = 'bold';
+                this.gameOverText.fontSize = 30;
+                this.gameOverText.fill = '#FF0000';
+            }
+    }
+
+    /** Lässt text verschwinden */
+	removeGOText(){
+		this.game.world.remove(this.gameOverText);
+	}
+
+
+    zeichneGOScreen(){
+        this.gameover_picture = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'go_screen');
+        this.gameover_picture.anchor.setTo(0.5, 0.5);
+
+    //  Here we'll create a basic timed event. This is a one-off event, it won't repeat or loop:
+    //  The first parameter is how long to wait before the event fires. In this case 4 seconds (you could pass in 4000 as the value as well.)
+    //  The next parameter is the function to call ('fadePicture') and finally the context under which that will happen.
+
+        this.game.time.events.add(Phaser.Timer.SECOND * 0.5, this.fadePicture, this);
+    }
+
+    fadePicture() {
+
+        //this.game.add.tween(this.gameover_picture).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true);
+        this.game.add.tween(this.gameover_picture).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true);
+
+    }
 
 }

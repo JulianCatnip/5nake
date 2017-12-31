@@ -133,4 +133,8 @@ export default class Schlange {
 		return this.list;
 	}
     
+    setLength(value){
+        this.list.length = value;
+    }
+    
 }
