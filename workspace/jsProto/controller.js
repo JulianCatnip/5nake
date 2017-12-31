@@ -96,7 +96,7 @@ export default class Controller {
         this.kollisionMitFeind = false;
 
         this.kollisionMitWand = false;*/
-        
+
 	}
 
     /** Enfernt Browser-Voreinstellungen zu den Eingaben */
@@ -219,15 +219,15 @@ export default class Controller {
 	*/
 	respawnAll() {
 
-		/** 
+		/**
 		* Fragt den Schlangen-Liste ab um Kollision beim Spawn von Pickup zu vermeiden
 		*/
 		var kopf = this.schlange.getInfo();
 		kopf = kopf[0];
 
-		this.pickup.respawn(kopf); // respawn 
+		this.pickup.respawn(kopf); // respawn
 
-		/** 
+		/**
 		* Fragt Pickup-Liste ab um Kollision beim Spawn von Gegner zu vermeiden
 		*/
 		var pickupkol = this.pickup.getInfo();
@@ -452,23 +452,23 @@ export default class Controller {
 		var schlangeninfo = this.schlange.getInfo();
 		//update Länge der Schlange
 		this.view.laengenAnzeige(schlangeninfo.length);
-		for(var i = 0; i < schlangeninfo.length; i++){
+		for(var i = schlangeninfo.length-1; i > 0 ; i--){
 			this.view.draw(schlangeninfo[i], true);
             console.log('lösche Schlangenteil ' + i);
 		}
 		var gegnerinfo = this.gegner.getInfo();
-		for(var i = 0; i < gegnerinfo.length; i++){
+		for(var i = gegnerinfo.length-1; i > 0 ; i--){
 			this.view.draw(gegnerinfo[i], true);
             console.log('lösche gegnerteil ' + i);
 		}
 		var pickupinfo = this.pickup.getInfo();
-		for(var i = 0; i < pickupinfo.length; i++){
+		for(var i = pickupinfo.length-1; i > 0 ; i--){
 			this.view.draw(pickupinfo[i], true);
             console.log('lösche pickupteil ' + i);
 		}
     }
 
-     Löscht Schlange bis auf Kopf 
+     Löscht Schlange bis auf Kopf
 	loescheSchlange(){
         for(var i = this.schlange.getLength(); i > 0 ; i--){
             var zutoeten = this.schlange.delete(0);

@@ -72,7 +72,7 @@ export default class Main {
 		this.paused = true;
 		this.dead = false;
 
-        
+
         var gameover_picture;
 
         var called = false;
@@ -171,11 +171,11 @@ export default class Main {
                                         break;
 
                         case 'boon':    /** Kollision mit Upgrade-Item? */
-                                        /** TODO: Apply Boon;*/ 
+                                        /** TODO: Apply Boon;*/
                                         console.log('BOON');
                                         break;
 
-                        case 'pickup':  /** Kollision mit Pickup */ 
+                        case 'pickup':  /** Kollision mit Pickup */
                                         this.controller.respawnAll();
                                         this.controller.verkuerzeSchlange();
                                         this.score + 10;
@@ -241,7 +241,7 @@ export default class Main {
             * Gameover Screen einblenden und alle objekt.images löschen
             */
             this.controller.gameover();
-            
+
             if(this.controller.getEnterKey().isDown) { // Space-Taste für Neustart drücken
 
                 //this.controller.zeichneObjekte();
@@ -249,6 +249,20 @@ export default class Main {
                 this.resetGame(); // kolisionstyp auf frei setzen
                 this.gameStatus = 'start';
             }
+
+
+              /////////////////////////TODO////////////////////////////////
+              // Erhöhen des Counters alle 20 Frames, unabhängig von der Spielgeschwindigkeit
+              if (this.framecounter == 20){
+                    //Erhöhen des logik counters
+                    this.snekSpawn++;
+                    this.snekSpawn %= 10;
+                    if(this.snekSpawn == 0){
+                        this.controller.vergroessereSchlange();
+                    }
+                }
+
+
 
         } // ENDE DEAD
 
