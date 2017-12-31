@@ -179,6 +179,10 @@ export default class Main {
                                         this.controller.respawnAll();
                                         this.controller.verkuerzeSchlange();
                                         this.score + 10;
+                                        this.spielgeschwindigkeit -= 2; 
+                                        if (this.spielgeschwindigkeit <= 5) { 
+                                            this.spielgeschwindigkeit = 5;
+                                        }
                                         break;
 
                     }
