@@ -95,7 +95,8 @@ export default class Controller {
         this.kollisionMitFeind = false;
 
         this.kollisionMitWand = false;
-		}
+        
+	}
 
     /** Enfernt Browser-Voreinstellungen zu den Eingaben */
     resetKeyboardKeys() {

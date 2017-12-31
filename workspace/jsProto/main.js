@@ -68,9 +68,11 @@ export default class Main {
         */
 		this.paused = true;
 
-		  /**
-		  * Ist der Spieler tot oder nicht */
-		  this.dead = false;
+		/**
+		* Ist der Spieler tot oder nicht 
+        */
+		this.dead = false;
+
 
         var gameover_picture;
 
@@ -85,15 +87,18 @@ export default class Main {
     * Canvas-Einstellungen und Bild-/Audio-Dateien
     */
     preload() {
-      /** Boden-Sprite laden */
-      this.game.load.image('boden', '../images/boden.png');
+
+        /** Boden-Sprite laden */
+        this.game.load.image('boden', '../images/boden.png');
 
         /** Objekt-Sprites laden */
         this.game.load.spritesheet('spieler', '../images/spieler.png', 60, 60, 12);
         this.game.load.spritesheet('verfolger', '../images/verfolger.png', 60, 60, 12);
         this.game.load.spritesheet('feind', '../images/feind.png', 60, 60, 12);
         this.game.load.image('stein', '../images/stein.jpg');
-		  this.game.load.image('item', '../images/item.jpg');
+		this.game.load.image('item', '../images/item.jpg');
+
+        /** GAMEOVER-Sprite laden */
         this.game.load.image('go_screen', '../images/go_screen.jpg');
         // usw...
     }
@@ -116,7 +121,8 @@ export default class Main {
     /**
     Setzt neue Schlange für den Controller und resettet alle stats
     */
-    resetGame(){
+    resetGame() {
+
         this.resetted = true;
         // neue schlange initialisieren
         this.controller.zeichneSchlange_LVL1();
@@ -138,6 +144,7 @@ export default class Main {
         this.controller.zeichneObjekte();
 
         this.controller.view.text = undefined;
+
         //Pause-Screen zeichnen
         /*this.view.drawPauseScreen();
         //Wenn eine Taste gedrückt ist
@@ -153,12 +160,12 @@ export default class Main {
     */
     update() {
 
-		  //Wenn das Spiel nicht pausiert ist
-		  if(!this.paused){
+		  // Wenn das Spiel nicht pausiert
+		  if(!this.paused) {
 
-              // Debugging
-              this.i++;
-              console.log('update keine pause aufgerufen ' + this.i);
+            // Debugging
+            //this.i++;
+            //console.log('update keine pause aufgerufen ' + this.i);
 
             this.controller.updateLaufrichtung(); // Laufrichtung aktualisieren
 
@@ -176,32 +183,28 @@ export default class Main {
                 // HIER WIRD DIE SCHLANGE MIT DEM CURSOR BEWEGT
                 this.controller.bewegeSchlange();
 
-                    // OBJEKTE WERDEN AUTOMATISCH IM CONTROLLER INITIALISIERT UND GESPAWNT!
+                // OBJEKTE WERDEN AUTOMATISCH IM CONTROLLER INITIALISIERT UND GESPAWNT!
 
-                   // HIER WERDEN KOLLISIONEN ABGEFRAGT
-                   this.kollisionstyp = this.controller.kollision();
+                // HIER WERDEN KOLLISIONEN ABGEFRAGT
+                this.kollisionstyp = this.controller.kollision();
 
-                   if(this.kollisionstyp != 'frei'){
-                       switch(this.kollisionstyp) {
-                            case 'feind': /** TODO: GAMEOVER;*/
-                                    this.controller.kollisionMitVerfolger = true;
-                                    console.log('GAMEOVER!');
-                                    break;
-                            case 'boon': /** TODO: Apply Boon;*/ console.log('BOON');
-                                    break;
-                            case 'pickup':
-                                    this.controller.respawnAll();
-                                    this.controller.verkuerzeSchlange();
-                                    this.score + 10;
-                                    break;
-                        }
-                   }
+                if(this.kollisionstyp != 'frei') {
 
+                    switch(this.kollisionstyp) {
+                        case 'feind':   /** TODO: GAMEOVER;*/
+                                        this.controller.kollisionMitVerfolger = true;
+                                        console.log('GAMEOVER!');
+                                        break;
+                        case 'boon':    /** TODO: Apply Boon;*/ console.log('BOON');
+                                        break;
+                        case 'pickup':  this.controller.respawnAll();
+                                        this.controller.verkuerzeSchlange();
+                                        this.score + 10;
+                                        break;
+                    }
+                }
 
                 ////////////////// TODO: //////////////////
-
-
-
                 if (this.controller.kollisionMitVerfolger || this.controller.kollisionMitFeind || this.controller.kollisionMitWand) {
                     // Game over...-Meldung
                     //this.view.drawGameOverText();
@@ -226,9 +229,6 @@ export default class Main {
                     this.controller.kollisionMitVerfolger = false;
                     this.controller.kollisionMitFeind = false;
                     this.controller.kollisionMitWand = false;
-
-
-
                 }
 
                 /*
@@ -255,6 +255,7 @@ export default class Main {
     			}
 
                 this.frameCounter = 0;
+
             }
 
             // Wenn space gedrückt wird pausieren
@@ -262,12 +263,15 @@ export default class Main {
                 this.paused = true;
                 this.view.drawPauseScreen();
             }
+        } // ENDE IF(!PAUSED)
 
-        } else if(this.dead) { // Was Passiert wenn das Spiel nicht Pausiert sondern zuende ist? (Tot)
+        else if(this.dead) { // Was Passiert wenn das Spiel nicht Pausiert sondern zuende ist? (Tot)
 
 		// HIER TOT SCREEN EINFÜGEN
 
-        } else if(this.paused) { // Was passiert um das Spiel zu starten bzw was passiert im Pausescreen?
+        } // ENDE IF(DEAD)
+
+        else if(this.paused) { // Was passiert um das Spiel zu starten bzw was passiert im Pausescreen?
 
             this.controller.paused();
 
@@ -276,12 +280,15 @@ export default class Main {
                 this.paused = false;
                 this.view.removeText();
 			}
-        }
-    }
 
-    setUnPaused(){
+        } // ENDE IF(PAUSED)
+
+    } // ENDE UPDATE
+
+    setUnPaused() {
         this.paused = false;
     }
+
 }
 
 /////////////////////////////////////////////////////////////////////////////
