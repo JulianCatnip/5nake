@@ -53,7 +53,7 @@ export default class Controller {
         /**
         * Laufrichtung der Schlange
         */
-        this.laufrichtung;
+        this.laufrichtung = this.richtungen.right;
 
 		/**
 		* Schlangen-Objekt
@@ -89,20 +89,20 @@ export default class Controller {
         */
         //this.changeId;
 
-        /** Speichert ob und womit es eine Kollision gab, setzen der IV durch aufruf von setMethoden in Main*/
+        /** VERWORFEN
+        Speichert ob und womit es eine Kollision gab, setzen der IV durch aufruf von setMethoden in Main
         this.kollisionMitVerfolger = false;
 
         this.kollisionMitFeind = false;
 
-        this.kollisionMitWand = false;
+        this.kollisionMitWand = false;*/
         
 	}
 
     /** Enfernt Browser-Voreinstellungen zu den Eingaben */
     resetKeyboardKeys() {
-    	this.game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN, Phaser.Keyboard.SPACEBAR ]);
+    	this.game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN, Phaser.Keyboard.SPACEBAR, Phaser.Keyboard.ENTER ]);
     }
-
     /** Getter für die Cursor Keys */
     getCursor() {
         return this.game.input.keyboard.createCursorKeys();
@@ -110,6 +110,10 @@ export default class Controller {
     /** Getter für die Space Bar */
     getSpaceBar() {
         return this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    }
+    /** Getter für die Space Bar */
+    getEnterKey() {
+        return this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
     }
 
     /** Getter für die Laufrichtung des Spielers */
@@ -214,12 +218,23 @@ export default class Controller {
 	* Setzt bei Pickup alle Objekte die neu verteilt werden sollen auf neue Positionen
 	*/
 	respawnAll() {
+
+		/** 
+		* Fragt den Schlangen-Liste ab um Kollision beim Spawn von Pickup zu vermeiden
+		*/
 		var kopf = this.schlange.getInfo();
 		kopf = kopf[0];
-		this.pickup.respawn(kopf);
+
+		this.pickup.respawn(kopf); // respawn 
+
+		/** 
+		* Fragt Pickup-Liste ab um Kollision beim Spawn von Gegner zu vermeiden
+		*/
 		var pickupkol = this.pickup.getInfo();
 		pickupkol = pickupkol[0];
-		this.gegner.respawn(pickupkol);
+
+		this.gegner.respawn(pickupkol); // respawn
+
 	}
 
 	/**
@@ -283,6 +298,7 @@ export default class Controller {
 
 		// falls nichts zutrifft frei wiedergeben
 		return 'frei'; // keine kollision
+
 	}
 
 	/** Vergrößert die Schlange */
@@ -293,11 +309,10 @@ export default class Controller {
 	/** Verkleinert die Schlange */
 	verkuerzeSchlange() {
 		var zutoeten = this.schlange.delete(0);
-		if(zutoeten != undefined){
+		if(zutoeten != undefined) {
 			this.view.draw(zutoeten, true);
 		}
 	}
-
 
 	/**
 	* Zeichne Objekte
@@ -339,36 +354,21 @@ export default class Controller {
 	}
 
 	/**
-	* Aktionen während der Spielzeit
-	* Blendet den Spielscreen ein.
-	* Iteriert durch Objekt-Listen und lässt in View ein Animation zuordnen.
+	* Aktionen beim Startscreen
+	* Blendet den Startscreen ein.
 	*/
-	played() {
+	started() {
 
 		/**
-		* Durch Schlangen-Liste iterieren und deren
-		* Animationen von View stoppen lassen
-
-		var schlangeninfo = this.schlange.getInfo(); // getter für die Liste in Schlange
-		for(var i = 0; i < schlangeninfo.length; i++){
-			this.view.playAnimation(schlangeninfo[i]); // objekt, kill = false
-		}*/
-
-		/**
-		* Durch Gegner-Liste iterieren und deren
-		* Animationen von View stoppen lassen
+		* Startscreen darstellen
 		*/
-		var gegnerinfo = this.gegner.getInfo(); // getter für die Liste in Gegner
-		for(var i = 0; i < gegnerinfo.length; i++){
-			this.view.playAnimation(gegnerinfo[i]); // objekt, kill=false
-		}
-
+		this.view.drawStartScreen();
 	}
 
 	/**
 	* Pausierende Aktionen
 	* Blendet den Pausenscreen ein.
-	* Iteriert durch Objekt-Listen und lässt in View ein Standbild zuordnen.
+	* Iteriert durch Objekt-Listen und lässt in View die ANimationen der Objekte stoppen.
 	*/
 	paused() {
 
@@ -397,7 +397,57 @@ export default class Controller {
 
 	}
 
-    loescheSchlange_2(){
+	/**
+	* Game-Over Aktionen
+	* Blendet den Game-Over Screen ein.
+	* Löscht ALLE Objekt-Listen (Gegner, Items, Schlange)
+	*/
+	gameover() {
+
+		/**
+		* Gameover-Screen darstellen
+		*/
+		this.view.drawGameOverText();
+
+		/**
+		* Durch Schlangen-Liste iterieren und deren
+		* Images löschen
+		*/
+		var schlangeninfo = this.schlange.getInfo(); // getter für die Liste in Schlange
+		for(var i = 0; i < schlangeninfo.length; i++){
+			this.view.draw(schlangeninfo[i], true); // objekt, kill = true
+		}
+
+		/**
+		* Durch Gegner-Liste iterieren und deren
+		* Images löschen
+		*/
+		var gegnerinfo = this.gegner.getInfo(); // getter für die Liste in Gegner
+		for(var i = 0; i < gegnerinfo.length; i++){
+			this.view.draw(gegnerinfo[i], true); // objekt, kill = true
+		}
+
+		/**
+		* Durch Item-Liste iterieren und deren
+		* Images löschen
+		*/
+		var pickupinfo = this.pickup.getInfo(); // getter für die Liste in Pickup
+		for(var i = 0; i < pickupinfo.length; i++){
+			this.view.draw(pickupinfo[i], false); // objekt, kill=false
+		}
+
+	}
+
+	reset() {
+		let Schlange = require('./schlange.js').default;
+		this.schlange = new Schlange();
+		this.schlange.startX = 1;
+		this.schlange.startY = 1;
+        this.laufrichtung = this.richtungen.right;
+    }
+
+	/**
+    loescheSchlange_2() {
         //Zunächst Schlangen zeichnung beauftragen
 		var schlangeninfo = this.schlange.getInfo();
 		//update Länge der Schlange
@@ -418,7 +468,7 @@ export default class Controller {
 		}
     }
 
-    /** Löscht Schlange bis auf Kopf */
+     Löscht Schlange bis auf Kopf 
 	loescheSchlange(){
         for(var i = this.schlange.getLength(); i > 0 ; i--){
             var zutoeten = this.schlange.delete(0);
@@ -436,7 +486,7 @@ export default class Controller {
 
     zeichneGOScreen(){
         this.view.zeichneGOScreen();
-    }
+    }*/
 
 
 }

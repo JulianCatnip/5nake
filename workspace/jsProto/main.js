@@ -62,23 +62,23 @@ export default class Main {
         */
         this.kollisionstyp = 'frei';
 
-		/**
-		* Ist das spiel pausiert oder nicht
-		* fängt mit true an (Press any Key to continue)
+        /**
+        * Spielstatus
         */
-		this.paused = true;
+        this.gameStatus = 'start';
 
-		/**
-		* Ist der Spieler tot oder nicht 
-        */
+		/** VERWORFEN
+
+		this.paused = true;
 		this.dead = false;
 
-
+        
         var gameover_picture;
 
         var called = false;
 
         var resetted = false;
+        */
 
     }
 
@@ -113,45 +113,9 @@ export default class Main {
         this.game.add.tileSprite(0, 0, 900, 660, 'boden');
         this.controller.resetKeyboardKeys();
 
-        /** Alle Objekte die zu Start benötigt werden zeichnen (Schlange, Pickup, Gegner) */
-		this.controller.zeichneObjekte();
-
-    }
-
-    /**
-    Setzt neue Schlange für den Controller und resettet alle stats
-    */
-    resetGame() {
-
-        this.resetted = true;
-        // neue schlange initialisieren
-        this.controller.zeichneSchlange_LVL1();
-
-        // Geschwindigkeit reseten
-        this.spielgeschwindigkeit = 20;
-
-        // laufrichtung resetten
-        this.controller.laufrichtung = undefined;
-
-        // start des Spielers reseten
-        this.controller.schlange.startX = 1;
-        this.controller.schlange.startY = 1;
-
-        this.controller.respawnAll();
-        // Punktestand reseten
-        this.score = 0;
-
+        /** GAME START */
         this.controller.zeichneObjekte();
-
-        this.controller.view.text = undefined;
-
-        //Pause-Screen zeichnen
-        /*this.view.drawPauseScreen();
-        //Wenn eine Taste gedrückt ist
-        if(this.controller.getCursor().down.isDown){
-            this.paused = false;
-            this.view.removeText();
-        }*/
+        //this.gameStatus = 'start';
     }
 
     /**
@@ -160,12 +124,20 @@ export default class Main {
     */
     update() {
 
-		  // Wenn das Spiel nicht pausiert
-		  if(!this.paused) {
+        if(this.gameStatus == 'start') {
 
-            // Debugging
-            //this.i++;
-            //console.log('update keine pause aufgerufen ' + this.i);
+            this.controller.started(); // startscreen
+
+            /** Alle Objekte die zu Start benötigt werden zeichnen (Schlange, Pickup, Gegner) */
+
+            if(this.controller.getEnterKey().isDown) { // Enter-Taste für Spiel-Start drücken
+                this.view.removeText();
+                this.gameStatus = 'play';
+            }
+
+        } // ENDE START
+
+        else if(this.gameStatus == 'play') {
 
             this.controller.updateLaufrichtung(); // Laufrichtung aktualisieren
 
@@ -191,21 +163,29 @@ export default class Main {
                 if(this.kollisionstyp != 'frei') {
 
                     switch(this.kollisionstyp) {
-                        case 'feind':   /** TODO: GAMEOVER;*/
-                                        this.controller.kollisionMitVerfolger = true;
+
+                        case 'feind':   /** Kollision mit Gegner oder Körperteil */
                                         console.log('GAMEOVER!');
+                                        this.gameStatus = 'dead'; // Spielstatus wechseln
+
                                         break;
-                        case 'boon':    /** TODO: Apply Boon;*/ console.log('BOON');
+
+                        case 'boon':    /** Kollision mit Upgrade-Item? */
+                                        /** TODO: Apply Boon;*/ 
+                                        console.log('BOON');
                                         break;
-                        case 'pickup':  this.controller.respawnAll();
+
+                        case 'pickup':  /** Kollision mit Pickup */ 
+                                        this.controller.respawnAll();
                                         this.controller.verkuerzeSchlange();
                                         this.score + 10;
                                         break;
+
                     }
                 }
 
-                ////////////////// TODO: //////////////////
-                if (this.controller.kollisionMitVerfolger || this.controller.kollisionMitFeind || this.controller.kollisionMitWand) {
+                ////////////////// VERWORFEN: //////////////////
+                /*if (this.controller.kollisionMitVerfolger || this.controller.kollisionMitFeind || this.controller.kollisionMitWand) {
                     // Game over...-Meldung
                     //this.view.drawGameOverText();
 
@@ -229,22 +209,10 @@ export default class Main {
                     this.controller.kollisionMitVerfolger = false;
                     this.controller.kollisionMitFeind = false;
                     this.controller.kollisionMitWand = false;
-                }
 
-                /*
-                if (this.view.kollisionMitPickup()) {
-                    // Punktestand raufsetzen
-                    // Pickup löschen
-                    // this.view.platziereRandomPickup(); // neues Pickup platzieren
-                    // this.spielgeschwindigkeit--; // spielgeschwindigkeit vergrößern?
-                    // if (this.spielgeschwindigkeit <= 5) { // geschwindigkeit nie kleiner als 5
-                        this.spielgeschwindigkeit = 5;
-                    }
-                }
-                */
-                // ...
+                }*/
 
-                // HIER WERDEN DIE EINZELENEN KOMPONENTEN GEZEICHNET
+                // HIER WERDEN DIE EINZELENEN KOMPONENTEN NEU GEZEICHNET
                 this.controller.zeichneObjekte(); // alle objekte neuzeichnen
 
                 // Schlange vergrößern
@@ -256,37 +224,80 @@ export default class Main {
 
                 this.frameCounter = 0;
 
-            }
+            } // ENDE BEWEGUNGS-LOOP
 
             // Wenn space gedrückt wird pausieren
             if(this.controller.getSpaceBar().isDown) {
-                this.paused = true;
-                this.view.drawPauseScreen();
+                this.gameStatus = 'paused';
             }
-        } // ENDE IF(!PAUSED)
 
-        else if(this.dead) { // Was Passiert wenn das Spiel nicht Pausiert sondern zuende ist? (Tot)
+        } // ENDE PLAY
 
-		// HIER TOT SCREEN EINFÜGEN
+        else if(this.gameStatus == 'dead') { // Was Passiert wenn das Spiel nicht Pausiert sondern zuende ist? (Tot)
 
-        } // ENDE IF(DEAD)
+            console.log('ENDE');
 
-        else if(this.paused) { // Was passiert um das Spiel zu starten bzw was passiert im Pausescreen?
+            /**
+            * Gameover Screen einblenden und alle objekt.images löschen
+            */
+            this.controller.gameover();
+            
+            if(this.controller.getEnterKey().isDown) { // Space-Taste für Neustart drücken
 
-            this.controller.paused();
+                //this.controller.zeichneObjekte();
+                this.view.removeText();
+                this.resetGame(); // kolisionstyp auf frei setzen
+                this.gameStatus = 'start';
+            }
+
+        } // ENDE DEAD
+
+        else if(this.gameStatus == 'paused') {
+
+            this.controller.paused(); // pause screen und gestoppte animation
+
+            var up = this.controller.getCursor().up.isDown;
+            var down = this.controller.getCursor().down.isDown;
+            var left = this.controller.getCursor().left.isDown;
+            var right = this.controller.getCursor().right.isDown;
 
             // Wenn space gedrückt wird
-            if(this.controller.getCursor().down.isDown) {
-                this.paused = false;
+            if(up || down || left || right) {
                 this.view.removeText();
+                this.gameStatus = 'play';
 			}
 
-        } // ENDE IF(PAUSED)
+        } // ENDE PAUSED
 
-    } // ENDE UPDATE
+    }
 
-    setUnPaused() {
-        this.paused = false;
+    /**
+    * Setzt neue Schlange für den Controller und resettet alle stats
+    */
+    resetGame() {
+
+        // neue schlange initialisieren
+        // laufrichtung resetten
+        // start des Spielers reseten
+        this.controller.reset();
+
+        //this.controller.respawnAll();
+
+        // Geschwindigkeit reseten
+        this.spielgeschwindigkeit = 20;
+
+        // Punktestand reseten
+        this.score = 0;
+
+        this.controller.zeichneObjekte();
+
+        //Pause-Screen zeichnen
+        /*this.view.drawPauseScreen();
+        //Wenn eine Taste gedrückt ist
+        if(this.controller.getCursor().down.isDown){
+            this.paused = false;
+            this.view.removeText();
+        }*/
     }
 
 }
@@ -336,7 +347,4 @@ window.addEventListener('load', () => {
         main.update();
     }
 
-    function fadePicture(){
-        main.fadePicture();
-    }
 });
