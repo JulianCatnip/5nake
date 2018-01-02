@@ -61,7 +61,10 @@ export default class Main {
         * Spielstatus
         */
         this.gameStatus = 'start';
-
+        
+        /** timer und Spielsekunden*/
+        this.timer;
+        this.seconds = 0;
 
     }
 
@@ -99,7 +102,26 @@ export default class Main {
         /** GAME START */
         this.controller.zeichneObjekte();
         //this.gameStatus = 'start';
+        
+        //  Timer initiieren
+        this.timer = this.game.time.create(false);
+
+        //Funktion zum Aktualisierend er Zeitanzeige initiieren
+        var updateTime = function() {
+            this.seconds ++;
+            this.view.zeitAnzeige(this.seconds);
+            }
+       
+        //  TimeEvent jede Sekunde ausführen lassen
+        this.timer.loop(1000, updateTime, this);
+
+        
     }
+    
+    /*updateTime() {
+    this.seconds ++;
+    this.view.zeitAnzeige(this.seconds);
+    }*/
 
     /**
     * PHASER-Methode GAMELOOP
@@ -116,6 +138,8 @@ export default class Main {
             if(this.controller.getEnterKey().isDown) { // Enter-Taste für Spiel-Start drücken
                 this.view.removeText();
                 this.gameStatus = 'play';
+                //  Timer für Zeitanzeige wird gestartet, sobald das Spiel anfängt
+                this.timer.start();
             }
 
         } // ENDE START
@@ -161,8 +185,7 @@ export default class Main {
                         case 'pickup':  /** Kollision mit Pickup */
                                         this.controller.respawnAll();
                                         this.controller.verkuerzeSchlange();
-                                        this.score + 10;
-                                        this.spielgeschwindigkeit -= 2; 
+                                        this.spielgeschwindigkeit -= 1; 
                                         if (this.spielgeschwindigkeit <= 5) { 
                                             this.spielgeschwindigkeit = 5;
                                         }
@@ -201,12 +224,15 @@ export default class Main {
 
                 // HIER WERDEN DIE EINZELENEN KOMPONENTEN NEU GEZEICHNET
                 this.controller.zeichneObjekte(); // alle objekte neuzeichnen
+                
 
-                // Schlange vergrößern
+                // Schlange vergrößern, Punktestand aktualisieren
                 this.snekSpawn++;
     			this.snekSpawn %= 10;
     			if(this.snekSpawn == 0){
                     this.controller.vergroessereSchlange();
+                    //pro Zeittaktung automatisches update der Punkte
+                    this.controller.updateScoreOverTime();
     			}
 
                 this.frameCounter = 0;
@@ -228,6 +254,7 @@ export default class Main {
             * Gameover Screen einblenden und alle objekt.images löschen
             */
             this.controller.gameover();
+            this.timer.stop(false);
 
             if(this.controller.getEnterKey().isDown) { // Space-Taste für Neustart drücken
 
@@ -235,6 +262,9 @@ export default class Main {
                 this.view.removeText();
                 this.resetGame(); // kolisionstyp auf frei setzen
                 this.gameStatus = 'start';
+                //Sekundenzahl zurücksetzen
+                this.seconds = 0;
+                this.view.zeitAnzeige(this.seconds);
             }
 
 
@@ -288,9 +318,6 @@ export default class Main {
         // Geschwindigkeit reseten
         this.spielgeschwindigkeit = 20;
 
-        // Punktestand reseten
-        this.score = 0;
-
         this.controller.zeichneObjekte();
 
         //Pause-Screen zeichnen
@@ -301,8 +328,12 @@ export default class Main {
             this.view.removeText();
         }*/
     }
+    
+    
 
 }
+
+
 
 /////////////////////////////////////////////////////////////////////////////
 /////////////////** Start sobald Browserfenster geladen *////////////////////

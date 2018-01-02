@@ -43,13 +43,25 @@ export default class View {
         tag.innerHTML = laenge;
     }
     
+    leadingzero (number) {
+    return (number < 10) ? '0' + number : number;
+    }
+    
     /** 
     * Zeitanzeige des Spiels mit DOM
     @param time: Zeit in Sekunden
     */
-    zeitAnzeige(time){
-        var tag = document.getElementById("time");
-        tag.innerHTML = time;
+    zeitAnzeige(seconds){
+        var tag =  document.getElementById("time");
+        var output = '00:00';
+        if (seconds >= 0) {
+          var m = Math.floor((seconds % 3600) / 60);
+          var s = seconds % 60;
+            output=
+            this.leadingzero(m) + ':' +
+            this.leadingzero(s);
+        }
+       tag.innerHTML = output;
     }
     
     

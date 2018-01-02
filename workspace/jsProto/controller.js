@@ -314,7 +314,7 @@ export default class Controller {
 			this.view.draw(zutoeten, true);
 		}
         //erhöhe Spielstand
-        this.score += 10;
+        this.score += 5;
 	}
 	
     
@@ -361,6 +361,21 @@ export default class Controller {
 		}
 
 	}
+    
+    /** Wird aufgerufen, um pro Zeitintervall automatisch den Punktestand in Abhängigkeit der Länge der Schlange zu erhöhen */
+    updateScoreOverTime(){
+        var schlangenInformation = this.schlange.getInfo();
+        //wenn die Schlange 3 oder weniger Verfolger hat, bekommt man pro Intervall 3 Punkte
+        if(schlangenInformation.length -1 <= 3){
+            this.score += 3;
+        } 
+        //wenn die Schlange 5 oder weniger Verfolger hat, bekommt man 2 Punkte pro Intervall
+        else if(schlangenInformation.length -1 <= 5){this.score += 2;}
+        //Wenn die Schlange zu viele Verfolger hat, 1 Punkt fürs Intervall
+        else{this.score +=1;}
+        //Punkteanzeige aktualisieren
+        this.view.punkteAnzeige(this.score);
+    }
 
 	/**
 	* Aktionen beim Startscreen
@@ -453,6 +468,8 @@ export default class Controller {
 		this.schlange.startX = 1;
 		this.schlange.startY = 1;
         this.laufrichtung = this.richtungen.right;
+        // Punktestand resetten
+        this.score = 0;
     }
 
 	/**
