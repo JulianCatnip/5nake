@@ -16,10 +16,11 @@ export default class Einzelobjekt {
 		/** Wichtig für die Sprite zuordnung */
 		this.positionX = positionX;
 		this.positionY = positionY;
-		this.typ = typ; // typ == spritename!#
-		this.laufrichtung = 'runter';
+		this.typ = typ; // typ == spritename!
+		
+		this.laufrichtung;
 		//this.image = null;
-
+		
 	}
 	
 	/** Gibt X-Koordinate der Position zurück */
