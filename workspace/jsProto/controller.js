@@ -37,6 +37,12 @@ export default class Controller {
         * Größe eines Einzelobjektes
         */
 	  	  this.objektGroesse = 60; // increment um 60
+        
+        /** Spielstand */
+        this.score = 0;
+        
+        /*+ Spieldauer in Sekunden*/
+        this.seconds = 0;
 
         /**
         * Canvas Höhe und Breite
@@ -84,7 +90,43 @@ export default class Controller {
         */
         //this.changeId;
 
+    }//Ende constructor
+    
+    
+    //// TIMER ////
+    /*calculateSeconds(){
+        this.seconds++;
+        window.setTimeout("calculateSeconds()", 100);
+        console.log(this.seconds);
+    }*/
+    
+    updateSeconds(){
+        var element = document.getElementById("time");
+        this.seconds += 1;
     }
+    
+    updatePoints(){
+        //Schlange auslesen
+        var element = document.getElementById("points");
+		var schlangeninfo = this.schlange.getInfo();
+        if(schlangeninfo.length-1 <= 3){
+            this.score += 3;
+        }
+        else{
+            this.score += 1;
+        }
+    }
+    
+    calculateSeconds(){
+        setInterval("updateSeconds()", 100);
+        setInterval("updateScore()", 100);
+    }
+    
+    
+    
+    
+    
+    //// BEWEGUNG DER SCHLANGE ////
 
     /** Getter für die Cursor Keys */
     getCursor() {
@@ -172,6 +214,7 @@ export default class Controller {
 
     }
 
+    //// KOLLISIONEN ////
 	
 	/** Befehl für das Spawnen eines Gegenstandes (Gegner)
 	@param Anzahl*/
@@ -249,15 +292,25 @@ export default class Controller {
 		if(zutoeten != undefined){
 			this.view.draw(zutoeten, true);
 		}
+        //erhöhe Spielstand
+        this.score += 10;
 	}
 	
+    
+    //// VIEW-UPDATE ////
 	
 	/** Zeichne Objekte */
 	zeichneObjekte(){
 		//Zunächst Schlangen zeichnung beauftragen
 		var schlangeninfo = this.schlange.getInfo();
-		//update Länge der Schlange
-		this.view.laengenAnzeige(schlangeninfo.length);
+		//update HTML-Felder:
+        //Länge der Schlange (ohne den Kopf)
+		this.view.laengenAnzeige(schlangeninfo.length-1);
+        //Spielstand
+        this.view.punkteAnzeige(this.score);
+        //Timer
+        this.view.zeitAnzeige(this.seconds);
+        
 		for(var i = 0; i < schlangeninfo.length; i++){
 			this.view.draw(schlangeninfo[i], false);
 		}

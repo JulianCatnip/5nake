@@ -53,7 +53,7 @@ export default class Main {
 		 
 		  /**
 		  * SpielStand */
-		  this.score = 0;
+		  //this.score = 0;
 		 
 		  /**
 		  * Typ der aktuellen Kollision */
@@ -107,7 +107,6 @@ export default class Main {
 		  if(!this.paused){
 
         this.controller.updateLaufrichtung(); // Laufrichtung aktualisieren
-
         this.frameCounter++;
 
         /** 
@@ -135,7 +134,7 @@ export default class Main {
                                     break;
                case 'pickup': this.controller.respawnAll(); 
 										this.controller.verkuerzeSchlange();
-										this.score + 10;
+										//this.score + 10;
                                     break;
                }
 				}
@@ -168,7 +167,6 @@ export default class Main {
             // ...
 			  	 	// HIER WERDEN DIE EINZELENEN KOMPONENTEN GEZEICHNET
 			  		this.controller.zeichneObjekte();
-			  
 			  	//Erhöhen des logik counters
 			  	this.snekSpawn++;
 			   this.snekSpawn %= 10; 
@@ -187,6 +185,7 @@ export default class Main {
 		if(this.controller.getCursor().down.isDown){
 			this.paused = false;
 			this.view.removeText();
+            this.controller.calculateSeconds();
 			}
 	}  
 

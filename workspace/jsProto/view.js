@@ -66,6 +66,24 @@ export default class View {
         var tag = document.getElementById("length");
         tag.innerHTML = laenge;
     }
+    
+    /** 
+    * Zeitanzeige des Spiels mit DOM
+    @param time: Zeit in Sekunden
+    */
+    zeitAnzeige(time){
+        var tag = document.getElementById("time");
+        tag.innerHTML = time;
+    }
+    
+    
+    /** 
+    * Anzeige des Punktestands mit DOM
+    */
+    punkteAnzeige(punkte) {
+        var tag = document.getElementById("points");
+        tag.innerHTML = punkte;
+    }
 
     /** 
     * Bewegt die Schlange 
