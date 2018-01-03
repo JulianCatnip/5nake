@@ -79,10 +79,11 @@ export default class Main {
 
         /** Objekt-Sprites laden */
         this.game.load.spritesheet('spieler', '../images/spieler.png', 60, 60, 12);
-        this.game.load.spritesheet('verfolger', '../images/verfolger.png', 60, 60, 12);
-        this.game.load.spritesheet('feind', '../images/feind.png', 60, 60, 12);
+        this.game.load.spritesheet('verfolger', '../images/verfolger.png', 60, 60, 48);
+        this.game.load.spritesheet('feind', '../images/feind.png', 60, 60, 16);
+
         this.game.load.image('stein', '../images/stein.jpg');
-		this.game.load.image('item', '../images/item.jpg');
+		this.game.load.image('item', '../images/gummiente.png');
 
         /** GAMEOVER-Sprite laden */
         this.game.load.image('go_screen', '../images/go_screen.jpg');
@@ -262,6 +263,7 @@ export default class Main {
                 this.view.removeText();
                 this.resetGame(); // kolisionstyp auf frei setzen
                 this.gameStatus = 'start';
+
                 //Sekundenzahl zurücksetzen
                 this.seconds = 0;
                 this.view.zeitAnzeige(this.seconds);

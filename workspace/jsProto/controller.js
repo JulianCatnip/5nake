@@ -226,6 +226,14 @@ export default class Controller {
 		var kopf = this.schlange.getInfo();
 		kopf = kopf[0];
 
+		/**
+		* Durch Item-Liste iterieren und deren
+		* alte Objekt-Sprites von View löschen lassen
+		*/
+		var pickupinfo = this.pickup.getInfo(); // getter für die Liste in Pickup
+		for(var i = 0; i < pickupinfo.length; i++){
+			this.view.draw(pickupinfo[i], true); // objekt, kill=true!!!
+		}
 		this.pickup.respawn(kopf); // respawn
 
 		/**
@@ -234,7 +242,15 @@ export default class Controller {
 		var pickupkol = this.pickup.getInfo();
 		pickupkol = pickupkol[0];
 
-		this.gegner.respawn(pickupkol); // respawn
+		/**
+		* Durch Gegner-Liste iterieren und deren
+		* alte Objekt-Sprites von View löschen lassen
+		*/
+		var gegnerinfo = this.gegner.getInfo(); // getter für die Liste in Gegner
+		for(var i = 0; i < gegnerinfo.length; i++){
+			this.view.draw(gegnerinfo[i], true); // objekt, kill=true!!!
+		}
+		this.gegner.respawn(pickupkol); // respawn // alt:setzt vorhandenem objekt random position
 
 	}
 

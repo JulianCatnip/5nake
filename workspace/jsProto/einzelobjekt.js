@@ -19,6 +19,11 @@ export default class Einzelobjekt {
 		this.typ = typ; // typ == spritename!
 		
 		this.laufrichtung;
+
+		/** Vergibt bei Bedarf eine RandomId von 1-4 für die Character-Zuordnung der Sprites */
+		const zufallszahl = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
+		this.randomId = zufallszahl;
+
 		//this.image = null;
 		
 	}
@@ -56,5 +61,15 @@ export default class Einzelobjekt {
 			this.laufrichtung = 'runter';
 		}
 		this.positionY = newY;
+	}
+
+	/** Setzt zufällige ID von 1-4 */
+	setRandomId() {
+		this.randomId = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
+	}
+
+	/** Gibt die zufällige Id des Objektes zurück */
+	getRandomId() {
+		return this.randomId;
 	}
 }

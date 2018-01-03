@@ -84,12 +84,17 @@ export default class Gegner {
 	*/
 	respawn(gegenstand) {
 		for(var i = 0; i < this.list.length; i++){
-			this.reset(this.list[i]);
+			//this.reset(this.list[i]);
+			this.list[i] = new Einzelobjekt(
+				Math.floor(Math.random() * (this.maxX - 2 + 1)) + 2,
+				Math.floor(Math.random() * (this.maxY - 2 + 1)) + 2,
+				this.typ
+			);
 		}
 		this.stackVerhindern(gegenstand);
 	}
 	
-	/**
+	/** VERWORFEN
 	* Setzt ein Einzelobjekt auf neue Position 
 	*/
 	reset(objekt) {
@@ -97,7 +102,7 @@ export default class Gegner {
 		objekt.setPositionY(Math.floor(Math.random() * (this.maxY - 2 + 1)) + 2);
 	}
 	
-	/** gibt die informationen über alle Gegner als Array zurück */
+	/** Gibt die informationen über alle Gegner als Array zurück */
 	getInfo() {
 		return this.list;
 	}

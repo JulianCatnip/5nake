@@ -96,7 +96,7 @@ export default class View {
 			objekt.image = this.game.add.sprite(objekt.getPositionX() * this.objektGroesse, objekt.getPositionY() * this.objektGroesse, objekt.typ);
 
             /** Je nach Objekt-Typ andere Animation anwenden */
-			if(objekt.typ == 'spieler' || objekt.typ == 'verfolger') {
+			if(objekt.typ == 'spieler') {
 
                 // animation je nach laufrichtung wechseln
                 switch(objekt.laufrichtung) {
@@ -112,20 +112,121 @@ export default class View {
                 }
                 objekt.image.animations.play('walk');
 
+            } else if(objekt.typ == 'verfolger') {
+
+                /** 1 Einzelobjekt bekommt zufälliges Charakter-Design (1 von 4) */
+                var randomCharacter = objekt.getRandomId();
+
+                /** Verfolger hat verschiedene Designs */
+                switch(randomCharacter){
+                    // Charakter 1
+                    case 1: switch(objekt.laufrichtung) {
+                                case 'up': objekt.image.animations.add('walk', [1, 2], 5, true);
+                                    break;
+                                case 'right': objekt.image.animations.add('walk', [13, 14], 5, true);
+                                    break;
+                                case 'down': objekt.image.animations.add('walk', [25, 26], 5, true);
+                                    break;
+                                case 'left': objekt.image.animations.add('walk', [37, 38], 5, true);
+                                    break;
+                                default: objekt.image.frame = 12;
+                            }
+                        break;
+                    // Charakter 2
+                    case 2: switch(objekt.laufrichtung) {
+                                case 'up': objekt.image.animations.add('walk', [4, 5], 5, true);
+                                    break;
+                                case 'right': objekt.image.animations.add('walk', [16, 17], 5, true);
+                                    break;
+                                case 'down': objekt.image.animations.add('walk', [28, 29], 5, true);
+                                    break;
+                                case 'left': objekt.image.animations.add('walk', [40, 41], 5, true);
+                                    break;
+                                default: objekt.image.frame = 15;
+                            }
+                        break;
+                    // Charakter 3
+                    case 3: switch(objekt.laufrichtung) {
+                                case 'up': objekt.image.animations.add('walk', [7, 8], 5, true);
+                                    break;
+                                case 'right': objekt.image.animations.add('walk', [19, 20], 5, true);
+                                    break;
+                                case 'down': objekt.image.animations.add('walk', [31, 32], 5, true);
+                                    break;
+                                case 'left': objekt.image.animations.add('walk', [43, 44], 5, true);
+                                    break;
+                                default: objekt.image.frame = 18;
+                            }
+                        break;
+                    // Charakter 4
+                    default: switch(objekt.laufrichtung) {
+                                case 'up': objekt.image.animations.add('walk', [10, 11], 5, true);
+                                    break;
+                                case 'right': objekt.image.animations.add('walk', [22, 23], 5, true);
+                                    break;
+                                case 'down': objekt.image.animations.add('walk', [34, 35], 5, true);
+                                    break;
+                                case 'left': objekt.image.animations.add('walk', [46, 47], 5, true);
+                                    break;
+                                default: objekt.image.frame = 21;
+                            }
+                }
+
+                objekt.image.animations.play('walk');
+
 			} else if(objekt.typ == 'feind') {
 
-                // random 1-4
-                var random = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
+                /** 1 Einzelobjekt bekommt zufälliges Charakter-Design (1 von 4) */
+                var randomCharacter = objekt.getRandomId();
 
-                /** Feind blickt in zufällige Richtungen */
-                switch(random){
-                    case 1: objekt.image.frame = 3;
+                /** 1 Charakter-Design wechselt zufällig in 1 von 4 Frames */
+                var random = this.getRandom(1, 4);
+
+                /** Feind hat verschiedene Designs */
+                switch(randomCharacter){
+                    // Charakter 1
+                    case 1: switch(random) {
+                                case 1: objekt.image.frame = 0;
+                                    break;
+                                case 2: objekt.image.frame = 4;
+                                    break;
+                                case 3: objekt.image.frame = 8;
+                                    break;
+                                default: objekt.image.frame = 12;
+                            }
                         break;
-                    case 2: objekt.image.frame = 6;
+                    // Charakter 2
+                    case 2: switch(random) {
+                                case 1: objekt.image.frame = 1;
+                                    break;
+                                case 2: objekt.image.frame = 5;
+                                    break;
+                                case 3: objekt.image.frame = 9;
+                                    break;
+                                default: objekt.image.frame = 13;
+                            }
                         break;
-                    case 3: objekt.image.frame = 9;
+                    // Charakter 3
+                    case 3: switch(random) {
+                                case 1: objekt.image.frame = 2;
+                                    break;
+                                case 2: objekt.image.frame = 6;
+                                    break;
+                                case 3: objekt.image.frame = 10;
+                                    break;
+                                default: objekt.image.frame = 14;
+                            }
                         break;
-                    default: objekt.image.frame = 0;
+                    // Charakter 4
+                    default: switch(random) {
+                                case 1: objekt.image.frame = 3;
+                                    break;
+                                case 2: objekt.image.frame = 7;
+                                    break;
+                                case 3: objekt.image.frame = 11;
+                                    break;
+                                default: objekt.image.frame = 15;
+                            } 
                 }
 
             }
@@ -217,6 +318,12 @@ export default class View {
         // this.game.world.remove(this.text);
         this.text.destroy();
         this.text = undefined;
+    }
+
+    /** Gibt eine zufällige zahl von .. bis zurück */
+    getRandom(min, max) {
+        // random 1-4
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     /** 
