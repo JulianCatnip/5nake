@@ -288,6 +288,7 @@ export default class Main {
         else if(this.gameStatus == 'paused') {
 
             this.controller.paused(); // pause screen und gestoppte animation
+            this.timer.stop(false);
 
             var up = this.controller.getCursor().up.isDown;
             var down = this.controller.getCursor().down.isDown;
@@ -298,6 +299,7 @@ export default class Main {
             if(up || down || left || right) {
                 this.view.removeText();
                 this.gameStatus = 'play';
+                this.timer.start();
 			}
 
         } // ENDE PAUSED
