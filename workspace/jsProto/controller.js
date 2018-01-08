@@ -226,6 +226,7 @@ export default class Controller {
 	erhoeheGegnerzahl() {
 		var pickupkol = this.pickup.getInfo();
 		pickupkol = pickupkol[0];
+        this.gegner.stackVerhindern(pickupkol);
 		this.gegner.add(pickupkol);
 	}
 
@@ -263,6 +264,9 @@ export default class Controller {
 		var gegnerinfo = this.gegner.getInfo(); // getter für die Liste in Gegner
 		for(var i = 0; i < gegnerinfo.length; i++){
 			this.view.draw(gegnerinfo[i], true); // objekt, kill=true!!!
+		}
+        for(var i = 0; i < gegnerinfo.length; i++){
+			this.gegner.respawn(gegnerinfo[i]); // objekt, kill=true!!!
 		}
 		this.gegner.respawn(pickupkol); // respawn // alt:setzt vorhandenem objekt random position
 

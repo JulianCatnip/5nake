@@ -68,6 +68,7 @@ export default class Gegner {
 					if(this.list[i].getPositionY() == gegenstand.getPositionY()){
 						// Bei Gleichheit respawnen
 						this.reset(this.list[i]);
+                        this.stackVerhindern(gegenstand);
 					} else {
 						gleich = false;
 					}
