@@ -83,168 +83,262 @@ export default class View {
 	*/
 	draw(objekt, kill){
 
-		if(!kill) { // wenn objekt nicht gelöscht wurde
+		if(!kill) { // wenn objekt nicht gelöscht werden sollte
 
-			if(objekt.image != undefined){ // wenn objekt bereits ein Sprite besitzt
-				//oldx = objekt.image.x;
-				//oldy = objekt.image.y;
-				//Alten Sprite löschen
-				objekt.image.destroy(); // Sprite löschen
-			}
+            // wenn objekt kein Sprite besitzt
+            if(objekt.image == undefined) {
 
-            /** Dem Objekt ein Sprite hinzufügen */
-			objekt.image = this.game.add.sprite(objekt.getPositionX() * this.objektGroesse, objekt.getPositionY() * this.objektGroesse, objekt.typ);
-
-            /** Je nach Objekt-Typ andere Animation anwenden */
-			if(objekt.typ == 'spieler') {
-
-                // animation je nach laufrichtung wechseln
-                switch(objekt.laufrichtung) {
-                    case 'up': objekt.image.animations.add('walk', [1, 2], 5, true);
-                            break;
-                    case 'right': objekt.image.animations.add('walk', [4, 5], 5, true);
-                            break;
-                    case 'down': objekt.image.animations.add('walk', [7, 8], 5, true);
-                            break;
-                    case 'left': objekt.image.animations.add('walk', [10, 11], 5, true);
-                            break;
-                    default: objekt.image.frame = 3;
-                }
-                objekt.image.animations.play('walk');
-
-            } else if(objekt.typ == 'verfolger') {
-
-                /** 1 Einzelobjekt bekommt zufälliges Charakter-Design (1 von 4) */
-                var randomCharacter = objekt.getRandomId();
-
-                /** Verfolger hat verschiedene Designs */
-                switch(randomCharacter){
-                    // Charakter 1
-                    case 1: switch(objekt.laufrichtung) {
-                                case 'up': objekt.image.animations.add('walk', [1, 2], 5, true);
-                                    break;
-                                case 'right': objekt.image.animations.add('walk', [13, 14], 5, true);
-                                    break;
-                                case 'down': objekt.image.animations.add('walk', [25, 26], 5, true);
-                                    break;
-                                case 'left': objekt.image.animations.add('walk', [37, 38], 5, true);
-                                    break;
-                                default: objekt.image.frame = 12;
-                            }
-                        break;
-                    // Charakter 2
-                    case 2: switch(objekt.laufrichtung) {
-                                case 'up': objekt.image.animations.add('walk', [4, 5], 5, true);
-                                    break;
-                                case 'right': objekt.image.animations.add('walk', [16, 17], 5, true);
-                                    break;
-                                case 'down': objekt.image.animations.add('walk', [28, 29], 5, true);
-                                    break;
-                                case 'left': objekt.image.animations.add('walk', [40, 41], 5, true);
-                                    break;
-                                default: objekt.image.frame = 15;
-                            }
-                        break;
-                    // Charakter 3
-                    case 3: switch(objekt.laufrichtung) {
-                                case 'up': objekt.image.animations.add('walk', [7, 8], 5, true);
-                                    break;
-                                case 'right': objekt.image.animations.add('walk', [19, 20], 5, true);
-                                    break;
-                                case 'down': objekt.image.animations.add('walk', [31, 32], 5, true);
-                                    break;
-                                case 'left': objekt.image.animations.add('walk', [43, 44], 5, true);
-                                    break;
-                                default: objekt.image.frame = 18;
-                            }
-                        break;
-                    // Charakter 4
-                    default: switch(objekt.laufrichtung) {
-                                case 'up': objekt.image.animations.add('walk', [10, 11], 5, true);
-                                    break;
-                                case 'right': objekt.image.animations.add('walk', [22, 23], 5, true);
-                                    break;
-                                case 'down': objekt.image.animations.add('walk', [34, 35], 5, true);
-                                    break;
-                                case 'left': objekt.image.animations.add('walk', [46, 47], 5, true);
-                                    break;
-                                default: objekt.image.frame = 21;
-                            }
-                }
-
-                objekt.image.animations.play('walk');
-
-			} else if(objekt.typ == 'feind') {
-
-                /** 1 Einzelobjekt bekommt zufälliges Charakter-Design (1 von 4) */
-                var randomCharacter = objekt.getRandomId();
-
-                /** 1 Charakter-Design wechselt zufällig in 1 von 4 Frames */
-                var random = this.getRandom(1, 4);
-
-                /** Feind hat verschiedene Designs */
-                switch(randomCharacter){
-                    // Charakter 1
-                    case 1: switch(random) {
-                                case 1: objekt.image.frame = 0;
-                                    break;
-                                case 2: objekt.image.frame = 4;
-                                    break;
-                                case 3: objekt.image.frame = 8;
-                                    break;
-                                default: objekt.image.frame = 12;
-                            }
-                        break;
-                    // Charakter 2
-                    case 2: switch(random) {
-                                case 1: objekt.image.frame = 1;
-                                    break;
-                                case 2: objekt.image.frame = 5;
-                                    break;
-                                case 3: objekt.image.frame = 9;
-                                    break;
-                                default: objekt.image.frame = 13;
-                            }
-                        break;
-                    // Charakter 3
-                    case 3: switch(random) {
-                                case 1: objekt.image.frame = 2;
-                                    break;
-                                case 2: objekt.image.frame = 6;
-                                    break;
-                                case 3: objekt.image.frame = 10;
-                                    break;
-                                default: objekt.image.frame = 14;
-                            }
-                        break;
-                    // Charakter 4
-                    default: switch(random) {
-                                case 1: objekt.image.frame = 3;
-                                    break;
-                                case 2: objekt.image.frame = 7;
-                                    break;
-                                case 3: objekt.image.frame = 11;
-                                    break;
-                                default: objekt.image.frame = 15;
-                            } 
-                }
+                // Sprite zuordnen
+                objekt.image = this.game.add.sprite(objekt.getPositionX() * this.objektGroesse, objekt.getPositionY() * this.objektGroesse, objekt.typ);
+                this.addAnimation(objekt);
 
             }
 
-		} else { // wenn objekt gelöscht wurde
+            // wenn objekt spieler oder verfolger ist, müssen bei richtungswechsel die frames geändert werden
+            // allerdings nur nötig wenn laurichtung sich geändert hat (!!??)
+            if(objekt.typ == 'spieler' && objekt.changedDirection || objekt.typ == 'verfolger' && objekt.changedDirection) {
+                this.updateAnimation(objekt);
+            }
 
-			if(objekt.image != undefined) { // sprite löschen
-				objekt.image.destroy();
+            // Das Sprite an die neue Position setzen 
+            objekt.image.x = objekt.getPositionX() * this.objektGroesse;
+            objekt.image.y = objekt.getPositionY() * this.objektGroesse;
+
+		} else { // wenn objekt gelöscht statt gezeichnet werden soll
+
+			if(objekt.image != undefined) {
+				objekt.image.destroy(); // sprite löschen
+                objekt.image = undefined; // image ist undefiniert
 			}
 
 		}
 	}
 
+    addAnimation(objekt) {
+
+        /** Je nach Objekt-Typ andere Animation anwenden */
+        if(objekt.typ == 'spieler') {
+
+            // dem Objekt mögliche Animationen zuordnen
+            objekt.image.animations.add('player_walk_up', [1, 2], 5, true);
+            objekt.image.animations.add('player_walk_right', [4, 5], 5, true);
+            objekt.image.animations.add('player_walk_down', [7, 8], 5, true);
+            objekt.image.animations.add('player_walk_left', [10, 11], 5, true);
+
+            // entsprechende animation je nach laufrichtung abspielen
+            switch(objekt.laufrichtung) {
+                case 'up': objekt.image.animations.play('player_walk_up'); // abspielen
+                            break;
+                case 'right': objekt.image.animations.play('player_walk_right'); // abspielen
+                            break;
+                case 'down': objekt.image.animations.play('player_walk_down'); // abspielen
+                            break;
+                case 'left': objekt.image.animations.play('player_walk_left'); // abspielen
+                            break;
+                default: objekt.image.frame = 3; // wenn laufrichtung undefiniert
+            }
+
+        } else if(objekt.typ == 'verfolger') {
+
+            /** 1 Einzelobjekt bekommt zufälliges Charakter-Design (1 von 4) */
+            var randomCharacter = objekt.getRandomId();
+
+            /** Verfolger hat verschiedene Charakter-Designs */
+            switch(randomCharacter){
+                // Charakter 1
+                case 1: objekt.image.animations.add('black_walk_up', [1, 2], 5, true);
+                        objekt.image.animations.add('black_walk_right', [13, 14], 5, true);
+                        objekt.image.animations.add('black_walk_down', [25, 26], 5, true);
+                        objekt.image.animations.add('black_walk_left', [37, 38], 5, true);
+
+                        switch(objekt.laufrichtung) {
+                            case 'up': objekt.image.animations.play('black_walk_up'); // abspielen
+                                break;
+                            case 'right': objekt.image.animations.play('black_walk_right'); // abspielen
+                                break;
+                            case 'down': objekt.image.animations.play('black_walk_down'); // abspielen
+                                break;
+                            case 'left': objekt.image.animations.play('black_walk_left'); // abspielen
+                                break;
+                            default: objekt.image.frame = 12;
+                        }
+                        break;
+                // Charakter 2
+                case 2: objekt.image.animations.add('red_walk_up', [4, 5], 5, true);
+                        objekt.image.animations.add('red_walk_right', [16, 17], 5, true);
+                        objekt.image.animations.add('red_walk_down', [28, 29], 5, true);
+                        objekt.image.animations.add('red_walk_left', [40, 41], 5, true);
+
+                        switch(objekt.laufrichtung) {
+                            case 'up': objekt.image.animations.play('red_walk_up');
+                                    break;
+                            case 'right': objekt.image.animations.play('red_walk_right');
+                                    break;
+                            case 'down': objekt.image.animations.play('red_walk_down');
+                                    break;
+                            case 'left': objekt.image.animations.play('red_walk_left');
+                                    break;
+                            default: objekt.image.frame = 15;
+                        }
+                        break;
+                // Charakter 3
+                case 3: objekt.image.animations.add('blonde_walk_up', [7, 8], 5, true);
+                        objekt.image.animations.add('blonde_walk_right', [19, 20], 5, true);
+                        objekt.image.animations.add('blonde_walk_down', [31, 32], 5, true);
+                        objekt.image.animations.add('blonde_walk_left', [43, 44], 5, true);
+
+                        switch(objekt.laufrichtung) {
+                            case 'up': objekt.image.animations.play('blonde_walk_up');
+                                    break;
+                            case 'right': objekt.image.animations.play('blonde_walk_right');
+                                    break;
+                            case 'down': objekt.image.animations.play('blonde_walk_down');
+                                    break;
+                            case 'left': objekt.image.animations.play('blonde_walk_left');
+                                    break;
+                            default: objekt.image.frame = 18;
+                        }
+                        break;
+                // Charakter 4
+                case 4: objekt.image.animations.add('brown_walk_up', [10, 11], 5, true);
+                        objekt.image.animations.add('brown_walk_right', [22, 23], 5, true);
+                        objekt.image.animations.add('brown_walk_down', [34, 35], 5, true);
+                        objekt.image.animations.add('brown_walk_left', [46, 47], 5, true);
+
+                        switch(objekt.laufrichtung) {
+                            case 'up': objekt.image.animations.play('brown_walk_up');
+                                    break;
+                            case 'right': objekt.image.animations.play('brown_walk_right');
+                                    break;
+                            case 'down': objekt.image.animations.play('brown_walk_down');
+                                    break;
+                            case 'left': objekt.image.animations.play('brown_walk_left');
+                                    break;
+                            default: objekt.image.frame = 21;
+                        }
+            }
+
+        } else if(objekt.typ == 'feind') {
+
+            /** 1 Einzelobjekt bekommt zufälliges Charakter-Design (1 von 4) */
+            var randomCharacter = objekt.getRandomId();
+
+            /** 1 Charakter-Design wechselt zufällig in 1 von 4 Frames */
+            //var random = this.getRandom(1, 4);
+
+            /** Feind hat verschiedene Designs */
+            switch(randomCharacter) {
+                // Charakter 1
+                case 1: objekt.image.animations.add('black_rotate', [0, 4, 8, 12], 1, true);
+                        objekt.image.animations.play('black_rotate');
+                        break;
+                // Charakter 2
+                case 2: objekt.image.animations.add('red_rotate', [1, 5, 9, 13], 1, true);
+                        objekt.image.animations.play('red_rotate');
+                        break;
+                // Charakter 3
+                case 3: objekt.image.animations.add('blonde_rotate', [2, 6, 10, 14], 1, true);
+                        objekt.image.animations.play('blonde_rotate');
+                        break;
+                // Charakter 4
+                case 4: objekt.image.animations.add('brown_rotate', [3, 7, 11, 15], 1, true);
+                        objekt.image.animations.play('brown_rotate');
+            }
+
+        }
+
+    }
+
+    updateAnimation(objekt) {
+
+        if(objekt.typ == 'spieler') {
+
+            objekt.image.animations.stop();
+
+            // animation je nach laufrichtung wechseln
+            switch(objekt.laufrichtung) {
+                case 'up': objekt.image.animations.play('player_walk_up');
+                            break;
+                case 'right': objekt.image.animations.play('player_walk_right');
+                            break;
+                case 'down': objekt.image.animations.play('player_walk_down');
+                            break;
+                case 'left': objekt.image.animations.play('player_walk_left');
+                            break;
+                default: objekt.image.frame = 3;
+            }
+
+        } else if(objekt.typ == 'verfolger') {
+
+            /** 1 Einzelobjekt bekommt zufälliges Charakter-Design (1 von 4) */
+            var randomCharacter = objekt.getRandomId();
+
+            objekt.image.animations.stop();
+
+            /** Verfolger hat verschiedene Charakter-Designs */
+            switch(randomCharacter){
+                // Charakter 1
+                case 1: switch(objekt.laufrichtung) {
+                            case 'up': objekt.image.animations.play('black_walk_up');
+                                break;
+                            case 'right': objekt.image.animations.play('black_walk_right');
+                                break;
+                            case 'down': objekt.image.animations.play('black_walk_down');
+                                break;
+                            case 'left': objekt.image.animations.play('black_walk_left');
+                                break;
+                            default: objekt.image.frame = 12;
+                        }
+                        break;
+                // Charakter 2
+                case 2: switch(objekt.laufrichtung) {
+                            case 'up': objekt.image.animations.play('red_walk_up');
+                                    break;
+                            case 'right': objekt.image.animations.play('red_walk_right');
+                                    break;
+                            case 'down': objekt.image.animations.play('red_walk_down');
+                                    break;
+                            case 'left': objekt.image.animations.play('red_walk_left');
+                                    break;
+                            default: objekt.image.frame = 15;
+                        }
+                        break;
+                // Charakter 3
+                case 3: switch(objekt.laufrichtung) {
+                            case 'up': objekt.image.animations.play('blonde_walk_up');
+                                    break;
+                            case 'right': objekt.image.animations.play('blonde_walk_right');
+                                    break;
+                            case 'down': objekt.image.animations.play('blonde_walk_down');
+                                    break;
+                            case 'left': objekt.image.animations.play('blonde_walk_left');
+                                    break;
+                            default: objekt.image.frame = 18;
+                        }
+                        break;
+                // Charakter 4
+                default: switch(objekt.laufrichtung) {
+                            case 'up': objekt.image.animations.play('brown_walk_up');
+                                    break;
+                            case 'right': objekt.image.animations.play('brown_walk_right');
+                                    break;
+                            case 'down': objekt.image.animations.play('brown_walk_down');
+                                    break;
+                            case 'left': objekt.image.animations.play('brown_walk_left');
+                                    break;
+                            default: objekt.image.frame = 21;
+                        }
+            }
+        }
+
+        objekt.changedDirection = false;
+    }
+
     /**
     * Stoppt die Animation eines Objektes
     */
     stopAnimation(objekt) {
-        objekt.image.animations.stop('walk', false);
+        objekt.image.animations.stop();
     }
 
     /**
