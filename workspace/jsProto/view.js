@@ -31,6 +31,10 @@ export default class View {
 		*/
 		this.objektGroesse = 60;
 
+        this.frameSpeed = 3;
+
+        this.redAnimation = [];
+
         this.gameover_picture;
 
     }
@@ -92,12 +96,22 @@ export default class View {
                 objekt.image = this.game.add.sprite(objekt.getPositionX() * this.objektGroesse, objekt.getPositionY() * this.objektGroesse, objekt.typ);
                 this.addAnimation(objekt);
 
+                // jedes mal wenn für ein Pickup objekt ein neues bild gezeichnet werden muss
+                if(objekt.typ == 'item') {
+                    this.frameSpeed += 1; // framerate erhöhen
+                    console.log(this.frameSpeed);
+                }
+
             }
 
             // wenn objekt spieler oder verfolger ist, müssen bei richtungswechsel die frames geändert werden
             // allerdings nur nötig wenn laurichtung sich geändert hat (!!??)
             if(objekt.typ == 'spieler' && objekt.changedDirection || objekt.typ == 'verfolger' && objekt.changedDirection) {
-                this.updateAnimation(objekt);
+                this.updateAnimation(objekt); // animation wechseln bei richtungswechsel
+            }
+
+            if(this.frameSpeed < 10 && objekt.typ == 'verfolger' || this.frameSpeed < 10 && objekt.typ == 'spieler') {
+                this.updateAnimationSpeed(objekt);
             }
 
             // Das Sprite an die neue Position setzen 
@@ -146,10 +160,12 @@ export default class View {
             /** Verfolger hat verschiedene Charakter-Designs */
             switch(randomCharacter){
                 // Charakter 1
-                case 1: objekt.image.animations.add('black_walk_up', [1, 2], 5, true);
-                        objekt.image.animations.add('black_walk_right', [13, 14], 5, true);
-                        objekt.image.animations.add('black_walk_down', [25, 26], 5, true);
-                        objekt.image.animations.add('black_walk_left', [37, 38], 5, true);
+                case 1: this.redAnimation = [
+                            objekt.image.animations.add('black_walk_up', [1, 2], 5, true),
+                            objekt.image.animations.add('black_walk_right', [13, 14], 5, true),
+                            objekt.image.animations.add('black_walk_down', [25, 26], 5, true),
+                            objekt.image.animations.add('black_walk_left', [37, 38], 5, true)
+                        ];
 
                         switch(objekt.laufrichtung) {
                             case 'up': objekt.image.animations.play('black_walk_up'); // abspielen
@@ -226,7 +242,7 @@ export default class View {
             /** 1 Charakter-Design wechselt zufällig in 1 von 4 Frames */
             //var random = this.getRandom(1, 4);
 
-            /** Feind hat verschiedene Designs */
+            /** Feind dreht sich und hat 1 zufälliges Aussehen  */
             switch(randomCharacter) {
                 // Charakter 1
                 case 1: objekt.image.animations.add('black_rotate', [0, 4, 8, 12], 1, true);
@@ -331,7 +347,14 @@ export default class View {
             }
         }
 
+        //objekt.image.animations.speed = this.frameSpeed;
         objekt.changedDirection = false;
+    }
+
+    updateAnimationSpeed(objekt) {
+        if(objekt.image.animations.currentAnim != null) {
+            objekt.image.animations.currentAnim.speed = this.frameSpeed;
+        }
     }
 
     /**
@@ -342,7 +365,7 @@ export default class View {
     }
 
     /**
-    * Zeichnet STartbildschirm der auf enter Knopfdruck verschwindet
+    * Zeichnet Startbildschirm der auf enter Knopfdruck verschwindet
     */
     drawStartScreen() {
 
@@ -384,6 +407,10 @@ export default class View {
 		}
 
 	}
+
+    resetAnimationSpeed() {
+        this.frameSpeed = 3;
+    }
 
     /**
     * Schreibt bei Kollision game over auf den screen

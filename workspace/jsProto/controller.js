@@ -109,9 +109,9 @@ export default class Controller {
         return this.game.input.keyboard.createCursorKeys();
     }
 
-    /** Getter für die Space Bar */
-    getSpaceBar() {
-        return this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    /** Getter für die P Key */
+    getPauseKey() {
+        return this.game.input.keyboard.addKey(Phaser.Keyboard.P);
     }
 
     /** Getter für die Space Bar */
@@ -231,6 +231,8 @@ export default class Controller {
 	reset() {
 		// Text löschen
         this.view.removeText();
+
+        this.view.resetAnimationSpeed();
 
 		// neue Schlange instanziieren
 		let Schlange = require('./schlange.js').default;

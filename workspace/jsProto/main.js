@@ -221,8 +221,8 @@ export default class Main {
 
             } // ENDE BEWEGUNGS-LOOP
 
-            // Wenn space gedrückt wird pausieren
-            if(this.controller.getSpaceBar().isDown) {
+            // Wenn P gedrückt wird pausieren
+            if(this.controller.getPauseKey().isDown) {
                 this.gameStatus = 'paused';
             }
 
