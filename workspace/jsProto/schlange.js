@@ -80,7 +80,10 @@ export default class Schlange {
     * Das aktuelle Objekt muss den Vorgänger verfolgen!
     * @param kopfRichtung Laufrichtung des Spielers
     */
-    setObjektLaufrichtung(kopfRichtung) {
+    updateObjektLaufrichtung(neueKopfRichtung) {
+
+        // zur speicherung vom Kopf
+        var kopf = this.list[0];
 
         // zur speicherung von aktuellem und vorgänger Objekt 
         var aktueller;
@@ -94,7 +97,11 @@ export default class Schlange {
         var unter;
         var ueber;
 
-        this.list[0].laufrichtung = kopfRichtung;
+        // muss nur angepasst werden wenn neue vorhanden
+        if(kopf.laufrichtung != neueKopfRichtung) {
+            kopf.laufrichtung = neueKopfRichtung;
+            kopf.changedDirection = true;
+        }
 
         // durch liste iterieren
         for(var i = 1; i < this.list.length; i++) {
@@ -115,13 +122,25 @@ export default class Schlange {
             ueber = vorgaenger.getPositionY() > aktueller.getPositionY();
 
             if(horizontal && hinter) {
-                aktueller.laufrichtung = 'left';
+                if(aktueller.laufrichtung != 'left') {
+                    aktueller.laufrichtung = 'left';
+                    aktueller.changedDirection = true;
+                }
             } else if(horizontal && vor) {
-                aktueller.laufrichtung = 'right';
+                if(aktueller.laufrichtung != 'right') {
+                    aktueller.laufrichtung = 'right';
+                    aktueller.changedDirection = true;
+                }
             } else if(vertikal && unter) {
-                aktueller.laufrichtung = 'up';
+                if(aktueller.laufrichtung != 'up') {
+                    aktueller.laufrichtung = 'up';
+                    aktueller.changedDirection = true;
+                }
             } else if(vertikal && ueber) {
-                aktueller.laufrichtung = 'down';
+                if(aktueller.laufrichtung != 'down') {
+                    aktueller.laufrichtung = 'down';
+                    aktueller.changedDirection = true;
+                }
             }
 
         }

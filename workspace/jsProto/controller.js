@@ -3,6 +3,7 @@ import 'p2';
 import 'phaser';
 
 import { View } from './view';
+import { Sound } from './sound';
 import { Schlange } from './schlange';
 import { Einzelobjekt} from './einzelobjekt';
 import { Gegner } from './gegner';
@@ -20,7 +21,7 @@ export default class Controller {
     * @param canvasWidth : Canvas-Breite
     * @param canvasHeight : Canvas-Höhe
     */
-	constructor(game, view, canvasWidth, canvasHeight) {
+	constructor(game, view, sound, canvasWidth, canvasHeight) {
 
         /**
         * Phaser.Game Objekt
@@ -33,10 +34,15 @@ export default class Controller {
         */
 		this.view = view;
 
+		/**
+        * View-Objekt
+        */
+		this.sound = sound;
+
         /**
         * Größe eines Einzelobjektes
         */
-	  	  this.objektGroesse = 60; // increment um 60
+	  	this.objektGroesse = 60; // increment um 60
         
         /** Spielstand */
         this.score = 0;
@@ -81,35 +87,28 @@ export default class Controller {
 		*/
 		this.pickup = new Gegner(this.canvasWidth, this.canvasHeight, 'item');
 
-        /**
-        * x- und y-Koordinate
-        */
-        //this.x = this.view.startX + (2 * this.objektGroesse);
-        //this.y = this.view.startY;
-
-        /**
-        * Speichert eine Zahl je nach derzeitiger Laufrichtung
-        */
-        //this.changeId;
+    } //Ende constructor
 
 
-    }//Ende constructor
-    
-    
-    //// BEWEGUNG DER SCHLANGE ////
+    /////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////** KEYBOARD KEYS **/////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
 
     /** Enfernt Browser-Voreinstellungen zu den Eingaben */
     resetKeyboardKeys() {
     	this.game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN, Phaser.Keyboard.SPACEBAR, Phaser.Keyboard.ENTER ]);
     }
+
     /** Getter für die Cursor Keys */
     getCursor() {
         return this.game.input.keyboard.createCursorKeys();
     }
+
     /** Getter für die Space Bar */
     getSpaceBar() {
         return this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     }
+
     /** Getter für die Space Bar */
     getEnterKey() {
         return this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -120,7 +119,136 @@ export default class Controller {
     	return this.laufrichtung;
     }
 
-    /** Ändert die Laufrichtung */
+
+    createMusic() {
+    	this.sound.addMusic();
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+	////////////////////////////** SPIEL STATUS *////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
+
+    /**
+	* Aktionen beim Startscreen
+	* Blendet den Startscreen ein.
+	*/
+	started() {
+
+		/**
+		* Startscreen darstellen
+		*/
+		this.view.drawStartScreen();
+		this.sound.stopMusic();
+	}
+
+	played() {
+
+		this.view.removeText();
+		this.sound.startMusic();
+	}
+
+	/**
+	* Pausierende Aktionen
+	* Blendet den Pausenscreen ein.
+	* Iteriert durch Objekt-Listen und lässt in View die ANimationen der Objekte stoppen.
+	*/
+	paused() {
+
+		/**
+		* Pausenscreen darstellen
+		*/
+		this.view.drawPauseScreen();
+
+		/**
+		* Durch Schlangen-Liste iterieren und deren
+		* Animationen von View stoppen lassen
+		*/
+		var schlangeninfo = this.schlange.getInfo(); // getter für die Liste in Schlange
+		for(var i = 0; i < schlangeninfo.length; i++){
+			this.view.stopAnimation(schlangeninfo[i]); // objekt, kill = false
+		}
+
+		/**
+		* Durch Gegner-Liste iterieren und deren
+		* Animationen von View stoppen lassen
+		*/
+		var gegnerinfo = this.gegner.getInfo(); // getter für die Liste in Gegner
+		for(var i = 0; i < gegnerinfo.length; i++){
+			this.view.stopAnimation(gegnerinfo[i]); // objekt, kill=false
+		}
+
+	}
+
+	/**
+	* Game-Over Aktionen
+	* Blendet den Game-Over Screen ein.
+	* Löscht ALLE Objekt-Listen (Gegner, Items, Schlange)
+	*/
+	gameover() {
+
+		/**
+		* Gameover-Screen darstellen
+		*/
+		this.view.drawGameOverText();
+
+		this.sound.stopMusic();
+		this.sound.gameoverMusic();
+
+		/**
+		* Durch Schlangen-Liste iterieren und deren
+		* Images löschen
+		*/
+		var schlangeninfo = this.schlange.getInfo(); // getter für die Liste in Schlange
+		for(var i = 0; i < schlangeninfo.length; i++){
+			this.view.draw(schlangeninfo[i], true); // objekt, kill = true
+		}
+
+		/**
+		* Durch Gegner-Liste iterieren und deren
+		* Images löschen
+		*/
+		var gegnerinfo = this.gegner.getInfo(); // getter für die Liste in Gegner
+		for(var i = 0; i < gegnerinfo.length; i++){
+			this.view.draw(gegnerinfo[i], true); // objekt, kill = true
+		}
+
+		/**
+		* Durch Item-Liste iterieren und deren
+		* Images löschen
+		*/
+		var pickupinfo = this.pickup.getInfo(); // getter für die Liste in Pickup
+		for(var i = 0; i < pickupinfo.length; i++){
+			this.view.draw(pickupinfo[i], true); // objekt, kill=false
+		}
+
+	}
+
+	reset() {
+		// Text löschen
+        this.view.removeText(); 
+
+		// neue Schlange instanziieren
+		let Schlange = require('./schlange.js').default; 
+		this.schlange = new Schlange();
+
+		// Startposition setzen
+		this.schlange.startX = 1;
+		this.schlange.startY = 1;
+
+		// Laufrichtung setzen
+        this.laufrichtung = this.richtungen.right;
+
+        // Punktestand resetten
+        this.score = 0;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+	////////////////////////** BEWEGUNG DER SCHLANGE *///////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
+
+    /** 
+    * Ändert die Laufrichtung bei Verwendung des Cursors
+    */
     updateLaufrichtung() {
 
         if (this.getCursor().right.isDown && this.laufrichtung != this.richtungen.left) {
@@ -159,22 +287,22 @@ export default class Controller {
         if (this.laufrichtung == this.richtungen.right) { // wenn richtung rechts ist
 
 			this.schlange.move(kopf.positionX + 1, kopf.positionY);
-			this.schlange.setObjektLaufrichtung('right');
+			this.schlange.updateObjektLaufrichtung('right');
 
         } else if (this.laufrichtung == this.richtungen.left) { // wenn richtung links ist
 
             this.schlange.move(kopf.positionX - 1, kopf.positionY);
-            this.schlange.setObjektLaufrichtung('left');
+            this.schlange.updateObjektLaufrichtung('left');
 
         } else if (this.laufrichtung == this.richtungen.up) { // wenn richtung oben ist
 
             this.schlange.move(kopf.positionX, kopf.positionY - 1);
-            this.schlange.setObjektLaufrichtung('up');
+            this.schlange.updateObjektLaufrichtung('up');
 
         } else if (this.laufrichtung == this.richtungen.down) { // wenn richtung unten ist
 
             this.schlange.move(kopf.positionX, kopf.positionY + 1);
-            this.schlange.setObjektLaufrichtung('down');
+            this.schlange.updateObjektLaufrichtung('down');
 
         }
 
@@ -204,8 +332,10 @@ export default class Controller {
 
     }
 
+    /////////////////////////////////////////////////////////////////////////////
+	////////////////////////** SPAWN VERFOLGER / ALL *///////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
 
-    //// KOLLISIONEN ////
 	/**
 	* Befehl für das Spawnen eines Gegenstandes (Gegner)
 	*/
@@ -253,6 +383,10 @@ export default class Controller {
 		this.gegner.respawn(pickupkol); // respawn // alt:setzt vorhandenem objekt random position
 
 	}
+
+	/////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////** KOLLISIONEN *////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
 
 	/**
 	* Kollisionsabfragen mit dem Kopf der Schlange
@@ -318,6 +452,10 @@ export default class Controller {
 
 	}
 
+	/////////////////////////////////////////////////////////////////////////////
+	/////////////////** VERGRÖSSERN / VERKLEINERN SCHLANGE */////////////////////
+	/////////////////////////////////////////////////////////////////////////////
+
 	/** Vergrößert die Schlange */
 	vergroessereSchlange() {
 		this.schlange.add();
@@ -334,7 +472,9 @@ export default class Controller {
 	}
 	
     
-    //// VIEW-UPDATE ////     
+    /////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////** VIEW UPDATE *////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
 
 	/**
 	* Zeichne Objekte
@@ -391,101 +531,6 @@ export default class Controller {
         else{this.score +=1;}
         //Punkteanzeige aktualisieren
         this.view.punkteAnzeige(this.score);
-    }
-
-	/**
-	* Aktionen beim Startscreen
-	* Blendet den Startscreen ein.
-	*/
-	started() {
-
-		/**
-		* Startscreen darstellen
-		*/
-		this.view.drawStartScreen();
-	}
-
-	/**
-	* Pausierende Aktionen
-	* Blendet den Pausenscreen ein.
-	* Iteriert durch Objekt-Listen und lässt in View die ANimationen der Objekte stoppen.
-	*/
-	paused() {
-
-		/**
-		* Pausenscreen darstellen
-		*/
-		this.view.drawPauseScreen();
-
-		/**
-		* Durch Schlangen-Liste iterieren und deren
-		* Animationen von View stoppen lassen
-		*/
-		var schlangeninfo = this.schlange.getInfo(); // getter für die Liste in Schlange
-		for(var i = 0; i < schlangeninfo.length; i++){
-			this.view.stopAnimation(schlangeninfo[i]); // objekt, kill = false
-		}
-
-		/**
-		* Durch Gegner-Liste iterieren und deren
-		* Animationen von View stoppen lassen
-		*/
-		var gegnerinfo = this.gegner.getInfo(); // getter für die Liste in Gegner
-		for(var i = 0; i < gegnerinfo.length; i++){
-			this.view.stopAnimation(gegnerinfo[i]); // objekt, kill=false
-		}
-
-	}
-
-	/**
-	* Game-Over Aktionen
-	* Blendet den Game-Over Screen ein.
-	* Löscht ALLE Objekt-Listen (Gegner, Items, Schlange)
-	*/
-	gameover() {
-
-		/**
-		* Gameover-Screen darstellen
-		*/
-		this.view.drawGameOverText();
-
-		/**
-		* Durch Schlangen-Liste iterieren und deren
-		* Images löschen
-		*/
-		var schlangeninfo = this.schlange.getInfo(); // getter für die Liste in Schlange
-		for(var i = 0; i < schlangeninfo.length; i++){
-			this.view.draw(schlangeninfo[i], true); // objekt, kill = true
-		}
-
-		/**
-		* Durch Gegner-Liste iterieren und deren
-		* Images löschen
-		*/
-		var gegnerinfo = this.gegner.getInfo(); // getter für die Liste in Gegner
-		for(var i = 0; i < gegnerinfo.length; i++){
-			this.view.draw(gegnerinfo[i], true); // objekt, kill = true
-		}
-
-		/**
-		* Durch Item-Liste iterieren und deren
-		* Images löschen
-		*/
-		var pickupinfo = this.pickup.getInfo(); // getter für die Liste in Pickup
-		for(var i = 0; i < pickupinfo.length; i++){
-			this.view.draw(pickupinfo[i], false); // objekt, kill=false
-		}
-
-	}
-
-	reset() {
-		let Schlange = require('./schlange.js').default;
-		this.schlange = new Schlange();
-		this.schlange.startX = 1;
-		this.schlange.startY = 1;
-        this.laufrichtung = this.richtungen.right;
-        // Punktestand resetten
-        this.score = 0;
     }
 
 	/**
