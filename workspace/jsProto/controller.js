@@ -57,6 +57,11 @@ export default class Controller {
         * Laufrichtung der Schlange
         */
         this.laufrichtung = this.richtungen.right;
+		
+			/**
+			* Darf Laufrichtung in diesem Intervall noch geändert werden 
+			*/
+			this.laufrichtungsIntervall = true;
 
 		/**
 		* Schlangen-Objekt
@@ -122,27 +127,36 @@ export default class Controller {
 
     /** Ändert die Laufrichtung */
     updateLaufrichtung() {
+		 
+		 //Überprüft ob Laufrichtung in diesem Zeichenintervall bereits geändert wurde
+		 if(this.laufrichtungsIntervall){
 
         if (this.getCursor().right.isDown && this.laufrichtung != this.richtungen.left) {
 
             this.laufrichtung = this.richtungen.right; // richtung rechts
+			   this.laufrichtungsIntervall = false;
 
         }
         if (this.getCursor().left.isDown && this.laufrichtung != this.richtungen.right) {
 
             this.laufrichtung = this.richtungen.left; // richtung links
+			   this.laufrichtungsIntervall = false;
 
         }
         if (this.getCursor().up.isDown && this.laufrichtung != this.richtungen.down) {
 
             this.laufrichtung = this.richtungen.up; // richtung oben
+			   this.laufrichtungsIntervall = false;
 
         }
         if (this.getCursor().down.isDown && this.laufrichtung != this.richtungen.up) {
 
             this.laufrichtung = this.richtungen.down; // richtung unten
+			   this.laufrichtungsIntervall = false;
 
         }
+			 
+		 }
 
     }
 
@@ -375,6 +389,9 @@ export default class Controller {
 		for(var i = 0; i < pickupinfo.length; i++){
 			this.view.draw(pickupinfo[i], false); // objekt, kill=false
 		}
+		
+		//Nachdem alle Objekte gezeichnet wurden darf Laufrichtung wieder geändert werden
+		this.laufrichtungsIntervall = true;
 
 	}
     
