@@ -186,10 +186,11 @@ export default class Main {
                         case 'pickup':  /** Kollision mit Pickup */
                                         this.controller.respawnAll();
                                         this.controller.verkuerzeSchlange();
-                                        this.spielgeschwindigkeit -= 1; 
-                                        if (this.spielgeschwindigkeit <= 5) { 
-                                            this.spielgeschwindigkeit = 5;
-                                        }
+                                        if (this.spielgeschwindigkeit <= 10) { 
+                                            this.spielgeschwindigkeit = 10;
+                                        } else {
+														 this.spielgeschwindigkeit -= 1; 
+													 }
                                         break;
 
                     }

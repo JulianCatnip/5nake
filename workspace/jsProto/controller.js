@@ -394,6 +394,7 @@ export default class Controller {
 		this.laufrichtungsIntervall = true;
 
 	}
+	
     
     /** Wird aufgerufen, um pro Zeitintervall automatisch den Punktestand in Abhängigkeit der Länge der Schlange zu erhöhen */
     updateScoreOverTime(){
@@ -408,7 +409,17 @@ export default class Controller {
         else{this.score +=1;}
         //Punkteanzeige aktualisieren
         this.view.punkteAnzeige(this.score);
+		 
+		 //Überprüfe ob ein neuer Gegner erscheinen muss
+		 this.checkGegnerAnzahl();
     }
+	
+	/** Überprüft ob Gegneranzahl Proportional zur Punktzahl sind und passt diese an*/
+	checkGegnerAnzahl(){
+		if(this.score/100 >= this.gegner.getInfo().length){
+			 this.erhoeheGegnerzahl();
+		 }
+	}
 
 	/**
 	* Aktionen beim Startscreen
@@ -503,6 +514,10 @@ export default class Controller {
         this.laufrichtung = this.richtungen.right;
         // Punktestand resetten
         this.score = 0;
+		
+		//Gegneranzahl zurücksetzen
+		let Gegner = require('./gegner.js').default;
+		this.gegner = new Gegner(this.canvasWidth, this.canvasHeight, 'feind');
     }
 
 	/**
