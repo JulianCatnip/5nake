@@ -361,7 +361,9 @@ export default class View {
     * Stoppt die Animation eines Objektes
     */
     stopAnimation(objekt) {
-        objekt.image.animations.stop();
+        if(objekt.image != undefined){
+            objekt.image.animations.stop();
+        }
     }
 
     /**

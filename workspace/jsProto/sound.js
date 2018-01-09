@@ -20,27 +20,42 @@ export default class Sound {
         */
         this.game = game;
 
-        this.play;
-        this.gameover;
+        this.playSoundtrack;
+        this.gameoverSoundtrack;
+        this.pickupSound;
+        this.crashSound;
 
     }
 
     addMusic() {
-        this.play = this.game.add.audio('play', 1, true);
-        this.gameover = this.game.add.audio('gameover', 1, true);
+        this.playSoundtrack = this.game.add.audio('play', 1, true);
+        this.gameoverSoundtrack = this.game.add.audio('gameover', 1, false);
+        this.pickupSound = this.game.add.audio('pickup', 1, false);
+        this.crashSound = this.game.add.audio('crash', 1, false);
+
+        //this.game.sound.setDecodedCallback([ this.play, this.gameover, this.pickup ], start, this);
     }
 
-    startMusic() {
-        this.play.play();
+    stop(sound) {
+        if(sound == 'play') {
+            this.playSoundtrack.stop();
+        }
     }
 
-    stopMusic() {
-        this.play.stop();
-        //this.gameover.stop();
+    play() {
+        this.playSoundtrack.play();
     }
 
-    gameoverMusic() {
-        this.gameover.play();
+    pickup() {
+        this.pickupSound.play();
+    }
+
+    crash() {
+        this.crashSound.play();
+    }
+
+    gameover() {
+        this.gameoverSoundtrack.play();
     }
 
 }

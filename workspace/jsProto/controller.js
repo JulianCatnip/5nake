@@ -64,10 +64,10 @@ export default class Controller {
         */
         this.laufrichtung = this.richtungen.right;
 
-			/**
-			* Darf Laufrichtung in diesem Intervall noch geändert werden
-			*/
-			this.laufrichtungsIntervall = true;
+		/**
+		* Darf Laufrichtung in diesem Intervall noch geändert werden
+		*/
+		this.laufrichtungsIntervall = true;
 
 		/**
 		* Schlangen-Objekt
@@ -91,6 +91,9 @@ export default class Controller {
 		* Objektebehälter Pickup
 		*/
 		this.pickup = new Gegner(this.canvasWidth, this.canvasHeight, 'item');
+
+		this.counter = 0;
+		this.soundtrackCounter = 0;
 
     } //Ende constructor
 
@@ -124,8 +127,8 @@ export default class Controller {
     	return this.laufrichtung;
     }
 
-
-    createMusic() {
+    /** Sound hinzufügen */
+    createSound() {
     	this.sound.addMusic();
     }
 
@@ -143,13 +146,10 @@ export default class Controller {
 		* Startscreen darstellen
 		*/
 		this.view.drawStartScreen();
-		this.sound.stopMusic();
 	}
 
 	played() {
-
 		this.view.removeText();
-		this.sound.startMusic();
 	}
 
 	/**
@@ -195,9 +195,6 @@ export default class Controller {
 		* Gameover-Screen darstellen
 		*/
 		this.view.drawGameOverText();
-
-		this.sound.stopMusic();
-		this.sound.gameoverMusic();
 
 		/**
 		* Durch Schlangen-Liste iterieren und deren
@@ -258,36 +255,31 @@ export default class Controller {
     */
     updateLaufrichtung() {
 
-		 //Überprüft ob Laufrichtung in diesem Zeichenintervall bereits geändert wurde
-		 if(this.laufrichtungsIntervall){
+		//Überprüft ob Laufrichtung in diesem Zeichenintervall bereits geändert wurde
+		if(this.laufrichtungsIntervall){
 
-        if (this.getCursor().right.isDown && this.laufrichtung != this.richtungen.left) {
+			if (this.getCursor().right.isDown && this.laufrichtung != this.richtungen.left) {
 
-            this.laufrichtung = this.richtungen.right; // richtung rechts
-			   this.laufrichtungsIntervall = false;
+            	this.laufrichtung = this.richtungen.right; // richtung rechts
+				this.laufrichtungsIntervall = false;
 
+			}
+        	if (this.getCursor().left.isDown && this.laufrichtung != this.richtungen.right) {
+
+        		this.laufrichtung = this.richtungen.left; // richtung links
+        		this.laufrichtungsIntervall = false;
+        	}
+        	if (this.getCursor().up.isDown && this.laufrichtung != this.richtungen.down) {
+
+        		this.laufrichtung = this.richtungen.up; // richtung oben
+        		this.laufrichtungsIntervall = false;
+        	}
+        	if (this.getCursor().down.isDown && this.laufrichtung != this.richtungen.up) {
+        		
+        		this.laufrichtung = this.richtungen.down; // richtung unten
+        		this.laufrichtungsIntervall = false;
+        	}
         }
-        if (this.getCursor().left.isDown && this.laufrichtung != this.richtungen.right) {
-
-            this.laufrichtung = this.richtungen.left; // richtung links
-			   this.laufrichtungsIntervall = false;
-
-        }
-        if (this.getCursor().up.isDown && this.laufrichtung != this.richtungen.down) {
-
-            this.laufrichtung = this.richtungen.up; // richtung oben
-			   this.laufrichtungsIntervall = false;
-
-        }
-        if (this.getCursor().down.isDown && this.laufrichtung != this.richtungen.up) {
-
-            this.laufrichtung = this.richtungen.down; // richtung unten
-			   this.laufrichtungsIntervall = false;
-
-        }
-
-		 }
-
     }
 
     /**
@@ -469,6 +461,22 @@ export default class Controller {
 
 		// falls nichts zutrifft frei wiedergeben
 		return 'frei'; // keine kollision
+
+	}
+
+	notifySoundStats(kollisionstyp, spielgeschwindigkeit) {
+
+			if(kollisionstyp == 'feind'){
+
+				// crash sound
+				this.sound.crash();
+
+			} else if(kollisionstyp == 'pickup') {
+
+				// naknak sound
+				this.sound.pickup();
+
+			}
 
 	}
 

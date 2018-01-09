@@ -89,6 +89,8 @@ export default class Main {
         /** Sound */
         this.game.load.audio('play', ['../audio/a_journey_awaits.mp3', '../audio/a_journey_awaits.ogg']);
         this.game.load.audio('gameover', ['../audio/gameover.mp3']);
+        this.game.load.audio('pickup', ['../audio/pling.wav']);
+        this.game.load.audio('crash', ['../audio/crash.wav']);
 
         /** GAMEOVER-Sprite laden */
         this.game.load.image('gameover', '../images/gameover.jpg');
@@ -107,8 +109,8 @@ export default class Main {
         /** Keyboard Browservoreinstellungen reseten */
         this.controller.resetKeyboardKeys();
 
-        /** Keyboard Browservoreinstellungen reseten */
-        this.controller.createMusic();
+        /** Sound initialisieren */
+        this.controller.createSound();
 
         /** Alle Objekte zu Start zeichnen */
         this.controller.zeichneObjekte();
@@ -182,7 +184,7 @@ export default class Main {
                     switch(this.kollisionstyp) {
 
                         case 'feind':   /** Kollision mit Gegner oder Körperteil */
-                                        console.log('GAMEOVER!');
+
                                         this.gameStatus = 'dead'; // Spielstatus wechseln
 
                                         break;
@@ -208,6 +210,8 @@ export default class Main {
                 // HIER WERDEN DIE EINZELENEN KOMPONENTEN NEU GEZEICHNET
                 this.controller.zeichneObjekte(); // alle objekte neuzeichnen
 
+                this.controller.notifySoundStats(this.kollisionstyp, this.spielgeschwindigkeit); // aktualisierung der musik
+
                 // Schlange vergrößern, Punktestand aktualisieren
                 this.snekSpawn++;
     			this.snekSpawn %= 10;
@@ -221,6 +225,7 @@ export default class Main {
 
             } // ENDE BEWEGUNGS-LOOP
 
+
             // Wenn P gedrückt wird pausieren
             if(this.controller.getPauseKey().isDown) {
                 this.gameStatus = 'paused';
@@ -230,13 +235,12 @@ export default class Main {
         /** Spielstatus GAME OVER */
         else if(this.gameStatus == 'dead') {
 
-            // Gameover Screen einblenden und alle objekt.images löschen
             this.controller.gameover();
 
             // Zeit stoppen
             this.timer.stop(false);
 
-            if(this.controller.getEnterKey().isDown) { // Space-Taste für Neustart drücken
+            if(this.controller.getEnterKey().isDown) { // Enter-Taste für Neustart drücken
 
                 this.resetGame(); // kollisionstyp auf frei setzen
                 this.gameStatus = 'start'; // spielstatus auf start setzen
@@ -246,19 +250,15 @@ export default class Main {
                 this.view.zeitAnzeige(this.seconds);
             }
 
-
-              /////////////////////////TODO////////////////////////////////
-              // Erhöhen des Counters alle 20 Frames, unabhängig von der Spielgeschwindigkeit
-              if (this.framecounter == 20){
-                    //Erhöhen des logik counters
-                    this.snekSpawn++;
-                    this.snekSpawn %= 10;
+            // Erhöhen des Counters alle 20 Frames, unabhängig von der Spielgeschwindigkeit
+            if (this.framecounter == 20){
+                //Erhöhen des logik counters
+                this.snekSpawn++;
+                this.snekSpawn %= 10;
                     if(this.snekSpawn == 0){
                         this.controller.vergroessereSchlange();
-                    }
                 }
-
-
+            }
 
         }
         /** Spielstatus PAUSIEREND */
