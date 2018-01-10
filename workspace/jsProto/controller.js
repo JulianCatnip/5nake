@@ -244,6 +244,11 @@ export default class Controller {
 
         // Punktestand resetten
         this.score = 0;
+        
+        //Gegner-Array resetten
+        let Gegner = require('./gegner.js').default;
+		this.gegner = new Gegner(this.canvasWidth, this.canvasHeight, 'feind');
+        
     }
 
     /////////////////////////////////////////////////////////////////////////////
@@ -350,8 +355,8 @@ export default class Controller {
 	erhoeheGegnerzahl() {
 		var pickupkol = this.pickup.getInfo();
 		pickupkol = pickupkol[0];
-        this.gegner.stackVerhindern(pickupkol);
 		this.gegner.add(pickupkol);
+        var gegnerinfo = this.gegner.getInfo();
 	}
 
 	/**

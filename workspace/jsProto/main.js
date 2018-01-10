@@ -291,12 +291,15 @@ export default class Main {
 
         // neue schlange initialisieren
         // laufrichtung resetten
+        
         // Startposition des Spielers setzen
         this.controller.reset();
 
         // Geschwindigkeit reseten
         this.spielgeschwindigkeit = 20;
-
+        //FrameCounter resetten
+        this.frameCounter = 0;
+        
         this.controller.zeichneObjekte(); // objekte neuzeichnen
 
         //Pause-Screen zeichnen
