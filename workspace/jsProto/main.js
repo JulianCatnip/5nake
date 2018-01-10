@@ -87,7 +87,8 @@ export default class Main {
 		this.game.load.image('item', '../images/gummiente.png');
 
         /** Sound */
-        this.game.load.audio('play', ['../audio/a_journey_awaits.mp3', '../audio/a_journey_awaits.ogg']);
+        this.game.load.audio('play', ['../audio/a_better_world.mp3']);
+        this.game.load.audio('paused', ['../audio/a_journey_awaits.mp3', '../audio/a_journey_awaits.ogg']);
         this.game.load.audio('gameover', ['../audio/gameover.mp3']);
         this.game.load.audio('pickup', ['../audio/pling.wav']);
         this.game.load.audio('crash', ['../audio/crash.wav']);
@@ -110,7 +111,7 @@ export default class Main {
         this.controller.resetKeyboardKeys();
 
         /** Sound initialisieren */
-        this.controller.createSound();
+        this.controller.createSound(); // startsoundtrack abspielen
 
         /** Alle Objekte zu Start zeichnen */
         this.controller.zeichneObjekte();
@@ -148,8 +149,8 @@ export default class Main {
             /** Alle Objekte die zu Start benötigt werden zeichnen (Schlange, Pickup, Gegner) */
 
             if(this.controller.getEnterKey().isDown) { // Enter-Taste für Spiel-Start drücken
-                this.controller.played();
                 this.gameStatus = 'play';
+                this.controller.played(this.gameStatus);
                 // Timer für Zeitanzeige wird gestartet, sobald das Spiel anfängt
                 this.timer.start();
             }
@@ -184,8 +185,8 @@ export default class Main {
                     switch(this.kollisionstyp) {
 
                         case 'feind':   /** Kollision mit Gegner oder Körperteil */
-
-                                        this.gameStatus = 'dead'; // Spielstatus wechseln
+                                        this.controller.died(this.gameStatus);
+                                        this.gameStatus = 'dead'; // Spielstatus wechseln   
 
                                         break;
 
@@ -228,6 +229,7 @@ export default class Main {
 
             // Wenn P gedrückt wird pausieren
             if(this.controller.getPauseKey().isDown) {
+                this.controller.paused(this.gameStatus);
                 this.gameStatus = 'paused';
             }
 
@@ -264,7 +266,7 @@ export default class Main {
         /** Spielstatus PAUSIEREND */
         else if(this.gameStatus == 'paused') {
 
-            this.controller.paused(); // pause screen und gestoppte animation
+            this.controller.stopAnimation(); // pause screen und gestoppte animation
             this.timer.stop(false);
 
             // Getter für Cursor-Keys
@@ -275,7 +277,7 @@ export default class Main {
 
             // Wenn der Cursor gedrückt wird wieder spielen
             if(up || down || left || right) {
-                this.view.removeText();
+                this.controller.played(this.gameStatus);
                 this.gameStatus = 'play';
                 this.timer.start();
 			}
