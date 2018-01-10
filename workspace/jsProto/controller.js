@@ -104,7 +104,16 @@ export default class Controller {
 
     /** Enfernt Browser-Voreinstellungen zu den Eingaben */
     resetKeyboardKeys() {
-    	this.game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN, Phaser.Keyboard.SPACEBAR, Phaser.Keyboard.ENTER ]);
+    	this.game.input.keyboard.addKeyCapture(
+    		[ 
+    			Phaser.Keyboard.LEFT, 
+    			Phaser.Keyboard.RIGHT, 
+    			Phaser.Keyboard.UP, 
+    			Phaser.Keyboard.DOWN, 
+    			Phaser.Keyboard.SPACEBAR, 
+    			Phaser.Keyboard.ENTER 
+    		]
+    	);
     }
 
     /** Getter für die Cursor Keys */
@@ -130,6 +139,7 @@ export default class Controller {
     /** Sound hinzufügen */
     createSound() {
     	this.sound.addMusic();
+    	this.sound.play(); // start/play soundtrack abspielen
     }
 
     /////////////////////////////////////////////////////////////////////////////
@@ -146,23 +156,43 @@ export default class Controller {
 		* Startscreen darstellen
 		*/
 		this.view.drawStartScreen();
+		//this.sound.start();
 	}
 
-	played() {
+	/** 
+	* Startet neuen Soundtrack und pausiert den übergebenen
+	* @param zu pausierender Soundtrack
+	*/
+	played(gamestatus) {
+
 		this.view.removeText();
-	}
+
+		if(gamestatus == 'play') {
+			//this.sound.pause(oldSound); // pausiert start-sound
+			this.sound.restart(gamestatus); // startet play-sound
+		} else if(gamestatus == 'paused'){
+			this.sound.pause(gamestatus);
+			this.sound.resume('play');
+		}
+	}	
 
 	/**
 	* Pausierende Aktionen
 	* Blendet den Pausenscreen ein.
 	* Iteriert durch Objekt-Listen und lässt in View die ANimationen der Objekte stoppen.
 	*/
-	paused() {
+	paused(oldSound) {
 
 		/**
 		* Pausenscreen darstellen
 		*/
-		this.view.drawPauseScreen();
+		this.view.drawPauseScreen(); // pausiert spiele-sound
+		this.sound.pause(oldSound); // pausiert play-sound
+		this.sound.paused(); // resume start-sound
+
+	}
+
+	stopAnimation() {
 
 		/**
 		* Durch Schlangen-Liste iterieren und deren
@@ -184,17 +214,21 @@ export default class Controller {
 
 	}
 
+	died(oldSound) {
+		/**
+		* Gameover-Screen darstellen
+		*/
+		this.view.drawGameOverText();
+		this.sound.stop(oldSound); // stoppt play-sound
+		this.sound.gameover();
+	}
+
 	/**
 	* Game-Over Aktionen
 	* Blendet den Game-Over Screen ein.
 	* Löscht ALLE Objekt-Listen (Gegner, Items, Schlange)
 	*/
 	gameover() {
-
-		/**
-		* Gameover-Screen darstellen
-		*/
-		this.view.drawGameOverText();
 
 		/**
 		* Durch Schlangen-Liste iterieren und deren
@@ -230,6 +264,9 @@ export default class Controller {
         this.view.removeText();
 
         this.view.resetAnimationSpeed();
+
+        this.sound.reset();
+        this.createSound();
 
 		// neue Schlange instanziieren
 		let Schlange = require('./schlange.js').default;
