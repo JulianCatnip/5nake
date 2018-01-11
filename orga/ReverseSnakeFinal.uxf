@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>6</zoom_level>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>78</x>
+      <y>462</y>
+      <w>348</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>Objekte
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>594</x>
+      <y>462</y>
+      <w>264</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>View
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>324</x>
+      <y>210</y>
+      <w>318</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>Controller
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>228</y>
+      <w>126</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>Main
+--
+var Sound
+var Controller
+var View
+var Schlange
+var Game
+...
+--
+update()
+pause()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>276</x>
+      <y>486</y>
+      <w>114</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Einzelobjekt
+--
+var PositionX
+var PositionY
+var typ
+--
+setPosition()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>474</x>
+      <y>240</y>
+      <w>126</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>Controller
+--
+var Schlange
+var Gegner
+var Pickup
+--
+spawn()
+draw()
+despawn()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>84</x>
+      <y>552</y>
+      <w>114</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Gegner
+--
+var liste
+--
+stackverhindern()
+spawn()
+add()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>84</x>
+      <y>486</y>
+      <w>114</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Schlange
+--
+var Kopf
+var Körperteil
+--
+verlängern()
+verkürzen()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>504</y>
+      <w>114</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>Sound
+--
+var musik
+var sound
+--
+playSound()
+playMusik()
+stopMusik()
+resumeMusik()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>732</x>
+      <y>504</y>
+      <w>114</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>View
+--
+var objektGroesse
+var speed
+--
+drawObjekt()
+updateScore()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>168</x>
+      <y>372</y>
+      <w>276</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+verändert</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;60.0;440.0;60.0;440.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>474</x>
+      <y>372</y>
+      <w>210</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+updated</panel_attributes>
+    <additional_attributes>330.0;150.0;330.0;60.0;10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>192</x>
+      <y>468</y>
+      <w>96</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+ist</panel_attributes>
+    <additional_attributes>140.0;40.0;140.0;20.0;30.0;20.0;30.0;60.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>192</x>
+      <y>486</y>
+      <w>96</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+nutzt</panel_attributes>
+    <additional_attributes>140.0;10.0;100.0;10.0;100.0;140.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>276</x>
+      <y>552</y>
+      <w>114</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Typen der Einzelobjekte 
+virtuell, 
+werden immer im Gegner 
+oder Schlange gelagert
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>192</x>
+      <y>486</y>
+      <w>96</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+ist</panel_attributes>
+    <additional_attributes>140.0;10.0;80.0;10.0;80.0;50.0;10.0;50.0</additional_attributes>
+  </element>
+</diagram>
