@@ -68,7 +68,6 @@ export default class Gegner {
 					if(this.list[i].getPositionY() == gegenstand.getPositionY()){
 						// Bei Gleichheit respawnen
 						this.reset(this.list[i]);
-                        this.stackVerhindern(gegenstand);
 					} else {
 						gleich = false;
 					}
@@ -95,12 +94,13 @@ export default class Gegner {
 		this.stackVerhindern(gegenstand);
 	}
 	
-	/** VERWORFEN
-	* Setzt ein Einzelobjekt auf neue Position 
+	/** 
+	* Setzt ein Einzelobjekt auf neue Position (um 1 verrückt)
 	*/
 	reset(objekt) {
-		objekt.setPositionX(Math.floor(Math.random() * (this.maxX - 2 + 1)) + 2);
-		objekt.setPositionY(Math.floor(Math.random() * (this.maxY - 2 + 1)) + 2);
+		objekt.setPositionX((objekt.positionX +1)%this.maxX );
+		objekt.setPositionY((objekt.positionY +1)%this.maxY );
+        console.log("POSITION GEÄNDERT");
 	}
 	
 	/** Gibt die informationen über alle Gegner als Array zurück */

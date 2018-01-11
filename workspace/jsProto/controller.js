@@ -83,14 +83,13 @@ export default class Controller {
 		// canvashöhe und -breite werden für die Berechnung der zufälligen Position übergeben
 
 		/**
-		* Objektebehälter für Upgrades
-		*/
-		//this.boons = new Gegner(this.canvasWidth, this.canvasHeight, '');
-
-		/**
 		* Objektebehälter Pickup
 		*/
 		this.pickup = new Gegner(this.canvasWidth, this.canvasHeight, 'item');
+        
+        //Verhindern, dass Pickup auf Gegner oder Gegner auf Kopf spawend
+        this.spawnKollisionVerhindern();
+       
 
 		this.counter = 0;
 		this.soundtrackCounter = 0;
@@ -285,6 +284,8 @@ export default class Controller {
         //Gegner-Array resetten
         let Gegner = require('./gegner.js').default;
 		this.gegner = new Gegner(this.canvasWidth, this.canvasHeight, 'feind');
+        //Verhindern, dass übereinander gespawned wird
+        this.spawnKollisionVerhindern();
         
     }
 
@@ -393,7 +394,7 @@ export default class Controller {
 		var pickupkol = this.pickup.getInfo();
 		pickupkol = pickupkol[0];
 		this.gegner.add(pickupkol);
-        var gegnerinfo = this.gegner.getInfo();
+        this.spawnKollisionVerhindern();
 	}
 
 	/**
@@ -434,9 +435,26 @@ export default class Controller {
         for(var i = 0; i < gegnerinfo.length; i++){
 			this.gegner.respawn(gegnerinfo[i]); // objekt, kill=true!!!
 		}
-		this.gegner.respawn(pickupkol); // respawn // alt:setzt vorhandenem objekt random position
+		this.gegner.respawn(kopf); // respawn // alt:setzt vorhandenem objekt random position
+        
+        this.spawnKollisionVerhindern();
 
 	}
+    
+    /** Verhindert, dass ein Gegner auf dem Kopf der Schlange oder einem Pickup spawned */
+    spawnKollisionVerhindern(){
+        //Kopf der Schlange
+        var kopf = this.schlange.getInfo();
+		kopf = kopf[0];
+        //Pickup
+        var pickupkol = this.pickup.getInfo();
+		pickupkol = pickupkol[0];
+        
+        this.gegner.stackVerhindern(kopf);
+        this.gegner.stackVerhindern(pickupkol);
+        this.gegner.stackVerhindern(kopf);
+        console.log("spawnKollisionVerhindern aufgerufen");
+    }
 
 	/////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////** KOLLISIONEN *////////////////////////////////
@@ -616,48 +634,6 @@ export default class Controller {
 			 this.erhoeheGegnerzahl();
 		 }
 	}
-
-	/**
-    loescheSchlange_2() {
-        //Zunächst Schlangen zeichnung beauftragen
-		var schlangeninfo = this.schlange.getInfo();
-		//update Länge der Schlange
-		this.view.laengenAnzeige(schlangeninfo.length);
-		for(var i = schlangeninfo.length-1; i > 0 ; i--){
-			this.view.draw(schlangeninfo[i], true);
-            console.log('lösche Schlangenteil ' + i);
-		}
-		var gegnerinfo = this.gegner.getInfo();
-		for(var i = gegnerinfo.length-1; i > 0 ; i--){
-			this.view.draw(gegnerinfo[i], true);
-            console.log('lösche gegnerteil ' + i);
-		}
-		var pickupinfo = this.pickup.getInfo();
-		for(var i = pickupinfo.length-1; i > 0 ; i--){
-			this.view.draw(pickupinfo[i], true);
-            console.log('lösche pickupteil ' + i);
-		}
-    }
-
-     Löscht Schlange bis auf Kopf
-	loescheSchlange(){
-        for(var i = this.schlange.getLength(); i > 0 ; i--){
-            var zutoeten = this.schlange.delete(0);
-            if(zutoeten != undefined){
-                this.view.draw(zutoeten, true);
-            }
-            //zutoeten.image.destroy();
-        }
-    }
-
-    zeichneSchlange_LVL1(){
-        let Schlange = require('./schlange.js').default;
-        this.schlange = new Schlange();
-    }
-
-    zeichneGOScreen(){
-        this.view.zeichneGOScreen();
-    }*/
 
 
 }

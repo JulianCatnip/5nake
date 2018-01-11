@@ -449,29 +449,5 @@ export default class View {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    /** 
-    Lässt text verschwinden
-	removeGOText(){
-		this.game.world.remove(this.gameOverText);
-	}
-
-
-    zeichneGOScreen(){
-        this.gameover_picture = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'go_screen');
-        this.gameover_picture.anchor.setTo(0.5, 0.5);
-
-    //  Here we'll create a basic timed event. This is a one-off event, it won't repeat or loop:
-    //  The first parameter is how long to wait before the event fires. In this case 4 seconds (you could pass in 4000 as the value as well.)
-    //  The next parameter is the function to call ('fadePicture') and finally the context under which that will happen.
-
-        this.game.time.events.add(Phaser.Timer.SECOND * 0.5, this.fadePicture, this);
-    }
-
-    fadePicture() {
-
-        //this.game.add.tween(this.gameover_picture).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true);
-        this.game.add.tween(this.gameover_picture).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true);
-
-    } */
 
 }

@@ -1,6 +1,6 @@
 /**
 * Einzelobjekt erstellen, von dem andere Objekte erben können
-* Einzelobjekt: Spieler, Verfolger, Pickup(+randomspawn), Stein, Feind(+randomspawn)
+* Einzelobjekt: Spieler, Verfolger, Pickup, Feind
 */
 export default class Einzelobjekt {
 	

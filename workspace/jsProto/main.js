@@ -130,11 +130,6 @@ export default class Main {
 
     }
 
-    /*updateTime() {
-    this.seconds ++;
-    this.view.zeitAnzeige(this.seconds);
-    }*/
-
     /**
     * PHASER-Methode GAMELOOP
     * Hier wird die Spiele-Logik durchlaufen!!!
@@ -291,9 +286,6 @@ export default class Main {
     */
     resetGame() {
 
-        // neue schlange initialisieren
-        // laufrichtung resetten
-        
         // Startposition des Spielers setzen
         this.controller.reset();
 
@@ -303,9 +295,6 @@ export default class Main {
         this.frameCounter = 0;
         
         this.controller.zeichneObjekte(); // objekte neuzeichnen
-
-        //Pause-Screen zeichnen
-        //this.view.drawPauseScreen();
     }
 
 
