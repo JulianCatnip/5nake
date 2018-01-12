@@ -7,7 +7,11 @@
 }
 
 html {
-    background: #073040;
+    /*background: #073040;*/
+    /*background: #F02F19;*/
+    /*background: #FF7D6E;*/
+    /*background: #0C1340;*/
+    background: #062836;
     color: #fff;
     font-family: 'Open Sans', sans-serif;
     font-size: 100%;
@@ -18,20 +22,28 @@ html {
 }
 
 header {
-	background: #0D5F7F;
+	/*background: #FF7D6E;*/
+    background: #F02F19;
 	height: 3.5rem;
-	margin-bottom: 30px;
+    margin-top: 47px;
+    margin-bottom: 50px;
 }
 
-h1 {
-	font-family: 'Pixel', sans-serif;
-	font-size: 30px;
-	line-height: 30px;
-	font-weight: 400;
+
+#logo {
+    position: absolute;
+    z-index: 100;
 	float: left;
-	margin-top: 12px;
-	text-transform: uppercase;
+	margin-top: -30px;
+    margin-left: -80px;
+    margin-bottom: 10px;
+    width: 270px;
+    height: 120px;
+    background-image: url(../images/logo.png);
+    background-size: 270px 120px;
+    background-repeat: no-repeat;
 }
+
 h1 a {
 	color: #fff;
 	text-decoration: none;
@@ -44,17 +56,37 @@ h2, h3, h4 {
 #points, #length, #time {
 	font-family: 'Pixel', sans-serif;
 	font-weight: 400;
-	border: 1px solid #0D5F7F;
 	display: block;
     margin-top: 10px;
-    margin-bottom: 43px;
+    margin-bottom: 42px;
     font-size: 60px;
     text-align: center;
     line-height: 60px;
     padding: 13px 30px 20px 30px;
-    background: #fff;
-    color: #073040;
+    background: #F02F19;
+    color: #fff;
+    box-shadow: 8px 8px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+
+/*
+#statsFrame{
+    background-color: #ffffff;
+    height: 560px;
+    width: 320px;
+        /*width: 1240px;*/
+    /*
+    z-index: -100;
+    position: absolute;
+    margin-right: 0px;
+    margin-left: 910px;
+    margin-top: 30px;
+    border-style: double;
+    border-width: 10px;
+    border-color: #F02F19;
+    */
+        /* margin: -10px -5px
+}*/
 
 section {
 	margin-left: auto;
@@ -99,29 +131,29 @@ nav ul li {
 	float: left;
 }
 nav ul li:last-child a {
-	border-right: 1px solid #18ABE5;
+	border-right: 0.7px solid #062836;
 }
 
 nav ul li a {
-	font-family: 'Open Sans Light', sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	text-decoration: none;
 	color: #fff;
 	display: block;
     padding: 16px;
-    border-left: 1px solid #18ABE5;
+    border-left: 1px solid #062836;
 	transition: 300ms all ease-in-out;
 }
 nav ul li a:hover {
 	color: #fff;
-	background: #148FBF;
+	background: #840302;
 }
 nav ul li a.active {
 	font-family: 'Open Sans Bold', sans-serif;
 	color: #fff;
-	background: #073040;
+	background: #062836;
 }
 
 main #snake {
 	display: block;
-	border: 1px solid #0D5F7F;
+	border: 1px solid #062836;
 }
