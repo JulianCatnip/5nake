@@ -125,6 +125,11 @@ export default class Controller {
         return this.game.input.keyboard.addKey(Phaser.Keyboard.P);
     }
 
+    /** Getter für den A Key */
+    getManualKey() {
+        return this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+    }
+
     /** Getter für die Space Bar */
     getEnterKey() {
         return this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -158,13 +163,18 @@ export default class Controller {
 		//this.sound.start();
 	}
 
+	zeigeAnleitung() {
+		this.view.removeContent();
+		this.view.drawManualScreen();
+	}
+
 	/** 
 	* Startet neuen Soundtrack und pausiert den übergebenen
 	* @param zu pausierender Soundtrack
 	*/
 	played(gamestatus) {
 
-		this.view.removeText();
+		this.view.removeContent();
 
 		if(gamestatus == 'play') {
 			//this.sound.pause(oldSound); // pausiert start-sound
@@ -217,7 +227,7 @@ export default class Controller {
 		/**
 		* Gameover-Screen darstellen
 		*/
-		this.view.drawGameOverText();
+		this.view.drawGameOverScreen();
 		this.sound.stop(oldSound); // stoppt play-sound
 		this.sound.gameover();
 	}
@@ -260,7 +270,7 @@ export default class Controller {
 
 	reset() {
 		// Text löschen
-        this.view.removeText();
+        this.view.removeContent();
 
         this.view.resetAnimationSpeed();
 

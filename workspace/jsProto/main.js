@@ -94,7 +94,10 @@ export default class Main {
         this.game.load.audio('crash', ['../audio/crash.wav']);
 
         /** GAMEOVER-Sprite laden */
-        this.game.load.image('gameover', '../images/gameover.jpg');
+        this.game.load.image('startscreen', '../images/start.png');
+        this.game.load.image('anleitung', '../images/anleitung.png');
+        this.game.load.image('pause', '../images/pause.png');
+        this.game.load.image('gameover', '../images/gameover.png');
         // usw...
     }
 
@@ -148,6 +151,8 @@ export default class Main {
                 this.controller.played(this.gameStatus);
                 // Timer für Zeitanzeige wird gestartet, sobald das Spiel anfängt
                 this.timer.start();
+            } else if(this.controller.getManualKey().isDown) {
+                this.controller.zeigeAnleitung();
             }
 
         }

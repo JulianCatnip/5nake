@@ -25,6 +25,7 @@ export default class View {
         * Text für tot und PauseScreen
         */
         this.text = undefined;
+        this.image = undefined;
 
 		/**
 		* Größe der einzelnen Einheiten
@@ -32,10 +33,6 @@ export default class View {
 		this.objektGroesse = 60;
 
         this.frameSpeed = 3;
-
-        this.redAnimation = [];
-
-        this.gameover_picture;
 
     }
 
@@ -371,18 +368,21 @@ export default class View {
     */
     drawStartScreen() {
 
-        if(this.text == undefined) {
+        if(this.image == undefined) {
 
-            this.text = this.game.add.text(this.game.world.centerX, this.game.world.centerY, "- START -\nPress ENTER to Start");
-            //  Centers the text
-            this.text.anchor.set(0.5);
-            this.text.align = 'center';
+            this.image = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'startscreen');
+            this.image.anchor.set(0.5);
 
-            //  Our font + size
-            this.text.font = 'Arial';
-            this.text.fontWeight = 'bold';
-            this.text.fontSize = 30;
-            this.text.fill = '#101010';
+        }
+
+    }
+
+    drawManualScreen() {
+
+        if(this.image == undefined) {
+
+            this.image = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'anleitung');
+            this.image.anchor.set(0.5);
 
         }
 
@@ -393,20 +393,12 @@ export default class View {
     */
 	drawPauseScreen() {
 
-		if(this.text == undefined) {
+		if(this.image == undefined) {
 
-            this.text = this.game.add.text(this.game.world.centerX, this.game.world.centerY, "- PAUSED -\nUse CURSOR to Continue");
-            //  Centers the text
-            this.text.anchor.set(0.5);
-            this.text.align = 'center';
+            this.image = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'pause');
+            this.image.anchor.set(0.5);
 
-            //  Our font + size
-            this.text.font = 'Arial';
-            this.text.fontWeight = 'bold';
-            this.text.fontSize = 30;
-            this.text.fill = '#101010';
-
-		}
+        }
 
 	}
 
@@ -417,30 +409,28 @@ export default class View {
     /**
     * Schreibt bei Kollision game over auf den screen
     */
-    drawGameOverText() {
+    drawGameOverScreen() {
 
-        if (this.text == undefined) {
+        if(this.image == undefined) {
 
-            this.text = this.game.add.text(this.game.world.centerX, this.game.world.centerY, "- GAME OVER -\nPress ENTER to Restart");
-            //  Centers the text
-            this.text.anchor.set(0.5);
-            this.text.align = 'center';
+            this.image = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'gameover');
+            this.image.anchor.set(0.5);
 
-            //  Our font + size
-            this.text.font = 'Arial';
-            //this.text.zIndex = 10;
-            this.text.fontWeight = 'bold';
-            this.text.fontSize = 30;
-            this.text.fill = '#101010';
         }
 
     }
 
     /** Lässt text verschwinden */
-    removeText() {
+    removeContent() {
         // this.game.world.remove(this.text);
-        this.text.destroy();
-        this.text = undefined;
+        if(this.text != undefined) {
+            this.text.destroy();
+            this.text = undefined;
+        }
+        if(this.image != undefined) {
+            this.image.destroy();
+            this.image = undefined;
+        }
     }
 
     /** Gibt eine zufällige zahl von .. bis zurück */
