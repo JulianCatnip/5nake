@@ -61,6 +61,7 @@ h2, h3, h4 {
 	font-size: 20px;
 	color: #000;
 }
+
 #points, #length, #time {
 	font-family: 'Pixel', sans-serif;
 	font-weight: 300;
@@ -144,3 +145,35 @@ main #snake {
 	display: block;
 	border: 1px solid #0D5F7F;
 }
+
+main#credits p {
+	color: #000;
+	margin-bottom: 16px;
+}
+
+main#credits p a {
+	color: #000;
+}
+
+main#credits h2, main#credits h3, main#credits h4 {
+	font-family: 'Open Sans Semibold', sans-serif;
+	color: #000;
+}
+
+main#credits h2 {
+	font-size: 25px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+main#credits h3 {
+	font-size: 21px;
+	margin-bottom: 10px;
+}
+
+main#credits h4 {
+	font-size: 16px;
+	margin-bottom: 5px;
+}
+
+
