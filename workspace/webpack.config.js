@@ -41,8 +41,8 @@ var path = require('path');
         stats: {
             colors: true
         },
-        devtool: 'inline-source-map'
-        /*plugins: [
+        devtool: 'inline-source-map',
+        plugins: [
           new UglifyJSPlugin()
-        ]*/
+        ]
 };
