@@ -156,11 +156,26 @@ export default class Schlange {
             horizontal = vorgaenger.getPositionY() == aktueller.getPositionY();
             vertikal = vorgaenger.getPositionX() == aktueller.getPositionX();
 
-            // Der Aktuelle ist _____ dem Vorgaenger. 
+            // Der Aktuelle ist _____ dem Vorgaenger.
             hinter = vorgaenger.getPositionX() < aktueller.getPositionX();
             vor = vorgaenger.getPositionX() > aktueller.getPositionX();
             unter = vorgaenger.getPositionY() < aktueller.getPositionY();
             ueber = vorgaenger.getPositionY() > aktueller.getPositionY();
+
+            // Beim Hinauslaufen über den Rand
+            if(vorgaenger.getPositionX() == 0 && aktueller.getPositionX() == 14) {
+                // aktueller muss weiter nach rechts schauen
+                hinter = vor;
+            } else if(vorgaenger.getPositionX() == 14 && aktueller.getPositionX() == 0) {
+                // aktueller muss weiter nach links schauen
+                vor = hinter;            }
+            if(vorgaenger.getPositionY() == 0 && aktueller.getPositionY() == 10) {
+                // aktueller muss weiter nach unten schauen
+                unter = ueber;
+            } else if(vorgaenger.getPositionY() == 10 && aktueller.getPositionY() == 0) {
+                // aktueller muss weiter nach oben schauen
+                ueber = unter;
+            }
 
             if(horizontal && hinter) {
                 if(aktueller.getLaufrichtung() != 'left') {

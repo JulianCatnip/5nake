@@ -353,15 +353,19 @@ export default class Controller {
         */
         if (kopf.getPositionX() <= 0 - 1) { // wenn x position kleiner/gleich 0 - spielerbreite ist
             kopf.setPositionX(this.canvasWidth - 1); // position x = canvas-breite - spielerbreite
+            this.schlange.updateObjektLaufrichtung('left'); 
         } 
         else if (kopf.getPositionX() >= this.canvasWidth) { // wenn position x größer als canvas-breite
             kopf.setPositionX(0);
+            this.schlange.updateObjektLaufrichtung('right');
         } 
         else if (kopf.getPositionY() <= 0 - 1) { // wenn position y kleiner/gleich 0 - spielerhöhe ist
             kopf.setPositionY(this.canvasHeight - 1); // position y = canvas höhe - spielerhöhe
+            this.schlange.updateObjektLaufrichtung('up');
         } 
         else if (kopf.getPositionY() >= this.canvasHeight) { // wenn position y größer als canvas-höhe ist
             kopf.setPositionY(0); // y = 0
+            this.schlange.updateObjektLaufrichtung('down');
         }
 
     }
@@ -549,8 +553,15 @@ export default class Controller {
 		this.laufrichtungsIntervall = true;
 
 	}
+
+	/////////////////////////////////////////////////////////////////////////////
+	////////////////////////////** TIME UPDATE **////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
     
-    /** Ruft eine UpdateFunktion in der View auf, die die übergebene Sekundenzahl formatiert darstellt */
+    /** 
+    * Ruft eine UpdateFunktion in der View auf, die die übergebene Sekundenzahl 
+    * formatiert darstellt.
+    */
     updateTime(seconds){
         this.view.zeitAnzeige(seconds);
     }

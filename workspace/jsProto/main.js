@@ -125,12 +125,6 @@ export default class Main {
         this.timer.loop(1000, this.updateEverySecond, this); // TimeEvent jede Sekunde ausführen lassen
 
     }
-    
-    /** Funktion, die die Sekundenanzahl hochzählt und den Aufruf jede Sekunde an den Controller weitergibt */
-    updateEverySecond() { 
-                this.seconds++;
-                this.controller.updateTime(this.seconds);
-            }
 
     /**
     * PHASER-Methode GAMELOOP
@@ -252,6 +246,15 @@ export default class Main {
     /////////////////////////////////////////////////////////////////////////////
     //////////////////////////** ANDERE METHODEN **//////////////////////////////
     /////////////////////////////////////////////////////////////////////////////
+
+    /** 
+    * Funktion, die die Sekundenanzahl hochzählt und den 
+    * Aufruf jede Sekunde an den Controller weitergibt.
+    */
+    updateEverySecond() { 
+        this.seconds++;
+        this.controller.updateTime(this.seconds);
+    }
 
     /**
     * Setzt Variablen auf ihre Anfangswerte zurück und lässt Objekte neu zeichnen.
