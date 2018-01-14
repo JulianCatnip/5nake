@@ -121,15 +121,16 @@ export default class Main {
 
         // Timer initiieren
         this.timer = this.game.time.create(false);
+        
+        this.timer.loop(1000, this.updateTime, this); // TimeEvent jede Sekunde ausführen lassen
 
-        var updateTime = function() { // Funktion zum Aktualisieren der Zeitanzeige initiieren
+    }
+    
+    /** Funktion zum Aktualisieren der Zeitanzeige initiieren */
+    updateTime() { 
                 this.seconds++;
                 this.view.zeitAnzeige(this.seconds);
             }
-        
-        this.timer.loop(1000, updateTime, this); // TimeEvent jede Sekunde ausführen lassen
-
-    }
 
     /**
     * PHASER-Methode GAMELOOP
