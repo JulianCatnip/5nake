@@ -122,14 +122,14 @@ export default class Main {
         // Timer initiieren
         this.timer = this.game.time.create(false);
         
-        this.timer.loop(1000, this.updateTime, this); // TimeEvent jede Sekunde ausführen lassen
+        this.timer.loop(1000, this.updateEverySecond, this); // TimeEvent jede Sekunde ausführen lassen
 
     }
     
-    /** Funktion zum Aktualisieren der Zeitanzeige initiieren */
-    updateTime() { 
+    /** Funktion, die die Sekundenanzahl hochzählt und den Aufruf jede Sekunde an den Controller weitergibt */
+    updateEverySecond() { 
                 this.seconds++;
-                this.view.zeitAnzeige(this.seconds);
+                this.controller.updateTime(this.seconds);
             }
 
     /**

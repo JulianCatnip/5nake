@@ -549,6 +549,11 @@ export default class Controller {
 		this.laufrichtungsIntervall = true;
 
 	}
+    
+    /** Ruft eine UpdateFunktion in der View auf, die die übergebene Sekundenzahl formatiert darstellt */
+    updateTime(seconds){
+        this.view.zeitAnzeige(seconds);
+    }
 
 	/////////////////////////////////////////////////////////////////////////////
 	/////////////////////////** PUNKTESTAND UPDATE **////////////////////////////
