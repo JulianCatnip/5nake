@@ -1,22 +1,28 @@
 let Einzelobjekt = require('./einzelobjekt.js').default; // Klassenimport Einzelobjekt
-/** 
-* Die Schlange soll ihre Körperteile wie die Liste ihre Nodes verwalten.
-*/
+
+/////////////////////////////////////////////////////////////////////////////
+///////////////////////////////** SCHLANGE **////////////////////////////////
+////////////// Soll ihre Körperteile in einer Liste verwalten. //////////////
+/////////////////////////////////////////////////////////////////////////////
 export default class Schlange {
     
-    /** Constructor */
+    /** 
+    * Constructor 
+    */
     constructor() {
 
-        /** Schlange besteht aus einer Liste */
+        /** 
+        * Schlange besteht aus einer Liste.
+        */
         this.list = [
-            new Einzelobjekt(3, 1, 'spieler'), // x, y, typ des einzelobjektes
+            new Einzelobjekt(3, 1, 'spieler'), // x, y, typ des einzelobjektes (für die Sprite zuordnung)
             new Einzelobjekt(2, 1, 'verfolger'),
             new Einzelobjekt(1, 1, 'verfolger'),
             new Einzelobjekt(0, 1, 'verfolger')
 		];
 
         /**
-        * Ein Einzelobjekt ist 1x1 Einheiten (60px) groß)
+        * Ein Einzelobjekt ist 1x1 Einheiten (60px) groß.
         */
         this.objektGroesse = 1;
 
@@ -27,40 +33,73 @@ export default class Schlange {
         this.startY = 1;
 
     }
-    
-    /** Körperteil zur Schlange hinzufügen */
-    add() {
-        // Erweitert das Array durch ein Einzelobjekt
-        var neuesItem = new Einzelobjekt(this.list[this.list.length-1].getPositionX(), this.list[this.list.length-1].getPositionY(), 'verfolger');
-        this.list.push(neuesItem);
-    }
-    
+
+    /////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////** GETTER & SETTER **////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
+
     /** 
-    * Körperteil aus Schlange entfernen
-    * @return das getötete Objekt dessen sprite gelöscht werden muss
+    * Gibt die Schlangen-Liste zurück.
+    * @return Schlangen-Liste
     */
-    delete() {
-        if(this.list.length > 2) {
-            var zutoeten = this.list[this.list.length - 1];
-            this.list = this.list.slice(0, this.list.length - 1);
-            return zutoeten;
-        }
+    getList() {
+        return this.list;
     }
-    
-    /** Gibt die Länge der Schlange in Form eines Zahlenwertes zurück */
+
+    /** 
+    * Gibt die Länge der Schlangen-Liste zurück.
+    */
     getLength() {
         return this.list.length;
     }
+
+    /////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////** VERWALTUNG LISTE **////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
     
-    /** Weist den Schlangengliedern neue Positionen zu */
+    /** 
+    * Körperteil zur Schlangen-Liste hinzufügen.
+    */
+    add() {
+
+        // Erweitert das Array durch ein Einzelobjekt
+        let neuesItem = new Einzelobjekt(this.list[this.list.length-1].getPositionX(), this.list[this.list.length-1].getPositionY(), 'verfolger');
+        this.list.push(neuesItem);
+
+    }
+    
+    /** 
+    * Körperteil aus Schlange entfernen.
+    * @return das gekillte Objekt dessen Sprite noch gelöscht werden muss.
+    */
+    delete() {
+
+        if(this.list.length > 2) {
+
+            let zutoeten = this.list[this.list.length - 1]; // letztes Objekt speichern
+            this.list = this.list.slice(0, this.list.length - 1); // Array verkürzen
+
+            return zutoeten;
+
+        }
+
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////** BEWEGUNG **////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
+    
+    /** 
+    * Weist den Objekten in der Schlangen-Liste neue Positionen zu.
+    * @param newX, newY : neue Position
+    */
     move(newX, newY) {
         
-        //Speicher für die alte Position X
-        var oldX;
-        //Speicher für die alte Position Y
-        var oldY;
+        let oldX; // Speicher für die alte Position X
+        let oldY; // Speicher für die alte Position Y
 
-        for(var i = 0; i < this.list.length; i++){
+        for(let i = 0; i < this.list.length; i++) { // für jedes Objekt der Liste
+
             // Alte Position Speichern
             oldX = this.list[i].getPositionX();
             oldY = this.list[i].getPositionY();
@@ -72,24 +111,26 @@ export default class Schlange {
             // new neu besetzen
             newX = oldX;
             newY = oldY;
+
 		  }
+
     }
 
     /** 
-    * Weist den Schlangengliedern neue Laufrichtungen zu
+    * Weist den Objekten in der Schlangen-Liste neue Laufrichtungen zu.
     * Das aktuelle Objekt muss den Vorgänger verfolgen!
-    * @param kopfRichtung Laufrichtung des Spielers
+    * @param kopfRichtung : Laufrichtung des Spielers
     */
     updateObjektLaufrichtung(neueKopfRichtung) {
 
-        // zur speicherung vom Kopf
+        // zur Speicherung des Kopfes
         var kopf = this.list[0];
 
-        // zur speicherung von aktuellem und vorgänger Objekt 
+        // zur Speicherung von aktuellem und vorgänger Objekt 
         var aktueller;
         var vorgaenger;
 
-        // zur speicherung von Positionsabfragen (Boolean)
+        // zur Speicherung von Positionsabfragen (boolean)
         var horizontal;
         var vertikal;
         var hinter;
@@ -98,9 +139,9 @@ export default class Schlange {
         var ueber;
 
         // muss nur angepasst werden wenn neue vorhanden
-        if(kopf.laufrichtung != neueKopfRichtung) {
-            kopf.laufrichtung = neueKopfRichtung;
-            kopf.changedDirection = true;
+        if(kopf.getLaufrichtung() != neueKopfRichtung) {
+            kopf.setLaufrichtung(neueKopfRichtung);
+            kopf.setChangedDirection(true);
         }
 
         // durch liste iterieren
@@ -111,49 +152,40 @@ export default class Schlange {
             var j = i - 1;
             vorgaenger = this.list[j];
 
-            /** Der Aktuelle und der Vorgaenger sind _____ angebunden. */
+            // Der Aktuelle und der Vorgaenger sind _____ angebunden. 
             horizontal = vorgaenger.getPositionY() == aktueller.getPositionY();
             vertikal = vorgaenger.getPositionX() == aktueller.getPositionX();
 
-            /** Der Aktuelle ist _____ dem Vorgaenger. */
+            // Der Aktuelle ist _____ dem Vorgaenger. 
             hinter = vorgaenger.getPositionX() < aktueller.getPositionX();
             vor = vorgaenger.getPositionX() > aktueller.getPositionX();
             unter = vorgaenger.getPositionY() < aktueller.getPositionY();
             ueber = vorgaenger.getPositionY() > aktueller.getPositionY();
 
             if(horizontal && hinter) {
-                if(aktueller.laufrichtung != 'left') {
-                    aktueller.laufrichtung = 'left';
-                    aktueller.changedDirection = true;
+                if(aktueller.getLaufrichtung() != 'left') {
+                    aktueller.setLaufrichtung('left');
+                    aktueller.setChangedDirection(true); // Richtung wurde geändert (für den Wechsel der Animation)
                 }
             } else if(horizontal && vor) {
-                if(aktueller.laufrichtung != 'right') {
-                    aktueller.laufrichtung = 'right';
-                    aktueller.changedDirection = true;
+                if(aktueller.getLaufrichtung() != 'right') {
+                    aktueller.setLaufrichtung('right');
+                    aktueller.setChangedDirection(true); // Richtung wurde geändert (für den Wechsel der Animation)
                 }
             } else if(vertikal && unter) {
-                if(aktueller.laufrichtung != 'up') {
-                    aktueller.laufrichtung = 'up';
-                    aktueller.changedDirection = true;
+                if(aktueller.getLaufrichtung() != 'up') {
+                    aktueller.setLaufrichtung('up');
+                    aktueller.setChangedDirection(true); // Richtung wurde geändert (für den Wechsel der Animation)
                 }
             } else if(vertikal && ueber) {
-                if(aktueller.laufrichtung != 'down') {
-                    aktueller.laufrichtung = 'down';
-                    aktueller.changedDirection = true;
+                if(aktueller.getLaufrichtung() != 'down') {
+                    aktueller.setLaufrichtung('down');
+                    aktueller.setChangedDirection(true); // Richtung wurde geändert (für den Wechsel der Animation)
                 }
             }
 
         }
 
-    }
-	
-	/** Gibt die informationen über alle Körperteile als Array zurück */
-	getInfo() {
-		return this.list;
-	}
-    
-    setLength(value){
-        this.list.length = value;
     }
     
 }

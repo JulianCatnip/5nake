@@ -2,11 +2,11 @@ import 'pixi';
 import 'p2';
 import 'phaser';
 
-/**
-* HAUPTKLASSE
-* Erzeugt Model, View und Controller
-* Implementiert preload(), create() und update()-Methode für Phaser.Game
-*/
+/////////////////////////////////////////////////////////////////////////////
+///////////////////////////** HAUPTKLASSE MAIN **////////////////////////////
+//////////////////// Erzeugt Model, View und Controller. ////////////////////
+// Implementiert preload(), create() und update()-Methode für Phaser.Game ///
+/////////////////////////////////////////////////////////////////////////////
 export default class Main {
 
     /**
@@ -51,12 +51,12 @@ export default class Main {
         this.spielgeschwindigkeit = 20;
 
 		/**
-        * Steuerung der Spawnlogik von Schlangen-Körperteilen
+        * Steuerung der Spawnlogik von Schlangen-Körperteilen.
         */
         this.snekSpawn = 0;
 
 		/**
-        * Typ der aktuellen Kollision
+        * Typ der Kollision
         */
         this.kollisionstyp = 'frei';
 
@@ -65,11 +65,17 @@ export default class Main {
         */
         this.gameStatus = 'start';
 
-        /** Timer und Spielsekunden */
+        /** 
+        * Timer und Spielsekunden 
+        */
         this.timer;
         this.seconds = 0;
 
     }
+
+    /////////////////////////////////////////////////////////////////////////////
+    ///////////////////////** PHASER.GAME METHODEN **////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
 
     /**
     * PHASER-Methode SPRITES/DATEIEN LADEN
@@ -77,59 +83,51 @@ export default class Main {
     */
     preload() {
 
-        /** Boden-Sprite laden */
+        // Boden-Sprite laden
         this.game.load.image('boden', '../images/boden.png');
 
-        /** Objekt-Sprites laden */
+        // Objekt-Sprites laden
         this.game.load.spritesheet('spieler', '../images/spieler.png', 60, 60, 12);
         this.game.load.spritesheet('verfolger', '../images/verfolger.png', 60, 60, 48);
         this.game.load.spritesheet('feind', '../images/feind.png', 60, 60, 16);
 		this.game.load.image('item', '../images/gummiente.png');
 
-        /** Sound */
+        // Sound laden 
         this.game.load.audio('play', ['../audio/a_better_world.mp3']);
         this.game.load.audio('paused', ['../audio/a_journey_awaits.mp3', '../audio/a_journey_awaits.ogg']);
         this.game.load.audio('gameover', ['../audio/gameover.mp3']);
         this.game.load.audio('pickup', ['../audio/pling.wav']);
         this.game.load.audio('crash', ['../audio/crash.wav']);
 
-        /** GAMEOVER-Sprite laden */
+        // Spielstand-Screens laden
         this.game.load.image('startscreen', '../images/start.png');
         this.game.load.image('anleitung', '../images/anleitung.png');
         this.game.load.image('pause', '../images/pause.png');
         this.game.load.image('gameover', '../images/gameover.png');
-        // usw...
+
     }
 
     /**
-    * PHASER-Methode OBJEKTE ERZEUGEN
-    * Hier werden die benötigten Objekte und die Steuerung erzeugt.
+    * PHASER-Methode ERZEUGEN
+    * Hier werden die benötigten Objekte für den Start erzeugt.
     */
     create() {
 
-        /** Canvas-Hintergrund setzen */
-        this.game.add.tileSprite(0, 0, 900, 660, 'boden');
+        this.game.add.tileSprite(0, 0, 900, 660, 'boden'); // Canvas-Hintergrund setzen
+        
+        this.controller.resetKeyboardKeys(); // Keyboard Browser-Voreinstellungen entfernen
+        this.controller.createSound(); // Sound initialisieren
+        this.controller.zeichneObjekte(); // Alle Objekte zu Start zeichnen
 
-        /** Keyboard Browservoreinstellungen reseten */
-        this.controller.resetKeyboardKeys();
-
-        /** Sound initialisieren */
-        this.controller.createSound(); // startsoundtrack abspielen
-
-        /** Alle Objekte zu Start zeichnen */
-        this.controller.zeichneObjekte();
-
-        /** Timer initiieren */
+        // Timer initiieren
         this.timer = this.game.time.create(false);
 
-        /** Funktion zum Aktualisierend er Zeitanzeige initiieren */
-        var updateTime = function() {
-                this.seconds ++;
+        var updateTime = function() { // Funktion zum Aktualisieren der Zeitanzeige initiieren
+                this.seconds++;
                 this.view.zeitAnzeige(this.seconds);
             }
-
-        /**  TimeEvent jede Sekunde ausführen lassen */
-        this.timer.loop(1000, updateTime, this);
+        
+        this.timer.loop(1000, updateTime, this); // TimeEvent jede Sekunde ausführen lassen
 
     }
 
@@ -139,135 +137,99 @@ export default class Main {
     */
     update() {
 
-        /** Spielstatus STARTBILDSCHIRM */
+        // SPIELSTATUS START 
         if(this.gameStatus == 'start') {
 
             this.controller.started(); // startscreen
 
-            /** Alle Objekte die zu Start benötigt werden zeichnen (Schlange, Pickup, Gegner) */
-
-            if(this.controller.getEnterKey().isDown) { // Enter-Taste für Spiel-Start drücken
-                this.gameStatus = 'play';
-                this.controller.played(this.gameStatus);
-                // Timer für Zeitanzeige wird gestartet, sobald das Spiel anfängt
-                this.timer.start();
-            } else if(this.controller.getManualKey().isDown) {
+            if(this.controller.getEnterKey().isDown) { // Enter-Taste für Play-Status drücken
+                this.gameStatus = 'play'; // Spielstand wechseln
+                this.controller.played(this.gameStatus); // Aktionen beim Spiel-Status
+                this.timer.start(); // Timer für Zeitanzeige starten
+            } else if(this.controller.getManualKey().isDown) { // A-Taste für Anleitung drücken
                 this.controller.zeigeAnleitung();
             }
 
         }
-        /** Spielstatus SPIELEND */
+        // SPIELSTATUS PLAY
         else if(this.gameStatus == 'play') {
 
             this.controller.updateLaufrichtung(); // Laufrichtung aktualisieren
-
             this.frameCounter++;
 
-            /**
-            * Diese if-Abfrage regelt die Geschwindigkeit des Spiels, da die
-            * update()-Methode aus Phaser ein sehr schneller und unendlicher Loop ist.
-            *
-            * Diese update()-Loop läuft also durch unendlich viele "Frames" und durch frameCounter und spielgeschwindigkeit wird es
-            * nun so eingestellt das alle 20 Frames 1 Aktion ausgeführt wird und der Loop dann wieder von vorne beginnt.
-            */
+            // Diese Abfrage regelt die Geschwindigkeit des Spiels, da die
+            // update()-Methode aus Phaser ein sehr schneller und unendlicher Loop ist.
+            // Diese Loop läuft also durch unendlich viele "Frames" und durch frameCounter und spielgeschwindigkeit wird es
+            // nun so eingestellt das alle 20 Frames 1 Aktion ausgeführt wird und der Loop dann wieder von vorne beginnt.
             if (this.frameCounter == this.spielgeschwindigkeit) {
 
-                // HIER WIRD DIE SCHLANGE MIT DEM CURSOR BEWEGT
-                this.controller.bewegeSchlange();
+                this.controller.bewegeSchlange(); // Spieler mit mit Cursor bewegen
 
-                // OBJEKTE WERDEN AUTOMATISCH IM CONTROLLER INITIALISIERT UND GESPAWNT!
+                this.kollisionstyp = this.controller.kollision(); // Kollisonen Abfragen
+                if(this.kollisionstyp != 'frei') { 
 
-                // HIER WERDEN KOLLISIONEN ABGEFRAGT
-                this.kollisionstyp = this.controller.kollision();
-
-                if(this.kollisionstyp != 'frei') {
-
-                    switch(this.kollisionstyp) {
-
-                        case 'feind':   /** Kollision mit Gegner oder Körperteil */
-                                        this.controller.died(this.gameStatus);
+                    switch(this.kollisionstyp) { // je nach Kollisionstyp reagieren
+                        // bei Kollision mit Gegner oder Körperteil
+                        case 'feind':   this.controller.died(this.gameStatus);
                                         this.gameStatus = 'dead'; // Spielstatus wechseln   
-
                                         break;
-
-                        case 'boon':    /** Kollision mit Upgrade-Item? */
-                                        /** TODO: Apply Boon;*/
-                                        console.log('BOON');
-                                        break;
-
-                        case 'pickup':  /** Kollision mit Pickup */
-                                        this.controller.respawnAll();
+                        // bei Kollision mit Pickup 
+                        case 'pickup':  this.controller.respawnAll();
                                         this.controller.verkuerzeSchlange();
-                                        if (this.spielgeschwindigkeit <= 10) {
+
+                                        if (this.spielgeschwindigkeit <= 10) { // Spielgeschwindigkeit erhöhen (bis max. 10)
                                             this.spielgeschwindigkeit = 10;
                                         } else {
-														 this.spielgeschwindigkeit -= 1;
-													 }
-                                        break;
+                                            this.spielgeschwindigkeit -= 1;
+                                        }
 
                     }
+
                 }
 
-                // HIER WERDEN DIE EINZELENEN KOMPONENTEN NEU GEZEICHNET
-                this.controller.zeichneObjekte(); // alle objekte neuzeichnen
+                this.controller.zeichneObjekte(); // Objekte neu zeichnen
+                this.controller.notifySoundStats(this.kollisionstyp);
 
-                this.controller.notifySoundStats(this.kollisionstyp, this.spielgeschwindigkeit); // aktualisierung der musik
-
-                // Schlange vergrößern, Punktestand aktualisieren
+                // Schlange vergrößern & Punktestand aktualisieren
                 this.snekSpawn++;
     			this.snekSpawn %= 10;
     			if(this.snekSpawn == 0){
                     this.controller.vergroessereSchlange();
-                    //pro Zeittaktung automatisches update der Punkte
+                    // pro Zeittaktung automatisches update der Punkte
                     this.controller.updateScoreOverTime();
     			}
 
                 this.frameCounter = 0;
 
-            } // ENDE BEWEGUNGS-LOOP
+            }
 
-
-            // Wenn P gedrückt wird pausieren
-            if(this.controller.getPauseKey().isDown) {
+            if(this.controller.getPauseKey().isDown) { // Wenn P gedrückt wird pausieren
                 this.controller.paused(this.gameStatus);
                 this.gameStatus = 'paused';
             }
 
         }
-        /** Spielstatus GAME OVER */
+        // SPIELSTATUS GAMEOVER (DEAD)
         else if(this.gameStatus == 'dead') {
 
             this.controller.gameover();
 
-            // Zeit stoppen
-            this.timer.stop(false);
+            this.timer.stop(false); // Zeit stoppen
 
             if(this.controller.getEnterKey().isDown) { // Enter-Taste für Neustart drücken
-
-                this.resetGame(); // kollisionstyp auf frei setzen
-                this.gameStatus = 'start'; // spielstatus auf start setzen
-
-                // Sekundenzahl zurücksetzen
-                this.seconds = 0;
-                this.view.zeitAnzeige(this.seconds);
-            }
-
-            // Erhöhen des Counters alle 20 Frames, unabhängig von der Spielgeschwindigkeit
-            if (this.framecounter == 20){
-                //Erhöhen des logik counters
-                this.snekSpawn++;
-                this.snekSpawn %= 10;
-                    if(this.snekSpawn == 0){
-                        this.controller.vergroessereSchlange();
-                }
+                this.resetGame(); // spiel zurücksetzen
+                this.gameStatus = 'start';
+            } else if(this.controller.getStartKey().isDown) { // S-Taste Startseite drücken
+                this.resetGame(); // spiel zurücksetzen
+                this.gameStatus = 'start';
             }
 
         }
-        /** Spielstatus PAUSIEREND */
+        // SPIELSTATUS PAUSED
         else if(this.gameStatus == 'paused') {
 
-            this.controller.stopAnimation(); // pause screen und gestoppte animation
-            this.timer.stop(false);
+            this.controller.stopAnimation(); // sprite-animationen stoppen
+            this.timer.stop(false); // zeit anhalten
 
             // Getter für Cursor-Keys
             var up = this.controller.getCursor().up.isDown;
@@ -284,25 +246,25 @@ export default class Main {
 
         }
 
-    } // Ende update()-Loop
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    //////////////////////////** ANDERE METHODEN **//////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
 
     /**
-    * Setzt neue Schlange für den Controller und resettet alle stats
+    * Setzt Variablen auf ihre Anfangswerte zurück und lässt Objekte neu zeichnen.
     */
     resetGame() {
 
-        // Startposition des Spielers setzen
-        this.controller.reset();
+        this.seconds = 0; // Sekundenzahl zurücksetzen
+        this.spielgeschwindigkeit = 20; // Geschwindigkeit zurücksetzen
+        this.frameCounter = 0; //FrameCounter zurücksetzen
 
-        // Geschwindigkeit reseten
-        this.spielgeschwindigkeit = 20;
-        //FrameCounter resetten
-        this.frameCounter = 0;
-        
-        this.controller.zeichneObjekte(); // objekte neuzeichnen
+        this.controller.reset(this.seconds); // Startposition des Spielers setzen
+        this.controller.zeichneObjekte(); // Objekte neuzeichnen
+
     }
-
-
 
 }
 

@@ -1,111 +1,154 @@
-//import { Einzelobjekt } from './einzelobjekt';
-let Einzelobjekt = require('./einzelobjekt.js').default;
+let Einzelobjekt = require('./einzelobjekt.js').default; // Klassenimport Einzelobjekt
 
-/**
-* Taucht zufällig im Spielfeld auf
-* Game Over bei Kollision mit Schlange
-*/
+/////////////////////////////////////////////////////////////////////////////
+////////////////////////////////** GEGNER **/////////////////////////////////
+//// Spawnt zufällig im Spielfeld und sorgt für Gameover bei Kollision. /////
+/////////////////////////////////////////////////////////////////////////////
 export default class Gegner {
     
-    /** Constructor */
-    constructor(_maxX,_maxY, _typ) {
+    /** 
+    * Constructor
+    * @param maxX, maxY : Maximal-Werte für die Platzierung im Canvas
+    * @param typ : Typ der Einzelobjekte
+    */
+    constructor(maxX, maxY, typ) {
 
     	/**
     	* max-X Koordinate
     	*/
-    	this.maxX = _maxX - 1; // 14
+    	this.maxX = maxX - 1; // 14
 
     	/**
     	* max-Y Koordinate
     	*/
-		this.maxY = _maxY - 1; // 10
+		this.maxY = maxY - 1; // 10
 
 		/**
-    	* Typ
+    	* Typ für die Einzelobjekte
     	*/
-		this.typ = _typ; // 'feind'
+		this.typ = typ; // 'feind' beim Gegner
 
 		/**
     	* Gegner als Liste initialisieren
     	*/
-    	let Einzelobjekt = require('./einzelobjekt.js').default; // Klassenimport Einzelobjekt
 		this.list = [
 			new Einzelobjekt(
 				Math.floor(Math.random() * (this.maxX - 2 + 1)) + 2, // zufällige x-Platzierung
 			  	Math.floor(Math.random() * (this.maxY - 2 + 1)) + 2, // zufällige y-Platzierung
-				this.typ // Typ für Zuweisung des Sprites
+				this.typ // Typ für Zuweisung des Sprite
 			)
 		];
+
 	}
+
+	/////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////** GETTER & SETTER **////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
+
+	/** 
+	* Gibt die Gegner-Liste zurück.
+	* @return Gegner-Liste
+	*/
+	getList() {
+		return this.list;
+	}
+
+	/** 
+    * Gibt die Länge der Gegner-Liste zurück.
+    */
+    getLength() {
+        return this.list.length;
+    }
+
+	/////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////** VERWALTUNG LISTE **///////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	* Fügt ein weiteres Objekt dem Array zu 
-	* @param gegenstand mit dem nicht kollidiert werden darf
+	* Fügt ein weiteres Objekt dem Array zu.
+	* @param objekt : mit dem Überlagerung verhindert werden soll.
 	*/
-	add(gegenstand) {
+	add(objekt) {
+
 		this.list.push(
 			new Einzelobjekt(
-				Math.floor(Math.random() * (this.maxX - 2 + 1)) + 2,
-			  	Math.floor(Math.random() * (this.maxY - 2 + 1)) + 2, 
-				this.typ
+				Math.floor(Math.random() * (this.maxX - 2 + 1)) + 2, // zufällige x-Platzierung
+			  	Math.floor(Math.random() * (this.maxY - 2 + 1)) + 2, // zufällige y-Platzierung
+				this.typ // Typ für Zuweisung des Sprite
 			)
 		);
-		this.stackVerhindern(gegenstand);
+
+		this.stackVerhindern(objekt); // Überlagerung verhindern
+
 	}
+
+	/////////////////////////////////////////////////////////////////////////////
+    /////////////////////////** RESPAWN POSITIONIERUNG **////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	* Testet ob die Objekte dieser Liste mit dem auf einem anderen Objekt kollidieren
-	* (zb: Verhindert dass Gegner auf Pickups spawnen)
+	* Testet ob die Objekte dieser Liste beim spawnen mit einem anderen Objekt kollidieren.
+	* Verhindert z.B. dass Gegner auf Pickups spawnen.
+	* @param objekt : mit dem Überlagerung verhindert werden soll.
 	*/
-	stackVerhindern(gegenstand) {
-		var gleich = true;
-		for(var i = 0; i < this.list.length; i++){
-			while(gleich) {
+	stackVerhindern(objekt) {
 
-				// x-Koordinate überprüfen
-				if(this.list[i].getPositionX() == gegenstand.getPositionX()){
-					// y-Koordinate überprüfen
-					if(this.list[i].getPositionY() == gegenstand.getPositionY()){
-						// Bei Gleichheit respawnen
-						this.reset(this.list[i]);
+		let gleichePosition = true; // Abfrage auf der gleichen Position auf true
+
+		for(var i = 0; i < this.list.length; i++){ // für alle Objekte der Gegner-Liste
+
+			while(gleichePosition) { // solange gleiche Position
+			
+				if(this.list[i].getPositionX() == objekt.getPositionX()) { // x-Koordinaten der Objekte vergleichen
+					
+					if(this.list[i].getPositionY() == objekt.getPositionY()){ // y-Koordinaten der Objekte vergleichen
+						
+						this.reset(this.list[i]); // bei Gleichheit neu spawnen
+
 					} else {
-						gleich = false;
+
+						gleichePosition = false; // andernfalls gleiche Position ist false
+
 					}
+
 				} else {
-					gleich = false;
+
+					gleichePosition = false; // andernfalls gleiche Position ist false
+
 				}
+
 			}
 
 		}
+
 	}
 	
 	/**
-	* Setzt alle Inhalte auf neue zufällige Positionen 
+	* Setzt alle Gegner-Objekte auf neue zufällige Positionen.
+	* @param objekt : mit dem Überlagerung verhindert werden soll.
 	*/
-	respawn(gegenstand) {
-		for(var i = 0; i < this.list.length; i++){
-			//this.reset(this.list[i]);
-			this.list[i] = new Einzelobjekt(
-				Math.floor(Math.random() * (this.maxX - 2 + 1)) + 2,
-				Math.floor(Math.random() * (this.maxY - 2 + 1)) + 2,
-				this.typ
+	respawn(objekt) {
+
+		for(var i = 0; i < this.list.length; i++) { // für alle Objekte der Gegner-Liste
+
+			this.list[i] = new Einzelobjekt( // neues Einzelobjekt
+				Math.floor(Math.random() * (this.maxX - 2 + 1)) + 2, // zufällige x-Platzierung
+				Math.floor(Math.random() * (this.maxY - 2 + 1)) + 2, // zufällige y-Platzierung
+				this.typ // Typ für Zuweisung des Sprite
 			);
+
 		}
-		this.stackVerhindern(gegenstand);
+
+		this.stackVerhindern(objekt); // Überlagerung verhindern
 	}
 	
 	/** 
-	* Setzt ein Einzelobjekt auf neue Position (um 1 verrückt)
+	* Setzt ein Einzelobjekt auf neue Position (um 1 verrückt).
+	* @param objekt : dessen Position um 1 verrückt werden soll.
 	*/
 	reset(objekt) {
-		objekt.setPositionX((objekt.positionX +1)%this.maxX );
-		objekt.setPositionY((objekt.positionY +1)%this.maxY );
-        console.log("POSITION GEÄNDERT");
-	}
-	
-	/** Gibt die informationen über alle Gegner als Array zurück */
-	getInfo() {
-		return this.list;
+		objekt.setPositionX((objekt.positionX + 1) % this.maxX); // x-Platzierung
+		objekt.setPositionY((objekt.positionY + 1) % this.maxY); // y-Platzierung
 	}
     
 }

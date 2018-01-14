@@ -2,15 +2,15 @@ import 'pixi';
 import 'p2';
 import 'phaser';
 
-/**
-* Sound
-*/
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////** SOUND **/////////////////////////////////
+////////////////////// Verwaltet die Musik des Spieles. /////////////////////
+/////////////////////////////////////////////////////////////////////////////
 export default class Sound {
 
     /**
     * Constructor
     * @param game : Phaser.Game-Objekt
-    * @param schlange : Schlangen-Objekt
     */
 	constructor(game) {
 
@@ -20,18 +20,30 @@ export default class Sound {
         */
         this.game = game;
 
+        /**
+        * Soundtracks der Spiel-Stände.
+        */
         this.playSoundtrack;
         this.pauseSoundtrack;
         this.gameoverSoundtrack;
 
+        /**
+        * Soundeffekte der Kollisionen.
+        */
         this.pickupSound;
         this.crashSound;
 
     }
 
+    /////////////////////////////////////////////////////////////////////////////
+    ////////////////////////** SOUND-DATEIEN ZUORDNEN **/////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
+
+    /**
+    * Sound initialisieren.
+    */
     addMusic() {
-        //this.startSoundtrack = this.game.add.audio('paused', 0.1, true);
-        //this.startSoundtrack.onDecoded.add(this.start, this);
+
         this.playSoundtrack = this.game.add.audio('play', 0.1, true);
         this.pauseSoundtrack = this.game.add.audio('paused', 0.1, true);
         this.gameoverSoundtrack = this.game.add.audio('gameover', 0.1, false);
@@ -41,19 +53,58 @@ export default class Sound {
 
     }
 
-    start() {
-        this.startSoundtrack.play("",0,0.1);
+    /////////////////////////////////////////////////////////////////////////////
+    /////////////////////////** SOUNDEFFEKTE ABSPIELEN **////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
+
+    /**
+    * Pickup Soundeffekt abspielen.
+    */
+    pickup() {
+        this.pickupSound.play("",0,0.1);
     }
 
+    /**
+    * Gegner-Kollision Soundeffekt abspielen.
+    */
+    crash() {
+        this.crashSound.play("",0,0.1);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////////////////////////** SOUNDTRACKS ABSPIELEN **/////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
+
+    /**
+    * Play-Status Soundtrack abspielen.
+    */
     play() {
         this.playSoundtrack.play("",0,0.1);
         //this.playSoundtrack.fadeIn(4000);
     }
 
+    /**
+    * Pause-Status Soundtrack abspielen.
+    */
     paused() {
         this.pauseSoundtrack.play("",0,0.1);
     }
 
+    /**
+    * Gameover-Status Soundtrack abspielen.
+    */
+    gameover() {
+        this.gameoverSoundtrack.play("",0,0.1);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////////////////////////** SOUNDTRACKS VERWALTEN **/////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
+
+    /**
+    * Soundtrack pausieren.
+    * @param sound : Soundtrack der pausiert werden soll.
+    */
     pause(sound) {
         if(sound == 'start') {
             this.startSoundtrack.pause();
@@ -64,6 +115,10 @@ export default class Sound {
         }
     }
 
+    /**
+    * Pausierten Soundtrack weiterspielen.
+    * @param sound : Soundtrack der weitergespielt werden soll.
+    */
     resume(sound) {
         if(sound == 'start') {
             this.startSoundtrack.resume("",0,0.1);
@@ -74,6 +129,10 @@ export default class Sound {
         }
     }
 
+    /**
+    * Soundtrack neustarten.
+    * @param sound : Soundtrack der neu gestartet werden soll.
+    */
     restart(sound) {
         if(sound == 'start') {
             this.startSoundtrack.restart("",0,0.1);
@@ -84,6 +143,10 @@ export default class Sound {
         }
     }
 
+    /**
+    * Soundtrack stoppen.
+    * @param sound : Soundtrack der gestoppt werden soll.
+    */
     stop(sound) {
         if(sound == 'start') {
             this.startSoundtrack.stop();
@@ -94,6 +157,13 @@ export default class Sound {
         }
     }
 
+    /////////////////////////////////////////////////////////////////////////////
+    /////////////////////** ALLE SOUNDTRACKS ZURÜCKSETZEN **/////////////////////
+    /////////////////////////////////////////////////////////////////////////////
+
+    /**
+    * Alle Sounds stoppen und entfernen.
+    */
     reset() {
         this.playSoundtrack.stop();
         this.pauseSoundtrack.stop();
@@ -109,18 +179,6 @@ export default class Sound {
         this.pickupSound.destroy();
         this.crashSound.destroy();
 
-    }
-
-    pickup() {
-        this.pickupSound.play("",0,0.1);
-    }
-
-    crash() {
-        this.crashSound.play("",0,0.1);
-    }
-
-    gameover() {
-        this.gameoverSoundtrack.play("",0,0.1);
     }
 
 }
