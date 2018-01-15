@@ -84,26 +84,26 @@ export default class Main {
     preload() {
 
         // Boden-Sprite laden
-        this.game.load.image('boden', '../images/boden.png');
+        this.game.load.image('boden', 'images/boden.png');
 
         // Objekt-Sprites laden
-        this.game.load.spritesheet('spieler', '../images/spieler.png', 60, 60, 12);
-        this.game.load.spritesheet('verfolger', '../images/verfolger.png', 60, 60, 48);
-        this.game.load.spritesheet('feind', '../images/feind.png', 60, 60, 16);
-		this.game.load.image('item', '../images/gummiente.png');
+        this.game.load.spritesheet('spieler', 'images/spieler.png', 60, 60, 12);
+        this.game.load.spritesheet('verfolger', 'images/verfolger.png', 60, 60, 48);
+        this.game.load.spritesheet('feind', 'images/feind.png', 60, 60, 16);
+		this.game.load.image('item', 'images/gummiente.png');
 
         // Sound laden 
-        this.game.load.audio('play', ['../audio/a_better_world.mp3']);
-        this.game.load.audio('paused', ['../audio/a_journey_awaits.mp3', '../audio/a_journey_awaits.ogg']);
-        this.game.load.audio('gameover', ['../audio/gameover.mp3']);
-        this.game.load.audio('pickup', ['../audio/pling.wav']);
-        this.game.load.audio('crash', ['../audio/crash.wav']);
+        this.game.load.audio('play', ['audio/a_better_world.mp3']);
+        this.game.load.audio('paused', ['audio/a_journey_awaits.mp3', 'audio/a_journey_awaits.ogg']);
+        this.game.load.audio('gameover', ['audio/gameover.mp3']);
+        this.game.load.audio('pickup', ['audio/pling.wav']);
+        this.game.load.audio('crash', ['audio/crash.wav']);
 
         // Spielstand-Screens laden
-        this.game.load.image('startscreen', '../images/start.png');
-        this.game.load.image('anleitung', '../images/anleitung.png');
-        this.game.load.image('pause', '../images/pause.png');
-        this.game.load.image('gameover', '../images/gameover.png');
+        this.game.load.image('startscreen', 'images/start.png');
+        this.game.load.image('anleitung', 'images/anleitung.png');
+        this.game.load.image('pause', 'images/pause.png');
+        this.game.load.image('gameover', 'images/gameover.png');
 
     }
 
