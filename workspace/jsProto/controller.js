@@ -136,6 +136,15 @@ export default class Controller {
         return this.game.input.keyboard.addKey(Phaser.Keyboard.S);
     }
 
+    /** Getter für den Q-Key */
+    getQuitKey() {
+    	return this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////** ANDERE GETTER **/////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
+
     /** Getter für die Laufrichtung des Spielers */
     getLaufrichtung() {
     	return this.laufrichtung;

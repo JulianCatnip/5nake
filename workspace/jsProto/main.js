@@ -237,7 +237,11 @@ export default class Main {
                 this.controller.played(this.gameStatus);
                 this.gameStatus = 'play';
                 this.timer.start();
-			}
+			} else if (this.controller.getQuitKey().isDown) { // Bei Q-Key beenden und zur Startseite zurückkehren
+                this.controller.gameover(); // spiel zuende = alle sprites löschen
+                this.resetGame(); // spiel zurücksetzen
+                this.gameStatus = 'start';
+            }
 
         }
 
